@@ -1,13 +1,15 @@
 class User < ActiveRecord::Base
-  enum role: [:user, :vip, :admin]
-  after_initialize :set_default_role, :if => :new_record?
+  include Confirmable
 
-  def set_default_role
-    self.role ||= :user
-  end
+  has_many :emails, class_name: 'UserEmail'
+  has_many :loan_borrowers, foreign_key: :borrower_id
+  has_many :debts, class_name: 'Loan', source: :loan, through: :loan_borrowers
+  has_many :loans, foreign_key: :lender_id
 
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :rememberable, :trackable, :validatable
+  devise :database_authenticatable
+  devise :recoverable
+  devise :registerable
+  devise :rememberable
+  devise :trackable
+  devise :validatable
 end
