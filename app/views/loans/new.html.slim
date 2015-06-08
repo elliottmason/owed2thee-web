@@ -1,5 +1,6 @@
 = simple_form_for @loan do |f|
-  = f.input :creator_email,   as: :email
+  - if !user_signed_in?
+    = f.input :creator_email,   as: :email
   = f.input :type, collection: [['lent', :loan], ['owe', :debt]], priority: 'owe', include_blank: false
   = f.input :amount_dollars,  as: :integer, input_html: { min: 0, placeholder: 10 }
   = f.input :amount_cents,    as: :integer, input_html: { min: 0, placeholder: 00 }

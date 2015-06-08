@@ -1,4 +1,5 @@
-class LoanBorrower < ActiveRecord::Base
-  belongs_to :borrower, class_name: 'User', inverse_of: :loan_borrowers
-  belongs_to :loan, inverse_of: false
+class LoanBorrower < LoanParticipant
+  belongs_to :borrower, class_name:   'User',
+                        foreign_key:  :user_id,
+                        inverse_of:   :loan_borrowers
 end

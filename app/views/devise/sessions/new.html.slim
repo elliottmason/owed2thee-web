@@ -1,0 +1,8 @@
+#authform
+  = simple_form_for(SignInForm.from(resource), url: session_path(resource_name)) do |f|
+    = f.input :email, as: :email, placeholder: 'user@domain.com'
+    = f.input :password
+    = f.button :submit, 'Sign In'
+
+  a href="#" Forgot password
+  a href="#" Sign up

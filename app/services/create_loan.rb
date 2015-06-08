@@ -1,12 +1,11 @@
 class CreateLoan < BaseService
   include Wisper::Publisher
 
-  attr_reader :creator
-  attr_reader :loan
-
   def initialize(creator, params)
     @creator  = creator
     @params   = params
+
+    subscribe_to_listeners
   end
 
   def borrowers
@@ -14,21 +13,13 @@ class CreateLoan < BaseService
   end
 
   def create_loan
-    loan.borrowers = borrowers
+    loan.borrowers  = borrowers
+    loan.lenders    = lenders
     loan.save!
   end
 
   def creator
-    return @creator if @creator
-
-    return unless creator_email
-
-    extant_email = UserEmail.where(email: creator_email).first
-    @creator =  if extant_email && extant_email.uncomfirmed?
-                  extant_email.user
-                elsif extant_email.nil?
-                  CreateUserWithEmail.with(creator_email).user
-                end
+    @creator || prospective_creator
   end
 
   delegate :creator_email, to: :form
@@ -47,11 +38,11 @@ class CreateLoan < BaseService
   end
 
   def group
-    @group ||= LoanGroup.create
+    @group ||= LoanGroup.new
   end
 
-  def lender
-    type == :loan ? creator : obligors.first
+  def lenders
+    type == :loan ? [creator] : obligors
   end
 
   def loan
@@ -59,8 +50,7 @@ class CreateLoan < BaseService
 
     @loan = Loan.new do |l|
       l.group   = group
-      l.creator = creator
-      l.lender  = lender
+      l.creator = @creator || prospective_creator
       l.amount  = form.amount_dollars
       l.amount_cents += form.amount_cents
     end
@@ -90,7 +80,26 @@ class CreateLoan < BaseService
       end
     end
 
-    broadcast(:loan_created, loan) if successful?
+    broadcast(:create_loan_successful, loan) if successful?
+  end
+
+  def prospective_creator
+    return if @creator
+    return @prospective_creator if @prospective_creator
+
+    return if creator_email.nil?
+
+    @prospective_creator =
+      if (user_email = UserEmail.where(email: creator_email).first)
+        user_email.user
+      else
+        CreateUserWithEmail.with(creator_email).user
+      end
+  end
+  alias_method :prospective_creator?, :prospective_creator
+
+  def subscribe_to_listeners
+    subscribe(PublishLoan)
   end
 
   def successful?
@@ -100,4 +109,6 @@ class CreateLoan < BaseService
   def type
     form.type.to_sym
   end
+
+  alias_method :user, :creator
 end

@@ -277,6 +277,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    statesman (1.2.3)
     temple (0.7.5)
     thin (1.6.3)
       daemons (~> 1.0, >= 1.0.9)
@@ -347,6 +348,7 @@ DEPENDENCIES
   slim-rails (~> 3.0)
   spring
   spring-commands-rspec
+  statesman (~> 1.2)
   thin
   uglifier (~> 2.7)
   web-console (~> 2.0)

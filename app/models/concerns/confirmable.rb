@@ -1,29 +1,35 @@
+# TODO: extract the rest of these methods into Transitional
 module Confirmable
   def self.included(base)
     base.class_eval do
-      scope :confirmable, lambda {
-        where('confirmed_at IS NULL') \
-          .where('confirmation_token IS NOT NULL') \
-          .where('confirmation_sent_at <= ?', 7.days.ago)
-      }
-      scope :confirmed, -> { where('confirmed_at IS NOT NULL') }
+      include Transitional
+      extend ClassMethods
+
+      has_many :confirmation_transitions, as: :transitional
     end
   end
 
-  def confirm
-    self[:confirmed_at] = Time.zone.now
-  end
-
   def confirm!
-    confirm
-    save!
+    confirmation.transition_to!(:confirmed)
   end
 
-  def confirmed?
-    confirmed_at && confirmed_at <= Time.zone.now
+  def confirmation
+    @confirmation ||= ConfirmationStateMachine.new(
+      self,
+      association_name: :confirmation_transitions,
+      transition_class: ConfirmationTransition
+    )
   end
 
-  def uncomfirmed?
-    !confirmed?
+  ConfirmationStateMachine.states.each do |state|
+    define_method(:"#{state}?") do
+      confirmation.current_state == state
+    end
+  end
+
+  module ClassMethods
+    def initial_state
+      super << :unconfirmed
+    end
   end
 end

@@ -16,6 +16,7 @@ gem 'sass-rails',       '~> 5.0'
 gem 'sendgrid',         '~> 1.2'
 gem 'simple_form',      '~> 3.1'
 gem 'slim-rails',       '~> 3.0'
+gem 'statesman',        '~> 1.2'
 gem 'uglifier',         '~> 2.7'
 gem 'wisper',           '~> 1.6'
 
