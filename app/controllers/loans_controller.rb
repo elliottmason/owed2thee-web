@@ -1,20 +1,18 @@
 class LoansController < ApplicationController
+  before_action :authenticate_user!, only: [:show]
+
   def new
     @loan = LoanForm.new
   end
 
   def create
-    creator = CreateLoan.with(current_user, params[:loan])
+    service = CreateLoan.with(current_user, params[:loan])
 
-    if creator.successful?
-      if !user_signed_in? && creator.user.unconfirmed?
-        sign_in(creator.user)
-      elsif !user_signed_in? && creator.user.confirmed?
-        redirect_to(:new_session_path)
-      end
-      redirect_to(creator.loan)
+    if service.successful?
+      sign_in_creator(service)
+      redirect_to(service.loan)
     else
-      @loan = creator.form
+      @loan = service.form
       render(:new)
     end
   end
@@ -22,5 +20,19 @@ class LoansController < ApplicationController
   def show
     @loan = Loan.find(params[:id])
     authorize @loan
+    NotifyLoanParticipants.with(@loan)
+  end
+
+  private
+
+  def sign_in_creator(service)
+    return if user_signed_in?
+
+    if service.creator.unconfirmed?
+      sign_in(service.creator)
+    else
+      session[:created_loan_id] = service.loan.id
+      session[:user_email] = service.creator_email
+    end
   end
 end

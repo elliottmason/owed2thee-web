@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   include Confirmable
+  include Wisper::Publisher
 
-  attr_accessor :email
+  attr_writer :email
 
   has_many :emails, class_name: 'UserEmail'
   has_many :loan_borrowers, foreign_key: :user_id
@@ -19,11 +20,16 @@ class User < ActiveRecord::Base
   # A User can have multiple emails associated with his or her account, so we
   # retrieve a User through a UserEmail record
   def self.find_for_database_authentication(conditions)
-    if (user_email = UserEmail.confirmed.where(email: conditions[:email]).first)
-      if (user = user_email.user)
-        user.email = user_email.email
-        return user
-      end
+    user_email =  UserEmail.in_state(:confirmed) \
+                  .where(email: conditions[:email]) \
+                  .first
+    if user_email && (user = user_email.user)
+      user.email = user_email.email
+      return user
     end
+  end
+
+  def email
+    @email ||= emails.first.email
   end
 end

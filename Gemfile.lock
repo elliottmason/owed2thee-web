@@ -62,6 +62,7 @@ GEM
     cliver (0.3.2)
     coderay (1.1.0)
     columnize (0.9.0)
+    connection_pool (2.2.0)
     daemons (1.2.2)
     database_cleaner (1.4.1)
     debug_inspector (0.0.2)
@@ -128,6 +129,8 @@ GEM
     json (1.8.3)
     launchy (2.4.3)
       addressable (~> 2.3)
+    letter_opener (1.4.1)
+      launchy (~> 2.2)
     listen (2.10.0)
       celluloid (~> 0.16.0)
       rb-fsevent (>= 0.9.3)
@@ -215,6 +218,9 @@ GEM
     rb-fsevent (0.9.5)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
+    redis (3.2.1)
+    redis-namespace (1.5.2)
+      redis (~> 3.0, >= 3.0.4)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     rspec (3.2.0)
@@ -255,9 +261,18 @@ GEM
     sendgrid (1.2.0)
       json
     shellany (0.0.1)
+    sidekiq (3.3.4)
+      celluloid (>= 0.16.0)
+      connection_pool (>= 2.1.1)
+      json
+      redis (>= 3.0.6)
+      redis-namespace (>= 1.3.1)
     simple_form (3.1.0)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
+    site_prism (2.7)
+      addressable (>= 2.3.3, < 3.0)
+      capybara (>= 2.1, < 3.0)
     slim (3.0.6)
       temple (~> 0.7.3)
       tilt (>= 1.3.3, < 2.1)
@@ -312,12 +327,12 @@ PLATFORMS
 
 DEPENDENCIES
   better_errors
-  byebug
-  capybara
-  database_cleaner
+  byebug (~> 5.0)
+  capybara (~> 2.4)
+  database_cleaner (~> 1.4)
   devise (~> 3.5)
-  factory_girl_rails
-  faker
+  factory_girl_rails (~> 4.5)
+  faker (~> 1.4)
   fast_attributes (~> 0.7)
   figaro (~> 1.0)
   foundation-rails (~> 5.5)
@@ -327,12 +342,13 @@ DEPENDENCIES
   high_voltage (~> 2.3)
   jbuilder (~> 2.0)
   jquery-rails (~> 4.0)
-  launchy
+  launchy (~> 2.4)
+  letter_opener (~> 1.4)
   money-rails (~> 1.4)
   pg (~> 0.18)
-  poltergeist
-  pry-rails
-  pry-rescue
+  poltergeist (~> 1.6)
+  pry-rails (~> 0.3)
+  pry-rescue (~> 1.4)
   pundit (~> 1.0)
   quiet_assets
   rails (= 4.2.1)
@@ -340,16 +356,18 @@ DEPENDENCIES
   rb-fchange
   rb-fsevent
   rb-inotify
-  rspec-rails
-  rubocop
+  rspec-rails (~> 3.2)
+  rubocop (~> 0.32)
   sass-rails (~> 5.0)
   sendgrid (~> 1.2)
+  sidekiq (~> 3.3)
   simple_form (~> 3.1)
+  site_prism (~> 2.7)
   slim-rails (~> 3.0)
-  spring
+  spring (~> 1.3)
   spring-commands-rspec
   statesman (~> 1.2)
-  thin
+  thin (~> 1.6)
   uglifier (~> 2.7)
   web-console (~> 2.0)
   wisper (~> 1.6)

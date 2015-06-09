@@ -16,6 +16,10 @@ module Publishable
     )
   end
 
+  def publish!
+    publicity.transition_to(:published)
+  end
+
   PublicityStateMachine.states.each do |state|
     define_method(:"#{state}?") do
       publicity.current_state == state

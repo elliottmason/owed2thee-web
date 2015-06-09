@@ -14,6 +14,7 @@ gem 'pg',               '~> 0.18'
 gem 'pundit',           '~> 1.0'
 gem 'sass-rails',       '~> 5.0'
 gem 'sendgrid',         '~> 1.2'
+gem 'sidekiq',          '~> 3.3'
 gem 'simple_form',      '~> 3.1'
 gem 'slim-rails',       '~> 3.0'
 gem 'statesman',        '~> 1.2'
@@ -25,6 +26,7 @@ group :development do
   gem 'guard-bundler'
   gem 'guard-rails'
   gem 'guard-rspec'
+  gem 'letter_opener',  '~> 1.4'
   gem 'quiet_assets'
   gem 'rails_layout'
   gem 'rb-fchange', require: false
@@ -34,21 +36,22 @@ group :development do
 end
 
 group :development, :test do
-  gem 'byebug'
-  gem 'factory_girl_rails'
-  gem 'faker'
-  gem 'pry-rails'
-  gem 'pry-rescue'
-  gem 'rspec-rails'
-  gem 'rubocop'
-  gem 'spring'
-  gem 'thin'
-  gem 'web-console', '~> 2.0'
+  gem 'byebug',             '~> 5.0'
+  gem 'factory_girl_rails', '~> 4.5'
+  gem 'faker',              '~> 1.4'
+  gem 'pry-rails',          '~> 0.3'
+  gem 'pry-rescue',         '~> 1.4'
+  gem 'rspec-rails',        '~> 3.2'
+  gem 'rubocop',            '~> 0.32'
+  gem 'spring',             '~> 1.3'
+  gem 'thin',               '~> 1.6'
+  gem 'web-console',        '~> 2.0'
 end
 
 group :test do
-  gem 'capybara'
-  gem 'database_cleaner'
-  gem 'launchy'
-  gem 'poltergeist'
+  gem 'capybara',         '~> 2.4'
+  gem 'database_cleaner', '~> 1.4'
+  gem 'launchy',          '~> 2.4'
+  gem 'poltergeist',      '~> 1.6'
+  gem 'site_prism',       '~> 2.7'
 end

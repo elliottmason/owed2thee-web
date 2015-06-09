@@ -1,17 +1,32 @@
 class ConfirmLoanParticipation < BaseService
-  def initialize(loan_participant)
-    @loan_participant = loan_participant
+  include Wisper::Publisher
 
-    subscribe(PublishLoan)
+  def initialize(loan_id: nil, user: nil)
+    @loan_id  = loan_id
+    @user     = user
+
+    subscribe(PublishLoan.new)
   end
 
-  def peform
-    @successful = @loan_participant.confirm!
+  def loan_participant
+    @loan_participant ||= LoanParticipant.where(
+      loan_id:  @loan_id,
+      user:     @user
+    ).first
+  end
 
-    broadcast(:confirm_loan_participation_successful, @loan_participant)
+  def perform
+    loan_participant.confirm!
+    broadcast(:confirm_loan_participation_successful, loan_participant) \
+      if successful?
   end
 
   def successful?
-    @successful
+    loan_participant.confirmed?
+  end
+
+  def user_sign_in_successful(user, loan_id)
+    loan = Loan.find(loan_id)
+    self.class.with(loan: loan, user: user)
   end
 end

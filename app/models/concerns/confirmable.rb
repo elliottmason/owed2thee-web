@@ -10,7 +10,7 @@ module Confirmable
   end
 
   def confirm!
-    confirmation.transition_to!(:confirmed)
+    confirmation.transition_to(:confirmed)
   end
 
   def confirmation
