@@ -12,15 +12,17 @@ class CreateLoan < BaseService
     type == :debt ? [creator] : obligors
   end
 
+  def broadcast_to_listeners
+    broadcast(:create_loan_successful, loan) if successful?
+  end
+
   def create_loan
     loan.borrowers  = borrowers
     loan.lenders    = lenders
     loan.save!
   end
 
-  def creator
-    @creator || prospective_creator
-  end
+  attr_reader :creator
 
   delegate :creator_email, to: :form
 
@@ -50,7 +52,7 @@ class CreateLoan < BaseService
 
     @loan = Loan.new do |l|
       l.group   = group
-      l.creator = @creator || prospective_creator
+      l.creator = @creator || unconfirmed_creator
       l.amount  = form.amount_dollars
       l.amount_cents += form.amount_cents
     end
@@ -80,26 +82,25 @@ class CreateLoan < BaseService
       end
     end
 
-    broadcast(:create_loan_successful, loan) if successful?
+    broadcast_to_listeners
   end
 
-  def prospective_creator
+  def unconfirmed_creator
     return if @creator
-    return @prospective_creator if @prospective_creator
+    return @unconfirmed_creator if @unconfirmed_creator
 
     return if creator_email.nil?
 
-    @prospective_creator =
+    @unconfirmed_creator =
       if (user_email = UserEmail.where(email: creator_email).first)
         user_email.user
       else
         CreateUserWithEmail.with(creator_email).user
       end
   end
-  alias_method :prospective_creator?, :prospective_creator
+  alias_method :unconfirmed_creator?, :unconfirmed_creator
 
   def subscribe_to_listeners
-    subscribe(PublishLoan)
   end
 
   def successful?

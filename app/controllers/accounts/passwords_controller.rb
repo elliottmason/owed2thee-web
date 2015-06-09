@@ -1,5 +1,5 @@
 module Users
-  class PasswordsController < ApplicationController
+  class PasswordsController < BaseController
     before_filter :authenticate_user!
 
     def edit

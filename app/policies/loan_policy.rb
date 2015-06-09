@@ -4,14 +4,24 @@ class LoanPolicy
     @loan = loan
   end
 
-  def show?
-    return false unless @user
+  def cancel?
+    creator? && unconfirmed?
+  end
 
-    if @user.confirmed?
-      related?
-    else
-      related? && recent?
-    end
+  def confirm?
+    unconfirmed_obligor?
+  end
+
+  def dispute?
+    !creator? && obligor?
+  end
+
+  def edit?
+    participant?
+  end
+
+  def show?
+    participant?
   end
 
   private
@@ -28,11 +38,31 @@ class LoanPolicy
     @loan.lenders.include?(@user)
   end
 
-  def recent?
-    @loan.created_at >= 1.day.ago
+  attr_reader :loan
+
+  def loan_participant
+    @loan_participant ||= LoanParticipant.where(loan: loan, user: user).first
   end
 
-  def related?
-    creator? || lender? || borrower?
+  def obligor?
+    published? && (borrower? || lender?)
   end
+
+  def participant?
+    creator? || obligor?
+  end
+
+  def published?
+    @loan.published?
+  end
+
+  def unconfirmed?
+    @loan.unconfirmed?
+  end
+
+  def unconfirmed_obligor?
+    loan_participant && loan_participant.unconfirmed?
+  end
+
+  attr_reader :user
 end

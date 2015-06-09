@@ -9,7 +9,9 @@ class LoansController < ApplicationController
     service = CreateLoan.with(current_user, params[:loan])
 
     if service.successful?
-      sign_in_creator(service)
+      sign_in(service.creator) unless user_signed_in?
+      session[:user_email] = service.creator_email \
+        unless service.unconfirmed_creator?
       redirect_to(service.loan)
     else
       @loan = service.form
@@ -20,19 +22,5 @@ class LoansController < ApplicationController
   def show
     @loan = Loan.find(params[:id])
     authorize @loan
-    NotifyLoanParticipants.with(@loan)
-  end
-
-  private
-
-  def sign_in_creator(service)
-    return if user_signed_in?
-
-    if service.creator.unconfirmed?
-      sign_in(service.creator)
-    else
-      session[:created_loan_id] = service.loan.id
-      session[:user_email] = service.creator_email
-    end
   end
 end

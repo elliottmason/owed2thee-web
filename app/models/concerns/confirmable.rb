@@ -29,7 +29,7 @@ module Confirmable
 
   module ClassMethods
     def initial_state
-      super << :unconfirmed
+      super << ConfirmationStateMachine.initial_state
     end
   end
 end

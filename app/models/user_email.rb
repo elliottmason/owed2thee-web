@@ -6,4 +6,8 @@ class UserEmail < ActiveRecord::Base
 
   validates :email, uniqueness: { conditions: -> { in_state(:confirmed) } },
                     format: { with: /.+@.+\..+/, on: :create }
+
+  def to_param
+    email
+  end
 end

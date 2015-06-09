@@ -37,5 +37,22 @@ module Transitional
     def transition_class
       Transition
     end
+
+    def model_type
+      transition_reflection.type
+    end
+
+    def transition1_join
+      "LEFT OUTER JOIN #{model_table} transition1 " \
+        "ON transition1.#{model_foreign_key} = #{table_name}.id " \
+        "AND transition1.#{model_type} = '#{name}'"
+    end
+
+    def transition2_join
+      "LEFT OUTER JOIN #{model_table} transition2 " \
+        "ON transition2.#{model_foreign_key} = #{table_name}.id " \
+        "AND transition1.#{model_type} = '#{name}' " \
+        'AND transition2.sort_key > transition1.sort_key'
+    end
   end
 end
