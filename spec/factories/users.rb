@@ -1,13 +1,10 @@
 FactoryGirl.define do
   factory :user do
-    confirmed_at Time.now
-    name "Test User"
-    email "test@example.com"
-    password "please123"
-
-    trait :admin do
-      role 'admin'
+    password { SecureRandom.hex(8) }
+    trait :with_email do
+      before(:create) do |user, evaluator|
+        user.emails << build(:user_email, user: user)
+      end
     end
-
   end
 end

@@ -13,7 +13,7 @@ task :stats do
 
     dirs.each do |directory|
       name = directory.to_s.titleize
-      name = type == 'spec' ? "#{name} specs" : name
+      name = type == 'spec' && name != 'Factories' ? "#{name} specs" : name
       ::STATS_DIRECTORIES << [name, "#{type}/#{directory}"]
       CodeStatistics::TEST_TYPES << name if type == 'spec'
     end

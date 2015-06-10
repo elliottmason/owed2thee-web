@@ -49,9 +49,10 @@ group :development, :test do
 end
 
 group :test do
-  gem 'capybara',         '~> 2.4'
-  gem 'database_cleaner', '~> 1.4'
-  gem 'launchy',          '~> 2.4'
-  gem 'poltergeist',      '~> 1.6'
-  gem 'site_prism',       '~> 2.7'
+  gem 'capybara',             '~> 2.4'
+  gem 'capybara-screenshot',  '~> 1.0'
+  gem 'database_cleaner',     '~> 1.4'
+  gem 'launchy',              '~> 2.4'
+  gem 'poltergeist',          '~> 1.6'
+  gem 'site_prism',           '~> 2.7'
 end

@@ -22,9 +22,20 @@ class CreateLoan < BaseService
     loan.save!
   end
 
-  attr_reader :creator
+  def create_creator
+    @unregistered_creator = true
+    CreateUserWithEmail.with(creator_email).user
+  end
+
+  def creator
+    @creator ||= find_creator_by_email || create_creator
+  end
 
   delegate :creator_email, to: :form
+
+  def find_creator_by_email
+    UserEmail.where(email: creator_email).first.try(:user)
+  end
 
   def find_obligors_by_emails
     [FindOrCreateUserByEmail.with(form.obligor_email).user]
@@ -52,7 +63,7 @@ class CreateLoan < BaseService
 
     @loan = Loan.new do |l|
       l.group   = group
-      l.creator = @creator || unconfirmed_creator
+      l.creator = creator
       l.amount  = form.amount_dollars
       l.amount_cents += form.amount_cents
     end
@@ -85,21 +96,6 @@ class CreateLoan < BaseService
     broadcast_to_listeners
   end
 
-  def unconfirmed_creator
-    return if @creator
-    return @unconfirmed_creator if @unconfirmed_creator
-
-    return if creator_email.nil?
-
-    @unconfirmed_creator =
-      if (user_email = UserEmail.where(email: creator_email).first)
-        user_email.user
-      else
-        CreateUserWithEmail.with(creator_email).user
-      end
-  end
-  alias_method :unconfirmed_creator?, :unconfirmed_creator
-
   def subscribe_to_listeners
   end
 
@@ -109,6 +105,10 @@ class CreateLoan < BaseService
 
   def type
     form.type.to_sym
+  end
+
+  def unregistered_creator?
+    @unregistered_creator
   end
 
   alias_method :user, :creator
