@@ -1,0 +1,5 @@
+- if resource.errors[:base].any?
+  .form-errors
+    ul
+      - resource.errors.full_messages_for(:base).each do |message|
+        li.error = message

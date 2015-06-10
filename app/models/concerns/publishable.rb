@@ -8,6 +8,10 @@ module Publishable
     end
   end
 
+  def cancel!
+    publicity.transition_to(:canceled)
+  end
+
   def publicity
     @publicity ||= PublicityStateMachine.new(
       self,
@@ -18,6 +22,10 @@ module Publishable
 
   def publish!
     publicity.transition_to(:published)
+  end
+
+  def unpublish!
+    publicity.transition_to(:unpublished)
   end
 
   PublicityStateMachine.states.each do |state|

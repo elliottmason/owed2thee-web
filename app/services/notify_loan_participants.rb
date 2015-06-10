@@ -5,7 +5,7 @@ class NotifyLoanParticipants < BaseService
 
   def perform
     @loan.loan_participants.in_state(:unconfirmed).each do |loan_participant|
-      LoanParticipationMailer.email(loan_participant).deliver
+      LoanParticipationMailer.email(loan_participant).deliver_later
     end
   end
 

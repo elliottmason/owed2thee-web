@@ -5,7 +5,7 @@ class LoanPolicy
   end
 
   def cancel?
-    creator? && unconfirmed?
+    creator? && unconfirmed? && loan.publicity.can_transition_to?(:canceled)
   end
 
   def confirm?

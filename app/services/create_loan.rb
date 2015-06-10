@@ -85,6 +85,8 @@ class CreateLoan < BaseService
   end
 
   def perform
+    return unless form.valid?
+
     ActiveRecord::Base.transaction do
       begin
         create_loan

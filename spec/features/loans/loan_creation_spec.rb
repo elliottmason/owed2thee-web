@@ -1,10 +1,7 @@
-feature 'Create Loan', js: true do
+feature 'Create a loan', js: true do
   let(:new_loan_page)   { Loans::NewPage.new }
   let(:show_loan_page)  { Loans::ShowPage.new }
   let(:sign_in_page)    { SignInPage.new }
-
-  before do
-  end
 
   scenario 'as a new user' do
     new_loan_page.load
@@ -41,5 +38,29 @@ feature 'Create Loan', js: true do
       obligor_email:  Faker::Internet.email
     )
     expect(show_loan_page).to be_displayed
+  end
+
+  scenario 'invalid params' do
+    email = Faker::Internet.email
+
+    new_loan_page.load
+    new_loan_page.submit(
+      creator_email: email,
+      obligor_email: email
+    )
+    expect(new_loan_page).to have_content(
+      I18n.t('errors.messages.identical_users', record: 'loan'))
+    expect(new_loan_page).to have_content(
+      I18n.t('errors.messages.nonpositive_amount'))
+  end
+
+  scenario 'invalid params' do
+    email = Faker::Internet.email
+
+    new_loan_page.load
+    new_loan_page.submit
+    expect(new_loan_page).to have_content(
+      I18n.t('errors.messages.nonpositive_amount'))
+    expect(new_loan_page).to have_content(I18n.t('errors.messages.blank'))
   end
 end

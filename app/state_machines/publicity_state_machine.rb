@@ -3,7 +3,8 @@ class PublicityStateMachine
 
   state :unpublished, initial: true
   state :published
+  state :canceled
 
-  transition from: :unpublished,  to: %i(published)
-  transition from: :published,    to: %i(unpublished)
+  transition from: :unpublished,  to: %i(canceled published)
+  transition from: :published,    to: %i(canceled unpublished)
 end

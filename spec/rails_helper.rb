@@ -1,3 +1,12 @@
+require 'simplecov'
+SimpleCov.start 'rails' do
+  add_filter '.bundle'
+  add_group 'Forms',          'app/forms'
+  add_group 'Policies',       'app/policies'
+  add_group 'Services',       'app/services'
+  add_group 'State Machines', 'app/state_machines'
+end
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
 require 'spec_helper'

@@ -1,4 +1,4 @@
-module Users
+module Accounts
   class PasswordsController < BaseController
     before_filter :authenticate_user!
 

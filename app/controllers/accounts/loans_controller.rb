@@ -3,20 +3,23 @@ module Accounts
     before_filter :retrieve_loan
 
     def cancel
-      CancelLoan.with(current_user, @loan)
-
+      service = CancelLoan.with(@loan)
+      flash[:notice] = I18n.t('controllers.application.cancel.flash.notice') \
+        if service.successful?
       redirect_to([@loan])
     end
 
     def confirm
-      ConfirmLoanParticipation.with(current_user, @loan)
-
+      service = ConfirmLoanParticipation.with(current_user, @loan)
+      flash[:notice] = I18n.t('controllers.application.confirm.flash.notice') \
+        if service.successful?
       redirect_to([@loan])
     end
 
     def dispute
-      DisputeLoanParticipation.with(current_user, @loan)
-
+      service = DisputeLoanParticipation.with(current_user, @loan)
+      flash[:notice] = I18n.t('controllers.application.dispute.flash.notice') \
+        if service.successful?
       redirect_to([@loan])
     end
 

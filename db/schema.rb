@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150608214446) do
+ActiveRecord::Schema.define(version: 20150609223214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "ledgers", force: :cascade do |t|
+    t.integer  "user_a_id",                                  null: false
+    t.integer  "user_b_id",                                  null: false
+    t.integer  "confirmed_balance_cents",    default: 0,     null: false
+    t.string   "confirmed_balance_currency", default: "USD", null: false
+    t.integer  "projected_balance_cents",    default: 0,     null: false
+    t.string   "projected_balance_currency", default: "USD", null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+  end
+
+  add_index "ledgers", ["user_a_id", "user_b_id"], name: "index_ledgers_on_user_a_id_and_user_b_id", unique: true, using: :btree
 
   create_table "loan_groups", force: :cascade do |t|
     t.integer  "projected_amount_cents",    default: 0,     null: false

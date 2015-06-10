@@ -1,7 +1,7 @@
 RSpec.configure do |config|
   config.include Warden::Test::Helpers
 
-  config.before :suite, js: true do
+  config.before :each, :js do
     Warden.test_mode!
   end
 end

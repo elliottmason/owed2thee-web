@@ -1,13 +1,4 @@
-describe User do
+require 'rails_helper'
 
-  before(:each) { @user = User.new(email: 'user@example.com') }
-
-  subject { @user }
-
-  it { should respond_to(:email) }
-
-  it "#email returns a string" do
-    expect(@user.email).to match 'user@example.com'
-  end
-
+RSpec.describe User, type: :model do
 end

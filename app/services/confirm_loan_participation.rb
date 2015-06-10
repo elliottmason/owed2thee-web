@@ -5,6 +5,7 @@ class ConfirmLoanParticipation < BaseService
     @loan = loan
     @user = user
 
+    # subscribe(CreateLedgers.new)
     subscribe(PublishLoan.new)
   end
 
@@ -20,14 +21,14 @@ class ConfirmLoanParticipation < BaseService
   def perform
     return unless loan_participant
 
-    loan_participant.confirm!
+    @successful = loan_participant.confirm!
 
     broadcast(:confirm_loan_participation_successful, loan_participant) \
       if successful?
   end
 
   def successful?
-    loan_participant.confirmed?
+    @successful
   end
 
   attr_reader :user

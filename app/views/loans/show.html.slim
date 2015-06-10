@@ -1,6 +1,7 @@
+ul.button-group.even-3
 - if policy(@loan).confirm?
-  = button_to 'Confirm',  [:confirm, :account, @loan],  method: :patch
+  li = button_to 'Confirm',  [:confirm, :account, @loan],  method: :patch, class: 'button'
 - if policy(@loan).cancel?
-  = button_to 'Cancel',   [:cancel, :account, @loan],   method: :patch
+  li = button_to 'Cancel',   [:cancel, :account, @loan],   method: :patch, class: 'button'
 - if policy(@loan).dispute?
-  = button_to 'Dispute',  [:dispute, :account, @loan],  method: :patch
+  li = button_to 'Dispute',  [:dispute, :account, @loan],  method: :patch, class: 'button'
