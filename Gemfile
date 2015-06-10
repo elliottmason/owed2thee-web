@@ -54,5 +54,6 @@ group :test do
   gem 'database_cleaner',     '~> 1.4'
   gem 'launchy',              '~> 2.4'
   gem 'poltergeist',          '~> 1.6'
+  gem 'simplecov',            '~> 0.10',  require: false
   gem 'site_prism',           '~> 2.7'
 end
