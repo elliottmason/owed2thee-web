@@ -1,3 +1,5 @@
+require 'support/pages/form_section'
+
 module Loans
   class NewPage < SitePrism::Page
     include FormSection

@@ -1,3 +1,5 @@
+require 'support/pages/form_section'
+
 class SignInPage < SitePrism::Page
   include FormSection
 
