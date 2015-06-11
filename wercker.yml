@@ -26,6 +26,12 @@ build:
         - install-packages:
             packages: nodejs
 
+        - script: |-
+            git clone git://github.com/ariya/phantomjs.git
+            cd phantomjs
+            git checkout 2.0
+            ./build.sh
+
         - bundle-install
 
         - rails-database-yml
