@@ -7,7 +7,6 @@ class CancelLoan < BaseService
 
   def perform
     @successful = loan.cancel!
-    puts @successful
   end
 
   def successful?

@@ -7,5 +7,5 @@ class ConfirmationStateMachine
 
   transition from: :unconfirmed,  to: %i(confirmed disputed)
   transition from: :disputed,     to: %i(confirmed)
-  transition from: :confirmed,    to: %i(unconfirmed)
+  transition from: :confirmed,    to: %i(disputed)
 end

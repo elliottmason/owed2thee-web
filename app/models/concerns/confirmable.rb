@@ -21,6 +21,10 @@ module Confirmable
     )
   end
 
+  def dispute!
+    confirmation.transition_to(:disputed)
+  end
+
   ConfirmationStateMachine.states.each do |state|
     define_method(:"#{state}?") do
       confirmation.current_state == state

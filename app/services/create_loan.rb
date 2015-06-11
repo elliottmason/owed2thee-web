@@ -69,11 +69,6 @@ class CreateLoan < BaseService
     end
   end
 
-  # TODO: eventually support multiple borrowers
-  def obligor_emails
-    [form.obligor_email]
-  end
-
   def obligors
     return @obligors if @obligors
 

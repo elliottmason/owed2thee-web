@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   namespace :accounts, as: :account, only: [], path: 'account' do
     resources :emails,
               as:           :user_emails,
-              constraints:  { email: /.+@.+\..+/ },
+              constraints:  { email: /.+(?:@|%40).+\..+/ },
               only:         [],
               param:        :email,
               path_names:   { edit: 'change' } do

@@ -13,7 +13,8 @@ class LoanPolicy
   end
 
   def dispute?
-    !creator? && obligor?
+    !creator? && obligor? &&
+      loan_participant.confirmation.can_transition_to?(:disputed)
   end
 
   def edit?
@@ -32,6 +33,10 @@ class LoanPolicy
 
   def creator?
     @loan.creator == @user
+  end
+
+  def disputed?
+    @loan.disputed?
   end
 
   def lender?
@@ -57,11 +62,11 @@ class LoanPolicy
   end
 
   def unconfirmed?
-    @loan.unconfirmed?
+    !@loan.confirmed?
   end
 
   def unconfirmed_obligor?
-    loan_participant && loan_participant.unconfirmed?
+    loan_participant && !loan_participant.confirmed?
   end
 
   attr_reader :user
