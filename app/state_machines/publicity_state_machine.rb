@@ -1,6 +1,12 @@
 class PublicityStateMachine
   include Statesman::Machine
 
+  ACTIONS = {
+    cancel:     :canceled,
+    publish:    :published,
+    unpublish:  :unpublished
+  }
+
   state :unpublished, initial: true
   state :published
   state :canceled

@@ -12,7 +12,7 @@ module ConfirmationToken
     self[:confirmation_token] = SecureRandom.base64(32)
   end
 
-  def confirm
+  def confirm!
     self[:confirmation_token] = nil
     super if defined?(super)
   end
