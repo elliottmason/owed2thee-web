@@ -6,6 +6,7 @@ class BaseService
     alias_method :for, :with
   end
 
-  def perform
+  def successful?
+    @successful
   end
 end

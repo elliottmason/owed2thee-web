@@ -1,10 +1,14 @@
-class CreateLedger < BaseService
+class CreateLedgersFromLoan < BaseService
   def initialize(loan_participant = nil)
     @loan_participant = loan_participant
   end
 
   def borrower
     loan_participant.user
+  end
+
+  def confirmed_participants
+    loan.loan_participants.in_state(:confirmed)
   end
 
   def confirm_loan_participation_successful(loan_participant)
@@ -15,7 +19,9 @@ class CreateLedger < BaseService
     @ledger ||= Ledger.between(borrower, lender).first_or_initiailze
   end
 
-  delegate :lenders, to: :loan
+  def lender
+    loan_participant.user
+  end
 
   delegate :loan, to: :loan_participant
 
@@ -23,9 +29,5 @@ class CreateLedger < BaseService
 
   def perform
     @successful = ledger.save unless ledger.persisted?
-  end
-
-  def successful?
-    @successful
   end
 end

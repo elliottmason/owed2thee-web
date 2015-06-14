@@ -32,9 +32,4 @@ class ConfirmLoanParticipation < BaseService
   end
 
   attr_reader :user
-
-  def user_sign_in_successful(user, loan_id)
-    loan = Loan.find(loan_id)
-    self.class.with(loan: loan, user: user)
-  end
 end

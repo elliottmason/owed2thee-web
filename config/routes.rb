@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   devise_for :users,  controllers: { sessions: 'users/sessions' },
                       path: ''
 
-  resources :loans, only: [:create, :new, :show]
+  resources :loans, only: [:create, :new, :show] do
+    resources :payments, only: [:create]
+  end
 
   namespace :accounts, as: :account, only: [], path: 'account' do
     resources :emails,

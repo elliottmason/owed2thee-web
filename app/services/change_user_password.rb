@@ -1,5 +1,6 @@
 class ChangeUserPassword < BaseService
   attr_reader :form
+  attr_reader :user
 
   def initialize(user, params)
     @user = user
@@ -16,12 +17,4 @@ class ChangeUserPassword < BaseService
     user.password = new_password
     @successful = user.save
   end
-
-  def successful?
-    @successful
-  end
-
-  private
-
-  attr_reader :user
 end

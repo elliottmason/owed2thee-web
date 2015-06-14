@@ -5,6 +5,10 @@ class FindOrCreateUserByEmail < BaseService
     @email = email
   end
 
+  def perform
+    @successful = user.present?
+  end
+
   def user_email
     @user_email ||= UserEmail.where(email: @email).first
   end

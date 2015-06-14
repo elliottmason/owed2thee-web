@@ -1,4 +1,4 @@
-feature 'Create a loan', js: true do
+feature 'Create a loan', :js do
   let(:new_loan_page)   { Loans::NewPage.new }
   let(:show_loan_page)  { Loans::ShowPage.new }
   let(:sign_in_page)    { SignInPage.new }

@@ -16,8 +16,4 @@ class PublishLoan < BaseService
 
     broadcast(:publish_loan_successful, @loan) if successful?
   end
-
-  def successful?
-    @successful
-  end
 end

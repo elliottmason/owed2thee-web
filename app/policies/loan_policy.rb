@@ -5,43 +5,31 @@ class LoanPolicy
   end
 
   def cancel?
-    creator? && unconfirmed? && loan.publicity.can_transition_to?(:canceled)
+    user_is_creator? && loan_is_unconfirmed? && loan_is_cancelable?
   end
 
   def confirm?
-    unconfirmed_obligor?
+    ((user_is_creator? || loan_is_published?) &&
+      user_is_unconfirmed_participant?) &&
+      loan_is_confirmable?
   end
 
   def dispute?
-    !creator? && obligor? &&
-      loan_participant.confirmation.can_transition_to?(:disputed)
+    !user_is_creator? && user_is_participant? &&
+      loan_is_disputable?
   end
 
   def edit?
-    participant?
+    user_is_creator? ||
+      (loan_is_published? && loan_is_unconfirmed? &&
+      user_is_unconfirmed_obligor?)
   end
 
   def show?
-    participant?
+    user_is_creator? || (loan_is_published? && user_is_participant?)
   end
 
   private
-
-  def borrower?
-    @loan.borrowers.include?(@user)
-  end
-
-  def creator?
-    @loan.creator == @user
-  end
-
-  def disputed?
-    @loan.disputed?
-  end
-
-  def lender?
-    @loan.lenders.include?(@user)
-  end
 
   attr_reader :loan
 
@@ -49,25 +37,45 @@ class LoanPolicy
     @loan_participant ||= LoanParticipant.where(loan: loan, user: user).first
   end
 
-  def obligor?
-    published? && (borrower? || lender?)
+  def loan_is_cancelable?
+    loan.publicity.can_transition_to?(:canceled)
   end
 
-  def participant?
-    creator? || obligor?
+  def loan_is_confirmable?
+    loan_participant.confirmation.can_transition_to?(:confirmed)
   end
 
-  def published?
+  def loan_is_disputable?
+    loan_participant.confirmation.can_transition_to?(:disputed)
+  end
+
+  def loan_is_disputed?
+    loan.disputed?
+  end
+
+  def loan_is_published?
     @loan.published?
   end
 
-  def unconfirmed?
+  def loan_is_unconfirmed?
     !@loan.confirmed?
   end
 
-  def unconfirmed_obligor?
-    loan_participant && !loan_participant.confirmed?
+  def user_is_creator?
+    loan.creator == @user
+  end
+
+  def user_is_lender?
+    loan_participant.is_a?(LoanLender)
+  end
+
+  def user_is_participant?
+    loan_participant
   end
 
   attr_reader :user
+
+  def user_is_unconfirmed_participant?
+    user_is_participant? && !loan_participant.confirmed?
+  end
 end
