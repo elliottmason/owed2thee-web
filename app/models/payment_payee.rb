@@ -1,0 +1,2 @@
+class PaymentPayee < TransferParticipant
+end

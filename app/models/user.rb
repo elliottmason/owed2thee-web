@@ -1,8 +1,6 @@
 class User < ActiveRecord::Base
-  include Confirmable
+  include Transitional
   include Wisper::Publisher
-
-  attr_writer :email
 
   has_many :emails, class_name: 'UserEmail'
   has_many :loan_borrowers, foreign_key: :user_id
@@ -17,6 +15,8 @@ class User < ActiveRecord::Base
   devise :rememberable
   devise :trackable
 
+  transitional :confirmation
+
   # A User can have multiple emails associated with his or her account, so we
   # retrieve a User through a UserEmail record
   def self.find_for_database_authentication(conditions)
@@ -25,8 +25,4 @@ class User < ActiveRecord::Base
       user
     end
   end
-
-  # def email
-  #   @email ||= emails.first.email
-  # end
 end

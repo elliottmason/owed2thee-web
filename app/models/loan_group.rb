@@ -1,3 +1,3 @@
-class LoanGroup < ActiveRecord::Base
-  has_many :loans
+class LoanGroup < Group
+  has_many :loans, source: :groupable, source_type: 'Loan', through: :groupings
 end

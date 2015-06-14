@@ -11,10 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150609223214) do
+ActiveRecord::Schema.define(version: 20150614014415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "groupings", force: :cascade do |t|
+    t.integer  "group_id",       null: false
+    t.integer  "groupable_id",   null: false
+    t.string   "groupable_type", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "groupings", ["group_id"], name: "index_groupings_on_group_id", using: :btree
+  add_index "groupings", ["groupable_type", "groupable_id"], name: "index_groupings_on_groupable_type_and_groupable_id", using: :btree
+
+  create_table "groups", force: :cascade do |t|
+    t.integer  "projected_amount_cents",    default: 0,     null: false
+    t.string   "projected_amount_currency", default: "USD", null: false
+    t.integer  "confirmed_amount_cents",    default: 0,     null: false
+    t.string   "confirmed_amount_currency", default: "USD", null: false
+    t.string   "description"
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.string   "type"
+  end
 
   create_table "ledgers", force: :cascade do |t|
     t.integer  "user_a_id",                                  null: false
@@ -29,40 +51,61 @@ ActiveRecord::Schema.define(version: 20150609223214) do
 
   add_index "ledgers", ["user_a_id", "user_b_id"], name: "index_ledgers_on_user_a_id_and_user_b_id", unique: true, using: :btree
 
-  create_table "loan_groups", force: :cascade do |t|
-    t.integer  "projected_amount_cents",    default: 0,     null: false
-    t.string   "projected_amount_currency", default: "USD", null: false
-    t.integer  "confirmed_amount_cents",    default: 0,     null: false
-    t.string   "confirmed_amount_currency", default: "USD", null: false
-    t.string   "description"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+  create_table "loan_payments", force: :cascade do |t|
+    t.integer  "loan_id",                         null: false
+    t.integer  "payment_id",                      null: false
+    t.integer  "amount_cents",    default: 0,     null: false
+    t.string   "amount_currency", default: "USD", null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
-  create_table "loan_participants", force: :cascade do |t|
-    t.integer  "user_id",    null: false
-    t.integer  "loan_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string   "type"
-  end
-
-  add_index "loan_participants", ["loan_id", "user_id"], name: "index_loan_participants_on_loan_id_and_user_id", unique: true, using: :btree
-  add_index "loan_participants", ["loan_id"], name: "index_loan_participants_on_loan_id", using: :btree
-  add_index "loan_participants", ["user_id"], name: "index_loan_participants_on_user_id", using: :btree
-
-  create_table "loans", force: :cascade do |t|
+  create_table "payments", force: :cascade do |t|
     t.integer  "creator_id"
-    t.integer  "group_id"
+    t.integer  "payable_id",                      null: false
+    t.string   "payable_type",                    null: false
+    t.integer  "payer_id",                        null: false
+    t.integer  "amount_cents",    default: 0,     null: false
+    t.string   "amount_currency", default: "USD", null: false
+    t.datetime "paid_at"
+    t.string   "type"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "payments", ["payable_id", "payable_type"], name: "index_payments_on_payable_id_and_payable_type", using: :btree
+  add_index "payments", ["payer_id"], name: "index_payments_on_payer_id", using: :btree
+
+  create_table "transfer_participants", force: :cascade do |t|
+    t.integer  "user_id",           null: false
+    t.integer  "participable_id",   null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "type"
+    t.string   "participable_type"
+  end
+
+  add_index "transfer_participants", ["participable_id", "participable_type", "user_id"], name: "index_transfer_participants_participable_user_id", unique: true, using: :btree
+  add_index "transfer_participants", ["participable_id", "participable_type"], name: "index_transfer_participants_on_participable", using: :btree
+  add_index "transfer_participants", ["user_id"], name: "index_transfer_participants_on_user_id", using: :btree
+
+  create_table "transfers", force: :cascade do |t|
+    t.integer  "creator_id"
     t.integer  "amount_cents",    default: 0,     null: false
     t.string   "amount_currency", default: "USD", null: false
     t.string   "description"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.integer  "sender_id",                       null: false
+    t.string   "sender_type",                     null: false
+    t.integer  "recipient_id",                    null: false
+    t.string   "recipient_type",                  null: false
+    t.string   "type",                            null: false
   end
 
-  add_index "loans", ["creator_id"], name: "index_loans_on_creator_id", using: :btree
-  add_index "loans", ["group_id"], name: "index_loans_on_group_id", using: :btree
+  add_index "transfers", ["creator_id"], name: "index_transfers_on_creator_id", using: :btree
+  add_index "transfers", ["recipient_type", "recipient_id"], name: "index_transfers_on_recipient_type_and_recipient_id", using: :btree
+  add_index "transfers", ["sender_type", "sender_id"], name: "index_transfers_on_sender_type_and_sender_id", using: :btree
 
   create_table "transitions", force: :cascade do |t|
     t.integer  "transitional_id",                null: false
@@ -76,8 +119,8 @@ ActiveRecord::Schema.define(version: 20150609223214) do
     t.string   "type"
   end
 
-  add_index "transitions", ["transitional_id", "transitional_type", "most_recent"], name: "index_confirmable_transitions_parent_most_recent", unique: true, where: "most_recent", using: :btree
-  add_index "transitions", ["transitional_id", "transitional_type", "sort_key"], name: "index_confirmable_transitions_parent_sort", unique: true, using: :btree
+  add_index "transitions", ["transitional_id", "transitional_type", "type", "most_recent"], name: "index_transitions_parent_sort", unique: true, using: :btree
+  add_index "transitions", ["transitional_id", "transitional_type", "type", "sort_key"], name: "index_transitions_parent_most_recent", unique: true, using: :btree
 
   create_table "user_emails", force: :cascade do |t|
     t.integer  "user_id",              null: false
