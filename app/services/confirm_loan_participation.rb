@@ -1,35 +1,19 @@
-class ConfirmLoanParticipation < BaseService
+class ConfirmLoanParticipation < ConfirmTransferParticipation
   include Wisper::Publisher
 
-  def initialize(user, loan)
-    @loan = loan
-    @user = user
+  def initialize(*args)
+    super
 
     subscribe(CreateLedgersForLoanParticipant.new)
     subscribe(PublishLoan.new)
   end
 
-  attr_reader :loan
-
-  def loan_participant
-    @loan_participant ||= LoanParticipant \
-                          .in_state(:unconfirmed) \
-                          .where(loan: loan, user: user) \
-                          .first
-  end
+  alias_method :loan, :participable
 
   def perform
-    return unless loan_participant
-
-    @successful = loan_participant.confirm!
+    super
 
     broadcast(:confirm_loan_participation_successful, user, loan) \
       if successful?
   end
-
-  def successful?
-    @successful
-  end
-
-  attr_reader :user
 end

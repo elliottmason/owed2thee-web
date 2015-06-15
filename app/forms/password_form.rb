@@ -6,4 +6,8 @@ class PasswordForm < BaseForm
     attribute :new_password,              String
     attribute :new_password_confirmation, String
   end
+
+  def current_password?
+    current_password
+  end
 end

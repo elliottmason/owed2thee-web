@@ -20,7 +20,9 @@ class User < ActiveRecord::Base
   # A User can have multiple emails associated with his or her account, so we
   # retrieve a User through a UserEmail record
   def self.find_for_database_authentication(conditions)
-    user_email =  UserEmail.where(email: conditions[:email]).first
+    user_email =  UserEmail.in_state(:confirmed)
+                  .where(email: conditions[:email])
+                  .first
     if user_email && (user = user_email.user)
       user
     end

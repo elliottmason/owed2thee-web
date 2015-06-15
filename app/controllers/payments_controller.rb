@@ -1,9 +1,13 @@
 class PaymentsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :retrieve_loan, only: %i(create new)
+  before_filter :retrieve_payment, only: %i(confirm show)
 
-  def new
-    @payment = PaymentForm.new
+  def confirm
+    service = ConfirmPaymentParticipation.with(current_user, @payment)
+    flash[:notice] = I18n.t('controllers.application.confirm.flash.notice') \
+      if service.successful?
+    redirect_to(@payment)
   end
 
   def create
@@ -15,6 +19,10 @@ class PaymentsController < ApplicationController
       @payment = service.form
       render :new
     end
+  end
+
+  def new
+    @payment = PaymentForm.new
   end
 
   def show

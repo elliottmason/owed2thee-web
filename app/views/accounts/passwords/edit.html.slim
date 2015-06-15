@@ -1,4 +1,4 @@
-= simple_form_for @password, url: user_password_path do |f|
+= simple_form_for @password, url: [:account, :password] do |f|
   - if @password.current_password?
     = f.input :current_password,        as: :password
   = f.input   :new_password,              as: :password

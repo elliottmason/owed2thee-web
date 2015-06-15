@@ -22,7 +22,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :payments, only: %i(show)
+  resources :payments, only: %i(show) do
+    member do
+      patch 'confirm'
+      put   'confirm'
+    end
+  end
 
   namespace :accounts, as: :account, only: [], path: 'account' do
     resources :emails,

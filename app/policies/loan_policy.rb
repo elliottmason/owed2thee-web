@@ -19,11 +19,11 @@ class LoanPolicy
       loan_is_disputable?
   end
 
-  def edit?
-    user_is_creator? ||
-      (loan_is_published? && loan_is_unconfirmed? &&
-      user_is_unconfirmed_obligor?)
-  end
+  # def edit?
+  #   user_is_creator? ||
+  #     (loan_is_published? && loan_is_unconfirmed? &&
+  #     user_is_unconfirmed_obligor?)
+  # end
 
   def pay?
     loan_is_unpaid? && user_is_borrower?
@@ -53,9 +53,9 @@ class LoanPolicy
     loan_participant.confirmation.can_transition_to?(:disputed)
   end
 
-  def loan_is_disputed?
-    loan.disputed?
-  end
+  # def loan_is_disputed?
+  #   loan.disputed?
+  # end
 
   def loan_is_published?
     @loan.published?
@@ -75,10 +75,6 @@ class LoanPolicy
 
   def user_is_creator?
     loan.creator == @user
-  end
-
-  def user_is_lender?
-    loan_participant.is_a?(LoanLender)
   end
 
   def user_is_participant?

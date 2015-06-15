@@ -1,0 +1,2 @@
+- if policy(@payment).confirm?
+  = li = button_to 'Confirm', [:confirm, @payment],  method: :patch, class: 'button'

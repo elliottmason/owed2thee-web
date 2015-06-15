@@ -1,5 +1,5 @@
 class LoansController < ApplicationController
-  before_action :authenticate_user!, only: [:show]
+  before_action :authenticate_user!, only: %i(show)
   before_filter :retrieve_loan, except: %i(create new)
 
   def new
@@ -53,7 +53,8 @@ class LoansController < ApplicationController
     if !user_signed_in? && service.unregistered_creator?
       sign_in(service.creator)
     else
-      session[:user_email] = service.creator_email
+      session[:created_loan_id] = service.loan.id
+      session[:user_email]      = service.creator_email
     end
   end
 end

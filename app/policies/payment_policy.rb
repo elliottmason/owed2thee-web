@@ -4,43 +4,35 @@ class PaymentPolicy
     @user     = user
   end
 
-  def create?
-    payment_published? && user_payee?
+  def confirm?
+    payment_is_unconfirmed? && user_is_participant? &&
+      participant.confirmation.can_transition_to?(:confirmed)
   end
 
-  alias_method :new?, :create?
-
   def show?
-    case payment.payable
-    when Loan
-      user_is_participant?
-    end
+    true
+    # case payable
+    # when Loan
+    #   user_is_participant?
+    # end
   end
 
   private
 
-  def loan_lender
-    loan.loan_lenders.where(user: user).first
-  end
-
-  def loan_participant
-    @loan_participant ||= LoanParticipant.where(loan: payable,
-                                                user: user).first
-  end
-
-  def payable
-    payment.payable
+  def participant
+    @participant ||= TransferParticipant.where(participable:  payment,
+                                               user_id:       user.id).first
   end
 
   attr_reader :payment
 
-  def payment_published?
-    loan.published?
+  def payment_is_unconfirmed?
+    payment.unconfirmed?
   end
 
   attr_reader :user
 
   def user_is_participant?
-    loan_participant
+    participant
   end
 end

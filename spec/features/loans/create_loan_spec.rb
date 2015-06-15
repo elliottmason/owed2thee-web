@@ -15,7 +15,7 @@ feature 'Create a loan', :js do
   end
 
   scenario 'as a signed-out, extant user' do
-    user = FactoryGirl.create(:user, :with_email)
+    user = FactoryGirl.create(:confirmed_user)
 
     new_loan_page.load
     new_loan_page.submit(
@@ -25,6 +25,12 @@ feature 'Create a loan', :js do
       obligor_email:  Faker::Internet.email
     )
     expect(sign_in_page).to be_displayed
+
+    sign_in_page.submit(
+      password: user.password
+    )
+
+    expect(show_loan_page).to be_displayed
   end
 
   scenario 'as as signed-in user' do

@@ -13,10 +13,11 @@ module Users
     private
 
     def confirm_loan_participation(user)
-      ConfirmLoanParticipation.with(
-        loan_id:  created_loan_id,
-        user:     user
-      ) if created_loan_id
+      ConfirmLoanParticipation.with(user, created_loan) if created_loan
+    end
+
+    def created_loan
+      Loan.where(id: created_loan_id).first if created_loan_id
     end
 
     def created_loan_id

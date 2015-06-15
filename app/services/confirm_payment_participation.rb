@@ -1,0 +1,2 @@
+class ConfirmPaymentParticipation < ConfirmTransferParticipation
+end

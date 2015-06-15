@@ -1,7 +1,7 @@
 feature 'Sign in', :devise, :js do
   let(:sign_in_page) { SignInPage.new }
 
-  let(:user) { FactoryGirl.create(:user, :with_email) }
+  let(:user) { FactoryGirl.create(:confirmed_user) }
 
   scenario 'when unregistered' do
     sign_in_page.load
