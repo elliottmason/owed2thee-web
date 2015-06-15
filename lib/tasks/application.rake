@@ -1,6 +1,10 @@
 task :stats do
   require 'rails/code_statistics'
 
+  exclude_directories = [
+    'support'
+  ]
+
   ::STATS_DIRECTORIES = []
   %w(app spec).each do |type|
     dirs =  Dir.entries(type).select do |entry|
@@ -12,8 +16,13 @@ task :stats do
     end
 
     dirs.each do |directory|
-      name = directory.to_s.titleize
-      name = type == 'spec' && name != 'Factories' ? "#{name} specs" : name
+      directory = directory.to_s
+      next if exclude_directories.include?(directory.to_s)
+
+      name = directory.titleize
+      is_spec = (type == 'spec' && !%w(Factories Pages).include?(name))
+      name = is_spec ? "#{name.singularize} specs" : name
+
       ::STATS_DIRECTORIES << [name, "#{type}/#{directory}"]
       CodeStatistics::TEST_TYPES << name if type == 'spec'
     end

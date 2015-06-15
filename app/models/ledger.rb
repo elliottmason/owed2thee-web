@@ -6,7 +6,7 @@ class Ledger < ActiveRecord::Base
   validates :user_b,  presence: true
   validates_with LedgerUniquenessValidator
 
-  before_create :synchronize
+  before_create :synchronize_balances
 
   monetize :confirmed_balance_cents
   monetize :projected_balance_cents
@@ -29,13 +29,8 @@ class Ledger < ActiveRecord::Base
       user_b.loans.in_state(:unconfirmed).sum(:amount_cents)
   end
 
-  def synchronize
+  def synchronize_balances
     sum_confirmed_balance
     sum_projected_balance
-  end
-
-  def synchronize!
-    synchronize
-    save
   end
 end

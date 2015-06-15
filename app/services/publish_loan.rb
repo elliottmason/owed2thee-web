@@ -7,8 +7,8 @@ class PublishLoan < BaseService
     subscribe(NotifyLoanParticipants.new)
   end
 
-  def confirm_loan_participation_successful(loan_participant)
-    self.class.with(loan_participant.loan)
+  def confirm_loan_participation_successful(_, loan)
+    self.class.with(loan)
   end
 
   def perform

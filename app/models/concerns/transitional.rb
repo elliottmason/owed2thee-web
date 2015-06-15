@@ -63,10 +63,6 @@ module Transitional
     attr_reader :class_methods
     attr_reader :instance_methods
 
-    def self.for(*args)
-      new(*args).module
-    end
-
     def initialize(name, options = {})
       @name   = name
       @class_methods    = Module.new

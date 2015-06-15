@@ -6,6 +6,6 @@ class Ledger::LedgerUniquenessValidator < ActiveModel::Validator
     end
 
     record.errors[:base] << 'Ledger between users exists' \
-      if Ledger.where(user_a: record.user_b, user_b: record.user_a).first
+      if Ledger.between(record.user_a, record.user_b).first
   end
 end

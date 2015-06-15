@@ -55,12 +55,10 @@ feature 'Create a loan', :js do
   end
 
   scenario 'invalid params' do
-    email = Faker::Internet.email
-
     new_loan_page.load
     new_loan_page.submit
-    expect(new_loan_page).to have_content(
-      I18n.t('errors.messages.nonpositive_amount'))
+    expect(new_loan_page).to \
+      have_content(I18n.t('errors.messages.nonpositive_amount'))
     expect(new_loan_page).to have_content(I18n.t('errors.messages.blank'))
   end
 end

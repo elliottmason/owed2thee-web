@@ -1,5 +1,6 @@
 class LoansController < ApplicationController
   before_action :authenticate_user!, only: [:show]
+  before_filter :retrieve_loan, except: %i(create new)
 
   def new
     @loan = LoanForm.new
@@ -18,11 +19,35 @@ class LoansController < ApplicationController
   end
 
   def show
-    @loan = Loan.find(params[:id])
-    authorize @loan
+  end
+
+  def cancel
+    service = CancelLoan.with(@loan)
+    flash[:notice] = I18n.t('controllers.application.cancel.flash.notice') \
+      if service.successful?
+    redirect_to([@loan])
+  end
+
+  def confirm
+    service = ConfirmLoanParticipation.with(current_user, @loan)
+    flash[:notice] = I18n.t('controllers.application.confirm.flash.notice') \
+      if service.successful?
+    redirect_to([@loan])
+  end
+
+  def dispute
+    service = DisputeLoanParticipation.with(current_user, @loan)
+    flash[:notice] = I18n.t('controllers.application.dispute.flash.notice') \
+      if service.successful?
+    redirect_to([@loan])
   end
 
   private
+
+  def retrieve_loan
+    @loan = Loan.find(params[:id])
+    authorize(@loan)
+  end
 
   def sign_in_creator(service)
     if !user_signed_in? && service.unregistered_creator?

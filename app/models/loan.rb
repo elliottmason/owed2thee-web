@@ -1,6 +1,12 @@
 class Loan < Transfer
   # has_many :through definitions must remain in this order until this issue is
   # resolved: https://github.com/rails/rails/issues/16139
+  belongs_to :borrower, foreign_key:  'recipient_id',
+                        foreign_type: 'recipient_type',
+                        polymorphic:  true
+  belongs_to :lender,   foreign_key:  'sender_id',
+                        foreign_type: 'sender_type',
+                        polymorphic:  true
   has_many :loan_borrowers, as: :participable
   has_many :borrowers, class_name: 'User', through: :loan_borrowers
   has_many :loan_lenders, as: :participable

@@ -5,7 +5,7 @@ class ConfirmLoanParticipation < BaseService
     @loan = loan
     @user = user
 
-    # subscribe(CreateLedgers.new)
+    subscribe(CreateLedgersForLoanParticipant.new)
     subscribe(PublishLoan.new)
   end
 
@@ -23,7 +23,7 @@ class ConfirmLoanParticipation < BaseService
 
     @successful = loan_participant.confirm!
 
-    broadcast(:confirm_loan_participation_successful, loan_participant) \
+    broadcast(:confirm_loan_participation_successful, user, loan) \
       if successful?
   end
 

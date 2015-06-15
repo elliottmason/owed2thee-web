@@ -1,6 +1,5 @@
 class UserEmail < ActiveRecord::Base
   include Transitional
-  include ConfirmationToken
 
   belongs_to :user
 
@@ -8,6 +7,8 @@ class UserEmail < ActiveRecord::Base
                     format: { with: /.+@.+\..+/, on: :create }
 
   transitional :confirmation
+
+  include ConfirmationToken
 
   def to_param
     email

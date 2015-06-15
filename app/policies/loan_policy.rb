@@ -25,6 +25,10 @@ class LoanPolicy
       user_is_unconfirmed_obligor?)
   end
 
+  def pay?
+    loan_is_unpaid? && user_is_borrower?
+  end
+
   def show?
     user_is_creator? || (loan_is_published? && user_is_participant?)
   end
@@ -59,6 +63,14 @@ class LoanPolicy
 
   def loan_is_unconfirmed?
     !@loan.confirmed?
+  end
+
+  def loan_is_unpaid?
+    !@loan.fully_paid?
+  end
+
+  def user_is_borrower?
+    loan_participant.is_a?(LoanBorrower)
   end
 
   def user_is_creator?

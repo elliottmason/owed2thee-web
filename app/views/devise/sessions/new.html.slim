@@ -1,5 +1,5 @@
 #authform
-  = simple_form_for(SignInForm.from(resource), url: session_path(resource_name)) do |f|
+  = simple_form_for(@sign_in_form, url: session_path(resource_name)) do |f|
     = f.input :email, as: :email, input_html: { value: session[:user_email] }
     = f.input :password
     = f.button :submit, 'Sign In'

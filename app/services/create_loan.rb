@@ -20,6 +20,7 @@ class CreateLoan < BaseService
     loan.borrowers  = borrowers
     loan.lenders    = lenders
     loan.save!
+    loan.groups << group
   end
 
   def create_creator
@@ -62,14 +63,12 @@ class CreateLoan < BaseService
     return @loan if @loan
 
     @loan = Loan.new do |l|
+      l.borrower  = borrowers.first
       l.creator   = creator
-      l.sender    = lenders.first
-      l.recipient = borrowers.first
+      l.lender    = lenders.first
       l.amount    = form.amount_dollars
       l.amount_cents += form.amount_cents
     end
-
-    # @loan.groups << group
   end
 
   def obligors

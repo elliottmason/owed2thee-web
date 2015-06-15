@@ -5,8 +5,24 @@ Rails.application.routes.draw do
                       path: ''
 
   resources :loans, only: [:create, :new, :show] do
-    resources :payments, only: [:create]
+    resources :payments, only: %i(create new)
+
+    collection do
+      get 'borrowed'
+      get 'lent'
+    end
+
+    member do
+      patch 'cancel'
+      put   'cancel'
+      patch 'confirm'
+      put   'confirm'
+      patch 'dispute'
+      put   'dispute'
+    end
   end
+
+  resources :payments, only: %i(show)
 
   namespace :accounts, as: :account, only: [], path: 'account' do
     resources :emails,
@@ -20,21 +36,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :loans,     only: [:index] do
-      collection do
-        get 'borrowed'
-        get 'lent'
-      end
-
-      member do
-        patch 'cancel'
-        put   'cancel'
-        patch 'confirm'
-        put   'confirm'
-        patch 'dispute'
-        put   'dispute'
-      end
-    end
     resource  :password,  only: [:edit, :update]
     resource  :profile,   only: [:edit, :update]
   end

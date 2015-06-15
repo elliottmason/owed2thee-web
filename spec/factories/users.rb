@@ -13,7 +13,7 @@ FactoryGirl.define do
     end
 
     trait :with_email do
-      before(:create) do |user, _|
+      after(:build) do |user, _|
         user.emails << build(:user_email, user: user)
       end
     end

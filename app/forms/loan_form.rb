@@ -6,11 +6,6 @@ end
 class LoanForm < BaseForm
   include ActiveModel::Validations
 
-  validate :emails_unidentical
-  validate :amount_positive
-  validates :obligor_email, presence: true
-  validates :type, inclusion: %w(debt loan)
-
   define_attributes initialize: true, attributes: true do
     attribute :amount_cents,    Integer
     attribute :amount_dollars,  Integer
@@ -18,6 +13,11 @@ class LoanForm < BaseForm
     attribute :obligor_email,   String
     attribute :type,            String
   end
+
+  validate :emails_unidentical
+  validate :amount_positive
+  validates :obligor_email, presence: true
+  validates :type, inclusion: %w(debt loan)
 
   private
 
