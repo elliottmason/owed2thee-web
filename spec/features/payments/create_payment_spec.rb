@@ -7,7 +7,7 @@ feature 'Create a payment for a loan', :js do
 
   scenario 'as a borrower' do
     login_as(loan.borrowers.first)
-    show_loan_page.load(id: loan.id)
+    show_loan_page.load(uuid: loan.uuid)
     expect(show_loan_page).to have_payment_button
 
     show_loan_page.payment_button.click
@@ -22,13 +22,13 @@ feature 'Create a payment for a loan', :js do
 
   scenario 'as a lender' do
     login_as(loan.lenders.first)
-    show_loan_page.load(id: loan.id)
+    show_loan_page.load(uuid: loan.uuid)
     expect(show_loan_page).to_not have_payment_button
   end
 
   scenario 'invalid params' do
     login_as(loan.borrowers.first)
-    new_payment_page.load(id: loan.id)
+    new_payment_page.load(uuid: loan.uuid)
 
     new_payment_page.submit(
       amount_dollars: '00',

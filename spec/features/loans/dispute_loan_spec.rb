@@ -6,7 +6,7 @@ feature 'Dispute a loan', :devise, :js do
   scenario 'as a borrower' do
     loan.publish!
     login_as(loan.borrowers.first)
-    show_loan_page.load(id: loan.id)
+    show_loan_page.load(uuid: loan.uuid)
     show_loan_page.dispute
 
     expect(show_loan_page).to be_displayed

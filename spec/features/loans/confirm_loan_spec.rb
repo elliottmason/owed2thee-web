@@ -5,7 +5,7 @@ feature 'Confirm a loan', js: true do
 
   scenario 'as a lender' do
     login_as(loan.lenders.first)
-    show_loan_page.load(id: loan.id)
+    show_loan_page.load(uuid: loan.uuid)
     show_loan_page.confirm
 
     expect(show_loan_page).to be_displayed
@@ -16,7 +16,7 @@ feature 'Confirm a loan', js: true do
   scenario 'as a borrower' do
     loan.publish!
     login_as(loan.borrowers.first)
-    show_loan_page.load(id: loan.id)
+    show_loan_page.load(uuid: loan.uuid)
     show_loan_page.confirm
 
     expect(show_loan_page).to be_displayed

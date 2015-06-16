@@ -5,7 +5,7 @@ feature 'Confirm a payment', :js do
 
   scenario 'as a payee' do
     login_as(payment.payees.first)
-    show_payment_page.load(id: payment.id)
+    show_payment_page.load(uuid: payment.uuid)
     show_payment_page.confirm
 
     expect(show_payment_page).to be_displayed
@@ -15,7 +15,8 @@ feature 'Confirm a payment', :js do
 
   scenario 'as payer' do
     login_as(payment.payer)
-    show_payment_page.load(id: payment.id)
+    show_payment_page.load(uuid: payment.uuid)
+    screenshot_and_save_page
     show_payment_page.confirm
 
     expect(show_payment_page).to be_displayed

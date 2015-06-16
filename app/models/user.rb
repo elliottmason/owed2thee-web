@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   include Transitional
+  include Uuidable
   include Wisper::Publisher
 
   has_many :emails, class_name: 'UserEmail'

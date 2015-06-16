@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   devise_for :users,  controllers: { sessions: 'users/sessions' },
                       path: ''
 
-  resources :loans, only: [:create, :new, :show] do
-    resources :payments, only: %i(create new)
+  resources :loans, only: %i(create new show), param: :uuid do
+    resources :payments, only: %i(create new), param: :uuid
 
     collection do
       get 'borrowed'
@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :payments, only: %i(show) do
+  resources :payments, only: %i(show), param: :uuid do
     member do
       patch 'confirm'
       put   'confirm'

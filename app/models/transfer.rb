@@ -1,5 +1,6 @@
 class Transfer < ActiveRecord::Base
   include Transitional
+  include Uuidable
 
   belongs_to :creator,  class_name: 'User'
   belongs_to :recipient,  polymorphic: true

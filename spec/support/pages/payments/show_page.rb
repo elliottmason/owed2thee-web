@@ -1,7 +1,7 @@
 module Payments
   class ShowPage < SitePrism::Page
-    set_url '/payments{/id}'
-    set_url_matcher %r{payments/\d+}
+    set_url '/payments{/uuid}'
+    set_url_matcher %r{payments/[a-z\d]+}
 
     element :confirm_button,  'input[value="Confirm"]'
 

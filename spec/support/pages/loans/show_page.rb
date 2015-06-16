@@ -1,7 +1,7 @@
 module Loans
   class ShowPage < SitePrism::Page
-    set_url '/loans{/id}'
-    set_url_matcher %r{loans/\d+}
+    set_url '/loans{/uuid}'
+    set_url_matcher %r{loans/[a-z\d]+}
 
     element :cancel_button,   'input[value="Cancel"]'
     element :confirm_button,  'input[value="Confirm"]'

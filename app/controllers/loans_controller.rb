@@ -45,7 +45,7 @@ class LoansController < ApplicationController
   private
 
   def retrieve_loan
-    @loan = Loan.find(params[:id])
+    @loan = Loan.where(uuid: params[:uuid]).first!
     authorize(@loan)
   end
 

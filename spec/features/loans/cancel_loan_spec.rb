@@ -5,7 +5,7 @@ feature 'Cancel a loan', js: true do
 
   scenario 'as the creator' do
     login_as(loan.creator)
-    show_loan_page.load(id: loan.id)
+    show_loan_page.load(uuid: loan.uuid)
     show_loan_page.cancel
 
     expect(show_loan_page).to have_content(cancellation_notice)

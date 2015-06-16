@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150614014415) do
+ActiveRecord::Schema.define(version: 20150616195222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(version: 20150614014415) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.string   "type"
-    t.string   "participable_type"
+    t.string   "participable_type", null: false
   end
 
   add_index "transfer_participants", ["participable_id", "participable_type", "user_id"], name: "index_transfer_participants_participable_user_id", unique: true, using: :btree
@@ -101,11 +101,14 @@ ActiveRecord::Schema.define(version: 20150614014415) do
     t.integer  "recipient_id",                    null: false
     t.string   "recipient_type",                  null: false
     t.string   "type",                            null: false
+    t.datetime "transferred_at"
+    t.uuid     "uuid"
   end
 
   add_index "transfers", ["creator_id"], name: "index_transfers_on_creator_id", using: :btree
   add_index "transfers", ["recipient_type", "recipient_id"], name: "index_transfers_on_recipient_type_and_recipient_id", using: :btree
   add_index "transfers", ["sender_type", "sender_id"], name: "index_transfers_on_sender_type_and_sender_id", using: :btree
+  add_index "transfers", ["uuid"], name: "index_transfers_on_uuid", using: :btree
 
   create_table "transitions", force: :cascade do |t|
     t.integer  "transitional_id",                null: false
@@ -147,8 +150,10 @@ ActiveRecord::Schema.define(version: 20150614014415) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
+    t.uuid     "uuid"
   end
 
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["uuid"], name: "index_users_on_uuid", using: :btree
 
 end
