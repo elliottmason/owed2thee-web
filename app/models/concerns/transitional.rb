@@ -17,14 +17,18 @@ module Transitional
       has_many :"#{name}_transitions", as: :transitional
     end
 
-    def initial_state
-      @initial_state ||= []
+    def initial_states
+      @initial_states ||= []
     end
 
     def initial_state?(states)
-      return unless initial_state
+      return unless initial_states
 
-      (initial_state.map(&:to_s) & states).any?
+      (initial_states.map(&:to_s) & states).any?
+    end
+
+    def model_type
+      transition_reflection.type
     end
 
     def states_where(temporary_table_name, states)
@@ -37,25 +41,18 @@ module Transitional
       end
     end
 
-    def model_type
-      transition_reflection.type
-    end
-
     def transition_class
       Transition
     end
 
     def transition1_join
-      "LEFT OUTER JOIN #{model_table} transition1 " \
-        "ON transition1.#{model_foreign_key} = #{table_name}.id " \
-        "AND transition1.#{model_type} = '#{name}'"
+      super +
+        " AND #{most_recent_transition_alias}.#{model_type} = '#{base_class}'"
     end
 
     def transition2_join
-      "LEFT OUTER JOIN #{model_table} transition2 " \
-        "ON transition2.#{model_foreign_key} = #{table_name}.id " \
-        "AND transition1.#{model_type} = '#{name}' " \
-        'AND transition2.sort_key > transition1.sort_key'
+      super +
+        " AND #{most_recent_transition_alias}.#{model_type} = '#{base_class}'"
     end
   end
 
@@ -64,7 +61,7 @@ module Transitional
     attr_reader :instance_methods
 
     def initialize(name, options = {})
-      @name   = name
+      @name = name
       @class_methods    = Module.new
       @instance_methods = Module.new
       @state_machine_class_name = options[:state_machine_class_name]
@@ -79,8 +76,8 @@ module Transitional
 
     def compile_initial_state
       @class_methods.module_eval <<-EOS, __FILE__, __LINE__ + 1
-        def initial_state
-          super << #{state_machine_class}.initial_state
+        def initial_states
+          super + [#{state_machine_class}.initial_state]
         end
       EOS
     end
