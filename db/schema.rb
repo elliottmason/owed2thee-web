@@ -102,13 +102,13 @@ ActiveRecord::Schema.define(version: 20150616195222) do
     t.string   "recipient_type",                  null: false
     t.string   "type",                            null: false
     t.datetime "transferred_at"
-    t.uuid     "uuid"
+    t.uuid     "uuid",                            null: false
   end
 
   add_index "transfers", ["creator_id"], name: "index_transfers_on_creator_id", using: :btree
   add_index "transfers", ["recipient_type", "recipient_id"], name: "index_transfers_on_recipient_type_and_recipient_id", using: :btree
   add_index "transfers", ["sender_type", "sender_id"], name: "index_transfers_on_sender_type_and_sender_id", using: :btree
-  add_index "transfers", ["uuid"], name: "index_transfers_on_uuid", using: :btree
+  add_index "transfers", ["uuid"], name: "index_transfers_on_uuid", unique: true, using: :btree
 
   create_table "transitions", force: :cascade do |t|
     t.integer  "transitional_id",                null: false
@@ -150,10 +150,10 @@ ActiveRecord::Schema.define(version: 20150616195222) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
-    t.uuid     "uuid"
+    t.uuid     "uuid",                               null: false
   end
 
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-  add_index "users", ["uuid"], name: "index_users_on_uuid", using: :btree
+  add_index "users", ["uuid"], name: "index_users_on_uuid", unique: true, using: :btree
 
 end
