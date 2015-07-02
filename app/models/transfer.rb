@@ -7,12 +7,15 @@ class Transfer < ActiveRecord::Base
   belongs_to :sender,     polymorphic: true
   has_many :groupings, as: :groupable
   has_many :groups, through: :groupings
-  has_many :transfer_participants
+  has_many :transfer_participants, as: :participable
   has_many :participants, class_name: 'User',
-                          through: :transfer_participants
+                          source:     :user,
+                          through:    :transfer_participants
 
   validates :amount_cents, numericality: { greater_than: 0 }
-  validates :creator,     presence: true
+  validates :creator,   presence: true
+  validates :recipient, presence: true
+  validates :sender,    presence: true
 
   monetize :amount_cents
 

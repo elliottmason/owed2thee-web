@@ -1,0 +1,8 @@
+- if @loans.present?
+  - @loans.each do |date, loans|
+    ul
+      li
+        h3 = date
+        ul
+          - loans.each do |loan|
+            li = cell(:loan, loan)

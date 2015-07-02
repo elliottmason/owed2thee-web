@@ -6,6 +6,7 @@ FactoryGirl.define do
     amount 10
 
     factory :published_loan, traits: %i(published)
+    factory :unpublished_loan
 
     trait :published do
       after(:create) do |loan, _|

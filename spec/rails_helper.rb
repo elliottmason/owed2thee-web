@@ -1,10 +1,19 @@
 require 'simplecov'
-SimpleCov.start 'rails' do
+SimpleCov.start do
   add_filter '.bundle'
+  add_filter 'config'
+  add_filter 'spec'
+  add_group 'Cells',          'app/cells'
+  add_group 'Controllers',    'app/controllers'
   add_group 'Forms',          'app/forms'
+  # add_group 'Listeners',      'app/listeners'
+  add_group 'Mailers',        'app/mailers'
+  add_group 'Models',         'app/models'
   add_group 'Policies',       'app/policies'
+  add_group 'Queries',        'app/queries'
   add_group 'Services',       'app/services'
   add_group 'State Machines', 'app/state_machines'
+  add_group 'Validators',     'app/validators'
 end
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'

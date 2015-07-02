@@ -1,3 +1,5 @@
+= cell(:loan, @loan, { current_user: current_user })
+
 ul.button-group.even-3
 - if policy(@loan).confirm?
   li = button_to 'Confirm', [:confirm, @loan],  method: :patch, class: 'button'

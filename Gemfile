@@ -1,11 +1,13 @@
 source 'https://rubygems.org'
 ruby '2.2.2'
 
-gem 'rails',            '4.2.1'
+gem 'rails',               '4.2.1'
+gem 'bourbon',          '~> 4.2'
+gem 'cells',            '~> 4.0'
+gem 'cells-slim',       '~> 0.0'
 gem 'devise',           '~> 3.5'
 gem 'fast_attributes',  '~> 0.7'
 gem 'figaro',           '~> 1.0'
-gem 'foundation-rails', '~> 5.5'
 gem 'high_voltage',     '~> 2.3'
 gem 'jbuilder',         '~> 2.0'
 gem 'jquery-rails',     '~> 4.0'
@@ -17,17 +19,19 @@ gem 'sendgrid',         '~> 1.2'
 gem 'sidekiq',          '~> 3.3'
 gem 'simple_form',      '~> 3.1'
 gem 'slim-rails',       '~> 3.0'
-gem 'statesman',        '~> 1.2'
+gem 'statesman',        '~> 1.3.0'
 gem 'uglifier',         '~> 2.7'
 gem 'wisper',           '~> 1.6'
 
 group :development do
   gem 'better_errors'
   gem 'guard-bundler'
+  gem 'guard-livereload', '~> 2.4', require: false
   gem 'guard-rails'
   gem 'guard-rspec'
-  gem 'letter_opener',  '~> 1.4'
+  gem 'letter_opener',    '~> 1.4'
   gem 'quiet_assets'
+  gem 'rack-livereload'
   gem 'rails_layout'
   gem 'rb-fchange', require: false
   gem 'rb-fsevent', require: false

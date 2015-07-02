@@ -1,3 +1,6 @@
+# Payments are applied toward unpaid Loans. Similar to Loans, they must be
+# confirmed by the creator to be published and visible, and must be confirmed
+# by the PaymentPayees.
 class Payment < Transfer
   belongs_to :payer,    foreign_key:  'sender_id',
                         foreign_type: 'sender_type',

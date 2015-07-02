@@ -1,14 +1,13 @@
-FastAttributes.type_cast Integer do
-  from '', to: 0
-  otherwise '%s.to_i'
+FastAttributes.type_cast Float do
+  from '', to: 0.0
+  otherwise '%s.to_f'
 end
 
 class LoanForm < BaseForm
   include ActiveModel::Validations
 
   define_attributes initialize: true, attributes: true do
-    attribute :amount_cents,    Integer
-    attribute :amount_dollars,  Integer
+    attribute :amount,          Float
     attribute :creator_email,   String
     attribute :obligor_email,   String
     attribute :type,            String
@@ -19,16 +18,18 @@ class LoanForm < BaseForm
   validates :obligor_email, presence: true
   validates :type, inclusion: %w(debt loan)
 
+  attr_writer :errors
+
   private
 
   def amount_positive
     errors.add(:base, I18n.t('errors.messages.nonpositive_amount')) \
-      if amount_cents <= 0 && amount_dollars <= 0
+      if amount <= 0
   end
 
   def emails_unidentical
     errors.add(:base,
                I18n.t('errors.messages.identical_users', record: 'loan')) \
-      if creator_email == obligor_email && !creator_email.nil?
+      if creator_email == obligor_email && !creator_email.blank?
   end
 end

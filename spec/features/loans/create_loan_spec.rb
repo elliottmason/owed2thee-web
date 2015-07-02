@@ -5,12 +5,7 @@ feature 'Create a loan', :js do
 
   scenario 'as a new user' do
     new_loan_page.load
-    new_loan_page.submit(
-      amount_cents:   '00',
-      amount_dollars: '10',
-      creator_email:  Faker::Internet.email,
-      obligor_email:  Faker::Internet.email
-    )
+    new_loan_page.submit(FactoryGirl.attributes_for(:loan_form))
     expect(show_loan_page).to be_displayed
   end
 
@@ -19,10 +14,11 @@ feature 'Create a loan', :js do
 
     new_loan_page.load
     new_loan_page.submit(
-      amount_cents:   '00',
-      amount_dollars: '10',
-      creator_email:  user.emails.first.email,
-      obligor_email:  Faker::Internet.email
+      FactoryGirl.attributes_for(
+        :loan_form,
+        creator_email: user.emails.first.email,
+        obligor_email: FactoryGirl.create(:confirmed_user).emails.first.email
+      )
     )
     expect(sign_in_page).to be_displayed
 
@@ -39,14 +35,12 @@ feature 'Create a loan', :js do
 
     new_loan_page.load
     new_loan_page.submit(
-      amount_cents:   '00',
-      amount_dollars: '10',
-      obligor_email:  Faker::Internet.email
+      FactoryGirl.attributes_for(:loan_form).except(:creator_email)
     )
     expect(show_loan_page).to be_displayed
   end
 
-  scenario 'invalid params' do
+  scenario 'creator and obligor emails the same' do
     email = Faker::Internet.email
 
     new_loan_page.load
@@ -60,11 +54,42 @@ feature 'Create a loan', :js do
       I18n.t('errors.messages.nonpositive_amount'))
   end
 
-  scenario 'invalid params' do
+  scenario 'amount zero or less' do
     new_loan_page.load
     new_loan_page.submit
     expect(new_loan_page).to \
       have_content(I18n.t('errors.messages.nonpositive_amount'))
     expect(new_loan_page).to have_content(I18n.t('errors.messages.blank'))
+  end
+
+  scenario 'borrowers are the same' do
+    user = FactoryGirl.create(:confirmed_user)
+    user.emails << FactoryGirl.build(:user_email)
+
+    new_loan_page.load
+    new_loan_page.submit(
+      FactoryGirl.attributes_for(
+        :loan_form,
+        creator_email:  user.emails.first.email,
+        obligor_email:  user.emails.last.email,
+        type:           'debt'
+      )
+    )
+    expect(new_loan_page).to have_content('you a bitch')
+  end
+
+  scenario 'lenders are the same' do
+    user = FactoryGirl.create(:confirmed_user)
+    user.emails << FactoryGirl.build(:user_email)
+
+    new_loan_page.load
+    new_loan_page.submit(
+      FactoryGirl.attributes_for(
+        :loan_form,
+        creator_email: user.emails.first.email,
+        obligor_email: user.emails.last.email
+      )
+    )
+    expect(new_loan_page).to have_content('you a bitch')
   end
 end

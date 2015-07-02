@@ -1,6 +1,6 @@
-module Accounts
+module Users
   class EmailsController < BaseController
-    skip_before_filter :authenticate_user!
+    skip_before_filter :authenticate_user!, only: %i(confirm)
 
     def confirm
       service = ConfirmUserEmail.with(params[:email],

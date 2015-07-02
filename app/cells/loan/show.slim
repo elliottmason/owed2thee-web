@@ -1,0 +1,13 @@
+.loan-box
+  p
+    | Lent
+    span<>
+      = currency_symbol
+      = amount
+    | to #{borrower_name}
+    span<>
+      | - #{created_at}
+  - if transitions.any?
+    ul
+      - transitions.each do |transition|
+        li = transition.inspect

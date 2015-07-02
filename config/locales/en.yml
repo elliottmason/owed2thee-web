@@ -1,4 +1,13 @@
 en:
+  activerecord:
+    errors:
+      models:
+        loan:
+          attributes:
+            borrower:
+              exclusion: 'You cannot borrow from yourself.'
+            lender:
+              exclusion: 'You cannot lend to yourself.'
   errors:
     format: "%{attribute} %{message}"
     messages:

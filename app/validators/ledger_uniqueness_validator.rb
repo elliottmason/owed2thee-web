@@ -1,4 +1,4 @@
-class Ledger::LedgerUniquenessValidator < ActiveModel::Validator
+class LedgerUniquenessValidator < ActiveModel::Validator
   def validate(record)
     if record.user_a == record.user_b
       record.errors[:base] << 'Cannot create ledger between identical users'

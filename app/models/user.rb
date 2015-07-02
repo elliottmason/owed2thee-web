@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   validates :emails, presence: true
 
   devise :database_authenticatable
+  devise :recoverable
   devise :registerable
   devise :rememberable
   devise :trackable
@@ -27,5 +28,11 @@ class User < ActiveRecord::Base
     if user_email && (user = user_email.user)
       user
     end
+  end
+
+  private
+
+  def email_changed?
+    false
   end
 end
