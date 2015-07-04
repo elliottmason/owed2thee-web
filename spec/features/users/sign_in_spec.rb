@@ -19,7 +19,7 @@ feature 'Sign in', :devise, :js do
   scenario 'with valid credentials' do
     sign_in_page.load
     sign_in_page.submit(
-      email:    user.emails.first.email,
+      email:    user.primary_email_address,
       password: user.password
     )
     expect(sign_in_page).to have_content I18n.t('devise.sessions.signed_in')
@@ -40,7 +40,7 @@ feature 'Sign in', :devise, :js do
   scenario 'with wrong password' do
     sign_in_page.load
     sign_in_page.submit(
-      email:    user.emails.first.email,
+      email:    user.primary_email_address,
       password: Faker::Internet.password
     )
     expect(page).to have_content(

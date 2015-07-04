@@ -16,6 +16,6 @@ class LoanCell < BaseCell
   # 2. TODO: We want to show the full name if the two users have a Ledger
   #          already. This will require a profile model of some kind.
   def borrower_name
-    @borrower_name = borrower.emails.first.email
+    @borrower_name = borrower.email_addresses.first.address
   end
 end

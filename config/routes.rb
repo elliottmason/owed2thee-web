@@ -35,7 +35,7 @@ Rails.application.routes.draw do
 
   namespace :users, as: :account, path: 'account' do
     resources :emails,
-              as:           :user_emails,
+              as:           :email_addresses,
               constraints:  { email: /.+(?:@|%40).+\..+/ },
               only:         %i(edit update),
               param:        :email do

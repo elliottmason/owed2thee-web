@@ -7,8 +7,8 @@ class ConfirmUser < BaseService
     @user = user
   end
 
-  def confirm_user_email_successful(email)
-    self.class.with(email.user)
+  def confirm_email_address_successful(email_address)
+    self.class.with(email_address.user)
   end
 
   def perform

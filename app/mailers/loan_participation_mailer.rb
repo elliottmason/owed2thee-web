@@ -6,8 +6,8 @@ class LoanParticipationMailer < ApplicationMailer
       url_for([loan])
     else
       url_for([
-        :confirm, :account, recipient_email,
-        { confirmation_token: recipient_email.confirmation_token }
+        :confirm, :account, recipient_email_address,
+        { confirmation_token: recipient_email_address.confirmation_token }
       ])
     end
   end
@@ -25,8 +25,8 @@ class LoanParticipationMailer < ApplicationMailer
     loan.creator
   end
 
-  def creator_email
-    creator.emails.first
+  def creator_email_address
+    creator.email_addresses.first
   end
 
   def loan
@@ -35,16 +35,17 @@ class LoanParticipationMailer < ApplicationMailer
 
   attr_reader :participant
 
-  def recipient_email
-    @recipient_email ||= recipient.emails.first
+  def recipient_email_address
+    @recipient_email_address ||= recipient.email_addresses.first
   end
 
   def subject
-    '[Owed2Thee] - Confirm or deny your loan with ' + creator_email.email
+    '[Owed2Thee] - Confirm or deny your loan with ' +
+      creator_email_address.address
   end
 
   def to
-    recipient_email.email
+    recipient_email_address.address
   end
 
   def recipient

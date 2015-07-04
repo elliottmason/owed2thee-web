@@ -7,14 +7,15 @@ FactoryGirl.define do
 
     trait :confirmed do
       after(:create) do |user, _|
-        email = user.emails.first
-        ConfirmUserEmail.with(email.email, email.confirmation_token)
+        email_address = user.email_addresses.first
+        ConfirmEmailAddress.with(email_address.address,
+                                 email_address.confirmation_token)
       end
     end
 
     trait :with_email do
       after(:build) do |user, _|
-        user.emails << build(:user_email, user: user)
+        user.email_addresses << build(:email_address, user: user)
       end
     end
   end

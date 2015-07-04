@@ -54,7 +54,7 @@ class LoansController < ApplicationController
       sign_in(service.creator)
     else
       session[:created_loan_id] = service.loan.id
-      session[:user_email]      = service.creator_email
+      session[:email_address]   = service.creator_email_address
     end
   end
 end

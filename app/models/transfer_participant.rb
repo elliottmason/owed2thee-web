@@ -4,7 +4,7 @@
 class TransferParticipant < ActiveRecord::Base
   include Transitional
 
-  belongs_to :email, class_name: 'UserEmail'
+  belongs_to :email, class_name: 'EmailAddress'
   belongs_to :participable, polymorphic: true
   belongs_to :user
 

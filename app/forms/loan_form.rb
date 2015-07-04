@@ -7,15 +7,15 @@ class LoanForm < BaseForm
   include ActiveModel::Validations
 
   define_attributes initialize: true, attributes: true do
-    attribute :amount,          Float
-    attribute :creator_email,   String
-    attribute :obligor_email,   String
-    attribute :type,            String
+    attribute :amount,                  Float
+    attribute :creator_email_address,   String
+    attribute :obligor_email_address,   String
+    attribute :type,                    String
   end
 
   validate :emails_unidentical
   validate :amount_positive
-  validates :obligor_email, presence: true
+  validates :obligor_email_address, presence: true
   validates :type, inclusion: %w(debt loan)
 
   attr_writer :errors
@@ -30,6 +30,7 @@ class LoanForm < BaseForm
   def emails_unidentical
     errors.add(:base,
                I18n.t('errors.messages.identical_users', record: 'loan')) \
-      if creator_email == obligor_email && !creator_email.blank?
+      if creator_email_address == obligor_email_address && \
+         !creator_email_address.blank?
   end
 end

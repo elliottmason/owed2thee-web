@@ -4,8 +4,6 @@ class CreateLoan < BaseService
   def initialize(creator, params)
     @creator  = creator
     @params   = params
-
-    subscribe_to_listeners
   end
 
   def borrowers
@@ -13,10 +11,10 @@ class CreateLoan < BaseService
   end
 
   def creator
-    @creator ||= find_creator_by_email || create_creator
+    @creator ||= find_creator_by_email_address || create_creator
   end
 
-  delegate :creator_email, to: :form
+  delegate :creator_email_address, to: :form
 
   def form
     @form ||= LoanForm.new(@params)
@@ -45,8 +43,7 @@ class CreateLoan < BaseService
     return @obligors if @obligors
 
     @obligors = []
-    @obligors += find_obligors_by_emails
-    @obligors += find_obligors_by_ids
+    @obligors += find_obligors_by_email_addresses
     @obligors.uniq!
     @obligors
   end
@@ -84,7 +81,7 @@ class CreateLoan < BaseService
 
   def create_creator
     @unregistered_creator = true
-    CreateUserWithEmail.with(creator_email).user
+    CreateUserWithEmailAddress.with(creator_email_address).user
   end
 
   def create_loan
@@ -95,19 +92,11 @@ class CreateLoan < BaseService
     loan.valid?
   end
 
-  def find_creator_by_email
-    UserEmail.where(email: creator_email).first.try(:user)
+  def find_creator_by_email_address
+    EmailAddress.where(address: creator_email_address).first.try(:user)
   end
 
-  def find_obligors_by_emails
-    [FindOrCreateUserByEmail.with(form.obligor_email).user]
-  end
-
-  # TODO: find user IDs with which creator has a relationship
-  def find_obligors_by_ids
-    []
-  end
-
-  def subscribe_to_listeners
+  def find_obligors_by_email_addresses
+    [FindOrCreateUserByEmailAddress.with(form.obligor_email_address).user]
   end
 end

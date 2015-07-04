@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150616195222) do
+ActiveRecord::Schema.define(version: 20150703002813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "email_addresses", force: :cascade do |t|
+    t.integer  "user_id",              null: false
+    t.string   "address",              null: false
+    t.string   "confirmation_token"
+    t.datetime "confirmation_sent_at"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "email_addresses", ["address"], name: "index_email_addresses_on_address", unique: true, using: :btree
+  add_index "email_addresses", ["confirmation_token"], name: "index_email_addresses_on_confirmation_token", unique: true, using: :btree
+  add_index "email_addresses", ["user_id"], name: "index_email_addresses_on_user_id", using: :btree
 
   create_table "groupings", force: :cascade do |t|
     t.integer  "group_id",       null: false
@@ -124,19 +137,6 @@ ActiveRecord::Schema.define(version: 20150616195222) do
 
   add_index "transitions", ["transitional_id", "transitional_type", "type", "most_recent"], name: "index_transitions_parent_sort", unique: true, using: :btree
   add_index "transitions", ["transitional_id", "transitional_type", "type", "sort_key"], name: "index_transitions_parent_most_recent", unique: true, using: :btree
-
-  create_table "user_emails", force: :cascade do |t|
-    t.integer  "user_id",              null: false
-    t.string   "email",                null: false
-    t.string   "confirmation_token"
-    t.datetime "confirmation_sent_at"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
-  end
-
-  add_index "user_emails", ["confirmation_token"], name: "index_user_emails_on_confirmation_token", unique: true, using: :btree
-  add_index "user_emails", ["email"], name: "index_user_emails_on_email", unique: true, using: :btree
-  add_index "user_emails", ["user_id"], name: "index_user_emails_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "encrypted_password"

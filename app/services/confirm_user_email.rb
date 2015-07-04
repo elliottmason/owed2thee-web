@@ -1,4 +1,4 @@
-class ConfirmUserEmail < BaseService
+class ConfirmEmailAddress < BaseService
   include Wisper::Publisher
 
   def initialize(email_address, confirmation_token)
@@ -8,25 +8,27 @@ class ConfirmUserEmail < BaseService
     subscribe(ConfirmUser.new)
   end
 
-  def email
-    @email ||=
-      UserEmail \
+  def email_address
+    return @email_address if @email_address.is_a?(EmailAddress)
+
+    @email_address =
+      EmailAddress \
       .in_state(:unconfirmed) \
-      .where(confirmation_token: @confirmation_token, email: @email_address)
+      .where(confirmation_token: @confirmation_token, address: @email_address)
       .first
   end
 
   def perform
-    return unless email
+    return unless email_address
 
-    email.confirm!
+    email_address.confirm!
 
-    broadcast(:confirm_user_email_successful, email) if successful?
+    broadcast(:confirm_email_address_successful, email_address) if successful?
   end
 
   def successful?
-    email && email.confirmed?
+    email_address && email_address.confirmed?
   end
 
-  delegate :user, to: :email
+  delegate :user, to: :email_address
 end
