@@ -32,7 +32,7 @@ class PaymentsController < ApplicationController
   private
 
   def retrieve_loan
-    @loan = Loan.where(uuid: params[:loan_uuid]).first!
+    @loan = LoanQuery.uuid(params[:loan_uuid])
     authorize(@loan, :pay?)
   end
 

@@ -8,6 +8,11 @@ class LoanPolicy
     user_is_creator? && loan_is_unconfirmed? && loan_is_cancelable?
   end
 
+  def comment?
+    user_is_creator? ||
+      (user_is_participant? && loan_is_published?)
+  end
+
   def confirm?
     ((user_is_creator? || loan_is_published?) &&
       user_is_unconfirmed_participant?) &&

@@ -10,12 +10,13 @@ class LoanQuery
       .published  \
       .user(user) \
       .page(page) \
+      .eager_load(:comments)    \
       .eager_load(:transitions) \
       .order('transfers.created_at DESC')
   end
 
-  def page
-
+  def self.uuid(uuid)
+    Loan.where(uuid: uuid).first!
   end
 
   attr_reader :relation

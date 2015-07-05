@@ -1,5 +1,5 @@
 class VisitorsController < ApplicationController
   def index
-    @loan_form = LoanForm.new
+    @loan = LoanForm.new
   end
 end

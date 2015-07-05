@@ -23,7 +23,7 @@ class LoansController < ApplicationController
       sign_in_creator(service)
       redirect_to(service.loan)
     else
-      @loan_form = service.form
+      @loan = service.form
       render(:new)
     end
   end
@@ -36,16 +36,17 @@ class LoansController < ApplicationController
   end
 
   def new
-    @loan_form = LoanForm.new
+    @loan = LoanForm.new
   end
 
   def show
+    @comment = CommentForm.new
   end
 
   private
 
   def retrieve_loan
-    @loan = Loan.where(uuid: params[:uuid]).first!
+    @loan = LoanQuery.uuid(params[:uuid])
     authorize(@loan)
   end
 

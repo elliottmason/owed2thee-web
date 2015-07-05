@@ -24,8 +24,6 @@ feature 'Create a loan', :js do
     )
     expect(sign_in_page).to be_displayed
 
-    puts user.password
-
     sign_in_page.submit(
       password: user.password
     )

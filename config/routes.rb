@@ -14,7 +14,8 @@ Rails.application.routes.draw do
   resources :loans, module: 'users', only: %i(index)
 
   resources :loans, only: %i(create new show), param: :uuid do
-    resources :payments, only: %i(create new), param: :uuid
+    resources :comments,  only: %i(create), module: 'loans'
+    resources :payments,  only: %i(create new), param: :uuid
 
     member do
       patch 'cancel'

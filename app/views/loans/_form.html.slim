@@ -1,5 +1,5 @@
-= simple_form_for @loan_form do |f|
-  = render partial: '/form_errors', locals: { resource: @loan_form }
+= simple_form_for @loan do |f|
+  = render partial: '/form_errors', locals: { resource: @loan }
   - if !user_signed_in?
     = f.input :creator_email_address, as: :email, input_html: { placeholder: 'your email address' }, label: 'your email address', required: true
   = f.input :type, collection: [['lent', :loan], ['owe', :debt]], priority: 'owe', include_blank: false, label: false, required: true

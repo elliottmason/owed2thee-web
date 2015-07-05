@@ -6,7 +6,7 @@ module Loans
     element :cancel_button,   'input[value="Cancel"]'
     element :confirm_button,  'input[value="Confirm"]'
     element :dispute_button,  'input[value="Dispute"]'
-    element :payment_button,  'input[value="Submit Payment"]'
+    element :payment_button,  'input[value="Pay"]'
 
     def cancel
       cancel_button.click
