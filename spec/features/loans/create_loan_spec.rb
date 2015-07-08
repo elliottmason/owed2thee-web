@@ -9,7 +9,7 @@ feature 'Create a loan', :js do
     expect(show_loan_page).to be_displayed
   end
 
-  scenario 'as a signed-out, extant user' do
+  scenario 'as a signed-out user' do
     user = FactoryGirl.create(:confirmed_user)
     obligor_email_address = \
       FactoryGirl.create(:confirmed_user).primary_email_address
@@ -29,6 +29,25 @@ feature 'Create a loan', :js do
     )
 
     expect(show_loan_page).to be_displayed
+  end
+
+  pending 'as a signed-out, unconfirmed user' do
+    user = FactoryGirl.create(:unconfirmed_user)
+
+    obligor_email_address = \
+      FactoryGirl.create(:confirmed_user).primary_email_address
+
+    new_loan_page.load
+    new_loan_page.submit(
+      FactoryGirl.attributes_for(
+        :loan_form,
+        creator_email_address: user.primary_email_address,
+        obligor_email_address: obligor_email_address
+      )
+    )
+    expect(sign_in_page).to_not be_displayed
+    # expect error message saying you need to confirm your shit to continue
+    # expect(new_loan_page).to have_content()
   end
 
   scenario 'as as signed-in user' do

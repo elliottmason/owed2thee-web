@@ -1,7 +1,7 @@
 module Users
   class LoansController < BaseController
     def index
-      loans = LoanQuery.paginated_for_user(current_user, params[:page])
+      loans = LoanQuery.paginated_for_user(current_user, page)
       @loans = GroupLoansByDate.with(loans)
     end
 

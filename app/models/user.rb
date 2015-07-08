@@ -22,12 +22,15 @@ class User < ActiveRecord::Base
   # A User can have multiple emails associated with his or her account, so we
   # retrieve a User through an EmailAddress record
   def self.find_for_database_authentication(conditions)
-    email_address = EmailAddress.in_state(:confirmed)
-                    .where(address: conditions[:email])
+    email_address = EmailAddress \
+                    .in_state(:confirmed) \
+                    .where(address: conditions[:email]) \
                     .first
-    if email_address && (user = email_address.user)
-      user
-    end
+    email_address.user if email_address
+  end
+
+  def password_blank?
+    encrypted_password.blank?
   end
 
   def primary_email_address
@@ -36,6 +39,7 @@ class User < ActiveRecord::Base
 
   private
 
+  # Devise voodoo
   def email_changed?
     false
   end

@@ -6,7 +6,7 @@ class LoanParticipationMailer < ApplicationMailer
       url_for([loan])
     else
       url_for([
-        :confirm, :account, recipient_email_address,
+        :confirm, :user, recipient_email_address,
         { confirmation_token: recipient_email_address.confirmation_token }
       ])
     end
@@ -17,7 +17,6 @@ class LoanParticipationMailer < ApplicationMailer
     @confirmation_link  = confirmation_link
     mail(to: to, subject: subject)
   end
-
 
   private
 

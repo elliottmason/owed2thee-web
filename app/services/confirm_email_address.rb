@@ -27,8 +27,8 @@ class ConfirmEmailAddress < BaseService
   end
 
   def successful?
-    email_address && email_address.confirmed?
+    email_address.present? && email_address.confirmed?
   end
 
-  delegate :user, to: :email_address
+  delegate :user, to: :email_address, allow_nil: true
 end

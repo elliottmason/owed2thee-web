@@ -7,6 +7,6 @@ class BaseService
   end
 
   def successful?
-    @successful
+    @successful || false
   end
 end

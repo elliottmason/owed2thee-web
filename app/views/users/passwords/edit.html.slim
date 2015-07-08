@@ -1,5 +1,5 @@
-= simple_form_for @password, url: [:account, :password] do |f|
-  - if @password.current_password?
+= simple_form_for @password_form, url: [:user, :password], method: :patch do |f|
+  - if @password_form.current_password?
     = f.input :current_password,        as: :password
   = f.input   :new_password,              as: :password
   = f.input   :new_password_confirmation, as: :password
