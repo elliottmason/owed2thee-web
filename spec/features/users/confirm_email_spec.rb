@@ -5,6 +5,14 @@ feature 'Confirm email address', :devise, :js do
   let(:confirm_email_page)  { Accounts::Emails::ConfirmPage.new }
   let(:home_page)           { HomePage.new }
 
+  let(:confirmation_message) do
+    confirmable =
+      I18n.t('controllers.application.confirm.email_address',
+             email_address: email_address.address)
+    I18n.t('controllers.application.confirm.flash.notice',
+           confirmable: confirmable)
+  end
+
   def confirm_email_address(confirmation_token = nil)
     confirmation_token ||= email_address.confirmation_token
     confirm_email_page.load(
@@ -13,14 +21,13 @@ feature 'Confirm email address', :devise, :js do
     )
   end
 
-  context 'for unconfirmed user' do
+  context 'for user with existing activity' do
     let(:change_password_page) { Accounts::Passwords::EditPage.new }
 
     scenario 'with correct confirmation token' do
       confirm_email_address
       expect(change_password_page).to be_displayed
-      # expect(change_password_page).to \
-      #   have_content('Your email address has been confirmed.')
+      expect(change_password_page).to have_content(confirmation_message)
     end
   end
 
@@ -35,8 +42,7 @@ feature 'Confirm email address', :devise, :js do
     scenario 'with correct confirmation token' do
       confirm_email_address
       expect(loans_page).to be_displayed
-      # expect(loans_page).to \
-      #   have_content('Your email address has been confirmed.')
+      expect(loans_page).to have_content(confirmation_message)
     end
   end
 

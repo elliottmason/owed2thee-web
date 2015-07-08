@@ -17,10 +17,13 @@ en:
     application:
       cancel:
         flash:
-          notice: 'cancellation completed'
+          notice: "%{cancelable} has been canceled."
       confirm:
+        email_address: "Your email address %{email_address}"
         flash:
-          notice: 'confirmation successful'
+          notice: "%{confirmable} is now confirmed."
       dispute:
         flash:
-          notice: 'dispute submitted'
+          notice: "Dispute againist %{disputable} has been submitted."
+        loan:     "%{creator}'s loan for %{amount}"
+        payment:  "%{creator}'s payment of %{amount}"

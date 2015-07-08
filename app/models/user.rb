@@ -29,8 +29,16 @@ class User < ActiveRecord::Base
     email_address.user if email_address
   end
 
-  def password_blank?
-    encrypted_password.blank?
+  def no_password?
+    !password?
+  end
+
+  def password?
+    encrypted_password.present?
+  end
+
+  def new?
+    last_sign_in_at.blank?
   end
 
   def primary_email_address
