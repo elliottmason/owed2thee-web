@@ -3,16 +3,20 @@ class ChangeUserPassword < BaseService
   attr_reader :user
 
   def initialize(user, params)
-    @user = user
-    @form = PasswordForm.new(params.merge(user: user))
+    @user   = user
+    @params = params
   end
 
   delegate :current_password, :new_password, :new_password_confirmation,
            to: :form
 
+  def form
+    @form ||= PasswordForm.new(@params)
+  end
+
   def perform
-    return unless user.valid_password?(current_password) &&
-                  new_password == new_password_confirmation
+    return unless form.valid?
+    return unless user.no_password? || user.valid_password?(current_password)
 
     user.password = new_password
     @successful = user.save

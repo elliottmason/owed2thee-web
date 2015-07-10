@@ -4,9 +4,9 @@ module Loans
 
     set_url '/loans/new'
 
-    element :creator_email_address_field, '#loan_creator_email_address'
-    element :type_field,                  '#loan_type'
-    element :amount_field,                '#loan_amount'
-    element :obligor_email_address_field, '#loan_obligor_email_address'
+    form_section :loan,
+                 fields:    %i(amount creator_email_address \
+                               obligor_email_address type),
+                 selector:  '#new_loan'
   end
 end

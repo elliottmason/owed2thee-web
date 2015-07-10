@@ -1,7 +1,6 @@
 class PaymentForm < BaseForm
   define_attributes initialize: true, attributes: true do
-    attribute :amount_cents,    Integer
-    attribute :amount_dollars,  Integer
+    attribute :amount, Float
   end
 
   validate :amount_positive
@@ -14,6 +13,6 @@ class PaymentForm < BaseForm
 
   def amount_positive
     errors.add(:base, I18n.t('errors.messages.nonpositive_amount')) \
-      if amount_cents <= 0 && amount_dollars <= 0
+      if amount <= 0
   end
 end

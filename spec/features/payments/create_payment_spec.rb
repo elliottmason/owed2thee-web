@@ -13,10 +13,8 @@ feature 'Create a payment for a loan', :js do
     show_loan_page.payment_button.click
     expect(new_payment_page).to be_displayed
 
-    new_payment_page.submit(
-      amount_dollars: '10',
-      amount_cents:   '00'
-    )
+    new_payment_page.payment_form.submit(
+      FactoryGirl.attributes_for(:payment_form))
     expect(show_payment_page).to be_displayed
   end
 
@@ -30,10 +28,7 @@ feature 'Create a payment for a loan', :js do
     login_as(loan.borrowers.first)
     new_payment_page.load(uuid: loan.uuid)
 
-    new_payment_page.submit(
-      amount_dollars: '00',
-      amount_cents:   '00'
-    )
+    new_payment_page.payment_form.submit(amount: '00')
     expect(new_payment_page).to \
       have_content(I18n.t('errors.messages.nonpositive_amount'))
   end

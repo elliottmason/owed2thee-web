@@ -34,8 +34,7 @@ class CreatePayment < BaseService
       payment.creator = creator
       payment.payable = loan
       payment.payer   = creator
-      payment.amount  = form.amount_dollars
-      payment.amount_cents += form.amount_cents
+      payment.amount  = form.amount
     end
   end
 

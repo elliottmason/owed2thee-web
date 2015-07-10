@@ -5,7 +5,7 @@ feature 'Sign in', :devise, :js do
 
   scenario 'when unregistered' do
     sign_in_page.load
-    sign_in_page.submit(
+    sign_in_page.sign_in_form.submit(
       email:    Faker::Internet.email,
       password: Faker::Internet.password
     )
@@ -18,7 +18,7 @@ feature 'Sign in', :devise, :js do
 
   scenario 'with valid credentials' do
     sign_in_page.load
-    sign_in_page.submit(
+    sign_in_page.sign_in_form.submit(
       email:    user.primary_email_address,
       password: user.password
     )
@@ -27,7 +27,7 @@ feature 'Sign in', :devise, :js do
 
   scenario 'with wrong email' do
     sign_in_page.load
-    sign_in_page.submit(
+    sign_in_page.sign_in_form.submit(
       email:    Faker::Internet.email,
       password: user.password
     )
@@ -39,7 +39,7 @@ feature 'Sign in', :devise, :js do
 
   scenario 'with wrong password' do
     sign_in_page.load
-    sign_in_page.submit(
+    sign_in_page.sign_in_form.submit(
       email:    user.primary_email_address,
       password: Faker::Internet.password
     )

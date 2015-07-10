@@ -7,9 +7,11 @@ module Accounts
 
       set_url '/account/password/edit'
 
-      element :new_password_field, '#password_new_password'
-      element :new_password_confirmation_field,
-              '#password_new_password_confirmation'
+      form_section(
+        :password,
+        fields:   %i(current_password new_password new_password_confirmation),
+        selector: '#new_password'
+      )
     end
   end
 end

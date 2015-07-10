@@ -1,4 +1,6 @@
 class PasswordForm < BaseForm
+  include ActiveModel::Validations
+
   attr_writer :user
 
   define_attributes initialize: true, attributes: true do
@@ -7,7 +9,9 @@ class PasswordForm < BaseForm
     attribute :new_password_confirmation, String
   end
 
-  def current_password?
-    current_password
+  validates :new_password, confirmation: true
+
+  def new_record?
+    false
   end
 end

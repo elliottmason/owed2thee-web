@@ -5,7 +5,7 @@ feature 'Create a loan', :js do
 
   scenario 'as a new user' do
     new_loan_page.load
-    new_loan_page.submit(FactoryGirl.attributes_for(:loan_form))
+    new_loan_page.loan_form.submit(FactoryGirl.attributes_for(:loan_form))
     expect(show_loan_page).to be_displayed
   end
 
@@ -15,7 +15,7 @@ feature 'Create a loan', :js do
       FactoryGirl.create(:confirmed_user).primary_email_address
 
     new_loan_page.load
-    new_loan_page.submit(
+    new_loan_page.loan_form.submit(
       FactoryGirl.attributes_for(
         :loan_form,
         creator_email_address: user.primary_email_address,
@@ -24,7 +24,7 @@ feature 'Create a loan', :js do
     )
     expect(sign_in_page).to be_displayed
 
-    sign_in_page.submit(
+    sign_in_page.sign_in_form.submit(
       password: user.password
     )
 
@@ -38,7 +38,7 @@ feature 'Create a loan', :js do
       FactoryGirl.create(:confirmed_user).primary_email_address
 
     new_loan_page.load
-    new_loan_page.submit(
+    new_loan_page.loan_form.submit(
       FactoryGirl.attributes_for(
         :loan_form,
         creator_email_address: user.primary_email_address,
@@ -55,7 +55,7 @@ feature 'Create a loan', :js do
     login_as(user, scope: :user, run_callbacks: false)
 
     new_loan_page.load
-    new_loan_page.submit(
+    new_loan_page.loan_form.submit(
       FactoryGirl.attributes_for(:loan_form).except(:creator_email_address)
     )
     expect(show_loan_page).to be_displayed
@@ -65,7 +65,7 @@ feature 'Create a loan', :js do
     email_address = Faker::Internet.email
 
     new_loan_page.load
-    new_loan_page.submit(
+    new_loan_page.loan_form.submit(
       creator_email_address: email_address,
       obligor_email_address: email_address
     )
@@ -77,7 +77,7 @@ feature 'Create a loan', :js do
 
   scenario 'amount zero or less' do
     new_loan_page.load
-    new_loan_page.submit
+    new_loan_page.loan_form.submit
     expect(new_loan_page).to \
       have_content(I18n.t('errors.messages.nonpositive_amount'))
     expect(new_loan_page).to have_content(I18n.t('errors.messages.blank'))
@@ -88,7 +88,7 @@ feature 'Create a loan', :js do
     user.email_addresses << FactoryGirl.build(:email_address)
 
     new_loan_page.load
-    new_loan_page.submit(
+    new_loan_page.loan_form.submit(
       FactoryGirl.attributes_for(
         :loan_form,
         creator_email_address:  user.email_addresses.first.address,
@@ -104,7 +104,7 @@ feature 'Create a loan', :js do
     user.email_addresses << FactoryGirl.build(:email_address)
 
     new_loan_page.load
-    new_loan_page.submit(
+    new_loan_page.loan_form.submit(
       FactoryGirl.attributes_for(
         :loan_form,
         creator_email_address: user.email_addresses.first.address,
