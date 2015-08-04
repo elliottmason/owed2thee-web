@@ -5,10 +5,6 @@ class PaymentForm < BaseForm
 
   validate :amount_positive
 
-  def self.model_name
-    ActiveModel::Name.new(Payment)
-  end
-
   private
 
   def amount_positive
