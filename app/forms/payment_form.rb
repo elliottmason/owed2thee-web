@@ -3,12 +3,5 @@ class PaymentForm < BaseForm
     attribute :amount, Float
   end
 
-  validate :amount_positive
-
-  private
-
-  def amount_positive
-    errors.add(:base, I18n.t('errors.messages.nonpositive_amount')) \
-      if amount <= 0
-  end
+  validates :amount, numericality: { greater_than: 0.00 }
 end

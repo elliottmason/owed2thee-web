@@ -12,7 +12,6 @@ class Transfer < ActiveRecord::Base
                           source:     :user,
                           through:    :transfer_participants
 
-  validates :amount_cents, numericality: { greater_than: 0 }
   validates :creator,   presence: true
   validates :recipient, presence: true
   validates :sender,    presence: true

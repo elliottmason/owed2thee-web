@@ -13,14 +13,8 @@ class CreateUserWithEmailAddress < BaseService
   end
 
   def perform
-    ActiveRecord::Base.transaction do
-      begin
-        user.email_addresses << email_address
-        user.save!
-      rescue ActiveRecord::RecordInvalid
-        raise ActiveRecord::Rollback
-      end
-    end
+    user.email_addresses << email_address
+    @successful = user.save
   end
 
   def user

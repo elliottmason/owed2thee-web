@@ -1,30 +1,34 @@
 feature 'Confirm a loan', js: true do
-  let(:loan) { FactoryGirl.create(:loan) }
-
+  let(:confirmation_notice) { 'Dongs' }
   let(:show_loan_page)  { Loans::ShowPage.new }
 
-  scenario 'as a lender' do
-    login_as(loan.lenders.first)
-    show_loan_page.load(uuid: loan.uuid)
-    show_loan_page.confirm
+  context 'as as lender' do
+    let(:loan) { FactoryGirl.create(:loan) }
 
-    expect(show_loan_page).to be_displayed
-    expect(show_loan_page).to have_content(confirmation_notice)
-    expect(show_loan_page).to_not have_confirm_button
+    scenario do
+      confirm_loan
+      expect_loan_confirmation
+    end
   end
 
-  scenario 'as a borrower' do
-    loan.publish!
-    login_as(loan.borrowers.first)
-    show_loan_page.load(uuid: loan.uuid)
-    show_loan_page.confirm
+  context 'as a borrower' do
+    let(:loan) { FactoryGirl.create(:debt) }
 
-    expect(show_loan_page).to be_displayed
-    expect(show_loan_page).to have_content(confirmation_notice)
-    expect(show_loan_page).to_not have_confirm_button
+    scenario do
+      confirm_loan
+      expect_loan_confirmation
+    end
   end
 
-  def confirmation_notice
-    I18n.t('controllers.application.confirm.flash.notice')
+  def confirm_loan
+    login_as(loan.creator)
+    show_loan_page.load(uuid: loan.uuid)
+    show_loan_page.confirm
+  end
+
+  def expect_loan_confirmation
+    expect(show_loan_page).to be_displayed
+    expect(show_loan_page).to_not have_content(confirmation_notice)
+    expect(show_loan_page).to_not have_confirm_button
   end
 end

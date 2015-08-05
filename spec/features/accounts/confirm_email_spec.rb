@@ -6,11 +6,6 @@ feature 'Confirm email address', :devise, :js do
   let(:home_page)           { HomePage.new }
 
   let(:confirmation_message) do
-    confirmable =
-      I18n.t('controllers.application.confirm.email_address',
-             email_address: email_address.address)
-    I18n.t('controllers.application.confirm.flash.notice',
-           confirmable: confirmable)
   end
 
   def confirm_email_address(confirmation_token = nil)

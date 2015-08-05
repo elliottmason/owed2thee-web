@@ -20,7 +20,7 @@ class Loan < Transfer
   has_many :loan_lenders, as: :participable
   has_many :lenders, class_name: 'User', through: :loan_lenders
 
-  validate :borrowers_not_lenders
+  validate :borrowers_must_not_be_lenders
   validates :borrowers, presence: true
   validates :lenders,   presence: true
 
@@ -30,7 +30,8 @@ class Loan < Transfer
 
   private
 
-  def borrowers_not_lenders
-    errors.add(:base, 'you a bitch') if (borrowers & lenders) != []
+  def borrowers_must_not_be_lenders
+    errors.add(:base, I18n.t('loans.errors.identical_users', 'loan')) \
+      if (borrowers & lenders).any?
   end
 end

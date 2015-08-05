@@ -1,5 +1,10 @@
 feature 'Cancel a loan', js: true do
-  let(:loan) { FactoryGirl.create(:loan) }
+  let(:cancellation_notice) do
+    'Your loan to Josh for $10.00 has been canceled'
+  end
+  let(:loan) do
+    FactoryGirl.create(:loan, amount: 10.00)
+  end
 
   let(:show_loan_page)  { Loans::ShowPage.new }
 
@@ -11,9 +16,5 @@ feature 'Cancel a loan', js: true do
     expect(show_loan_page).to have_content(cancellation_notice)
     expect(show_loan_page).to be_displayed
     expect(show_loan_page).to_not have_cancel_button
-  end
-
-  def cancellation_notice
-    I18n.t('controllers.application.cancel.flash.notice')
   end
 end

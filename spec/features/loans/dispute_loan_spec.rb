@@ -10,12 +10,10 @@ feature 'Dispute a loan', :devise, :js do
     show_loan_page.dispute
 
     expect(show_loan_page).to be_displayed
-    expect(show_loan_page).to have_content(dispute_notice)
+    expect(show_loan_page).to have_content(
+      "a dispute against Josh's loan for $10.00 has been submitted"
+    )
     expect(show_loan_page).to_not have_dispute_button
     expect(show_loan_page).to have_confirm_button
-  end
-
-  def dispute_notice
-    I18n.t('controllers.application.dispute.flash.notice')
   end
 end

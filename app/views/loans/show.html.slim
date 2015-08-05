@@ -2,15 +2,15 @@
 
 ul.button-group.even-3
 - if policy(@loan).confirm?
-  li = button_to 'Confirm', [:confirm, @loan],  method: :patch, class: 'button'
+  li = button_to t('.confirm_button'), [:confirm, @loan], class: 'button', form_class: 'confirm_button', method: :patch
 - if policy(@loan).cancel?
-  li = button_to 'Cancel',  [:cancel,  @loan],  method: :patch, class: 'button'
+  li = button_to t('.cancel_button'),  [:cancel,  @loan], class: 'button', form_class: 'cancel_button', method: :patch
 - if policy(@loan).dispute?
-  li = button_to 'Dispute', [:dispute, @loan],  method: :patch, class: 'button'
+  li = button_to t('.dispute_button'), [:dispute, @loan], class: 'button', form_class: 'dispute_button', method: :patch
 - if policy(@loan).pay?
-  li = button_to 'Pay', [:new, @loan, :payment], method: :get, class: 'button'
+  li = button_to t('.pay_button'), [:new, @loan, :payment], class: 'button', form_class: 'pay_button', method: :get
 
 - if policy(@loan).comment?
-  = simple_form_for [@loan, @comment] do |f|
+  = simple_form_for [@loan, @comment_form] do |f|
     = f.input :body, as: :text
     = f.button :submit

@@ -29,7 +29,8 @@ feature 'Create a payment for a loan', :js do
     new_payment_page.load(uuid: loan.uuid)
 
     new_payment_page.payment_form.submit(amount: '00')
-    expect(new_payment_page).to \
-      have_content(I18n.t('errors.messages.nonpositive_amount'))
+    expect(new_payment_page).to have_content(
+      'must be larger than $0.00'
+    )
   end
 end

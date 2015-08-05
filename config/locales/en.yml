@@ -1,29 +1,79 @@
 en:
-  activerecord:
-    errors:
-      models:
-        loan:
-          attributes:
-            borrower:
-              exclusion: 'You cannot borrow from yourself.'
-            lender:
-              exclusion: 'You cannot lend to yourself.'
-  errors:
-    format: "%{attribute} %{message}"
-    messages:
-      identical_users: you cannot create a %{record} with yourself
-      nonpositive_amount: amount must be greater than $0.00
-  controllers:
-    application:
-      cancel:
-        flash:
-          notice: "%{cancelable} has been canceled."
-      confirm:
-        email_address: "Your email address %{email_address}"
-        flash:
-          notice: "%{confirmable} is now confirmed."
+  app:
+    notices:
+      cancellation: "%{cancelable} has been canceled"
+      confirmation: "%{confirmable} is now confirmed"
       dispute:
-        flash:
-          notice: "Dispute againist %{disputable} has been submitted."
-        loan:     "%{creator}'s loan for %{amount}"
-        payment:  "%{creator}'s payment of %{amount}"
+        dispute: :app.objects.dispute
+        string: "a %{dispute} against %{disputable} has been submitted"
+    objects:
+      debt: debt
+      dispute: dispute
+      loan: loan
+      payment: payment
+    states:
+      cancellation: cancellation
+      confirmation: confirmation
+      dispute: dispute
+      payment: payment
+    verbs:
+      cancel: cancel
+      confirm: confirm
+      dispute: dispute
+      pay: pay
+      submit: submit
+
+  loans:
+    errors:
+      amount:
+        nonpositive: :transfers.errors.amount.nonpositive
+      identical_users:
+        record: :loans.name
+        string: :transfers.errors.identical_users
+    name: :app.objects.loan
+    notices:
+      cancellation: :app.notices.cancellation
+      confirmation:
+        confirmable: :loans.name
+        string: :app.notices.confirmation
+      dispute:
+        disputable: "%{creator} loan for %{amount}"
+        string: :app.notices.dispute
+    # Rails scopes
+    show:
+      cancel_button: :app.verbs.cancel
+      confirm_button: :app.verbs.confirm
+      dispute_button: :app.verbs.dispute
+      pay_button: :app.verbs.pay
+
+  passwords:
+    errors:
+      current_password:
+        incorrect: is incorrect.
+
+  payments:
+    errors:
+      amount:
+        nonpositive: :transfers.errors.amount.nonpositive
+    notices:
+      confirmation:
+        payee:
+          confirmable: "%{amount} %{payment} from %{payer}"
+          payment: :app.object.payment
+          string: :app.notices.confirmation
+        payer:
+          confirmable: "Your %{amount} %{payment} to %{payee}"
+          payment: :ap.object.payment
+          string: :app.notices.confirmation
+
+  transfers:
+    errors:
+      amount:
+        nonpositive: must be larger than $0.00
+      identical_users: "you cannot create a %{record} with yourself"
+
+  # scoped for Rails
+  errors:
+    attributes:
+      amount:
+        greater_than: :transfers.errors.amount.nonpositive

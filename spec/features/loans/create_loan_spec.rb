@@ -46,8 +46,7 @@ feature 'Create a loan', :js do
       )
     )
     expect(sign_in_page).to_not be_displayed
-    # expect error message saying you need to confirm your shit to continue
-    # expect(new_loan_page).to have_content()
+    expect(show_loan_page).to be_displayed
   end
 
   scenario 'as as signed-in user' do
@@ -70,17 +69,16 @@ feature 'Create a loan', :js do
       obligor_email_address: email_address
     )
     expect(new_loan_page).to have_content(
-      I18n.t('errors.messages.identical_users', record: 'loan'))
-    expect(new_loan_page).to have_content(
-      I18n.t('errors.messages.nonpositive_amount'))
+      'You cannot create a loan with yourself'
+    )
   end
 
   scenario 'amount zero or less' do
     new_loan_page.load
     new_loan_page.loan_form.submit
-    expect(new_loan_page).to \
-      have_content(I18n.t('errors.messages.nonpositive_amount'))
-    expect(new_loan_page).to have_content(I18n.t('errors.messages.blank'))
+    expect(new_loan_page).to have_content(
+      'must be larger than $0.00'
+    )
   end
 
   scenario 'borrowers are the same' do
@@ -96,7 +94,9 @@ feature 'Create a loan', :js do
         type:                   'debt'
       )
     )
-    expect(new_loan_page).to have_content('you a bitch')
+    expect(new_loan_page).to have_content(
+      'You cannot create a loan with yourself'
+    )
   end
 
   scenario 'lenders are the same' do
@@ -111,6 +111,8 @@ feature 'Create a loan', :js do
         obligor_email_address: user.email_addresses.last.address
       )
     )
-    expect(new_loan_page).to have_content('you a bitch')
+    expect(new_loan_page).to have_content(
+      'You cannot create a loan with yourself'
+    )
   end
 end

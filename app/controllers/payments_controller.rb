@@ -16,13 +16,13 @@ class PaymentsController < ApplicationController
     if service.successful?
       redirect_to(service.payment)
     else
-      @payment = service.form
+      @payment_form = service.form
       render :new
     end
   end
 
   def new
-    @payment = PaymentForm.new
+    @payment_form = PaymentForm.new
   end
 
   def show

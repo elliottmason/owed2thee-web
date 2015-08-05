@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :loan_form do
-    amount { Random.new.rand((0.1)..(1000).round(2)) }
+    amount { Faker::Commerce.price }
     creator_email_address { Faker::Internet.email }
     obligor_email_address { Faker::Internet.email }
   end

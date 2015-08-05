@@ -13,8 +13,8 @@ class LoanForm < BaseForm
     attribute :type,                    String
   end
 
-  validate :emails_unidentical
-  validate :amount_positive
+  validate :emails_most_not_be_identical
+  validates :amount, numericality: { greater_than: 0.00 }
   validates :obligor_email_address, presence: true
   validates :type, inclusion: %w(debt loan)
 
@@ -22,15 +22,13 @@ class LoanForm < BaseForm
 
   private
 
-  def amount_positive
-    errors.add(:base, I18n.t('errors.messages.nonpositive_amount')) \
-      if amount <= 0
+  def emails_identical?
+    creator_email_address == obligor_email_address &&
+      !creator_email_address.blank?
   end
 
-  def emails_unidentical
-    errors.add(:base,
-               I18n.t('errors.messages.identical_users', record: 'loan')) \
-      if creator_email_address == obligor_email_address && \
-         !creator_email_address.blank?
+  def emails_most_not_be_identical
+    errors.add(:base, I18n.t('loans.errors.identical_users')) \
+      if emails_identical?
   end
 end

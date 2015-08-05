@@ -4,15 +4,13 @@ class LoansController < ApplicationController
 
   def cancel
     service = CancelLoan.with(@loan)
-    flash[:notice] = I18n.t('controllers.application.cancel.flash.notice') \
-      if service.successful?
+    flash[:notice] = '' if service.successful?
     redirect_to([@loan])
   end
 
   def confirm
     service = ConfirmLoanParticipation.with(current_user, @loan)
-    flash[:notice] = I18n.t('controllers.application.confirm.flash.notice') \
-      if service.successful?
+    flash[:notice] = '' if service.successful?
     redirect_to([@loan])
   end
 
@@ -30,8 +28,7 @@ class LoansController < ApplicationController
 
   def dispute
     service = DisputeLoanParticipation.with(current_user, @loan)
-    flash[:notice] = I18n.t('controllers.application.dispute.flash.notice') \
-      if service.successful?
+    flash[:notice] = '' if service.successful?
     redirect_to([@loan])
   end
 
@@ -40,7 +37,7 @@ class LoansController < ApplicationController
   end
 
   def show
-    @comment = CommentForm.new
+    @comment_form = CommentForm.new
   end
 
   private

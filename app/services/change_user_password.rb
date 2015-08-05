@@ -11,12 +11,16 @@ class ChangeUserPassword < BaseService
            to: :form
 
   def form
-    @form ||= PasswordForm.new(@params)
+    return @form if @form
+
+    @form = PasswordForm.new(@params)
+    @form.require_current_password  = user.password?
+    @form.current_password_valid    = user.valid_password?(current_password)
+    @form
   end
 
   def perform
     return unless form.valid?
-    return unless user.no_password? || user.valid_password?(current_password)
 
     user.password = new_password
     @successful = user.save
