@@ -5,8 +5,7 @@ class PaymentsController < ApplicationController
 
   def confirm
     service = ConfirmPaymentParticipation.with(current_user, @payment)
-    flash[:notice] = I18n.t('controllers.application.confirm.flash.notice') \
-      if service.successful?
+    flash[:notice] = confirmation_notice if service.successful?
     redirect_to(@payment)
   end
 
@@ -30,6 +29,22 @@ class PaymentsController < ApplicationController
   end
 
   private
+
+  def confirmation_notice
+    user, key = if @payment.payer == current_user
+                  [@payment.payable.lender.first_name, :as_payer]
+                else
+                  [@payment.payer.first_name, :as_payee]
+                end
+    type = key == :as_payer ? :payee : :payer
+
+    flash[:notice] = I18n.t("payments.notices.confirmation.#{key}",
+                            amount_lent: @payment.payable.amount.format,
+                            amount_paid: @payment.amount.format,
+                            borrower: user,
+                            lender:   user,
+                            type =>   user)
+  end
 
   def retrieve_loan
     @loan = LoanQuery.uuid(params[:loan_uuid])

@@ -1,9 +1,10 @@
 feature 'Cancel a loan', js: true do
   let(:cancellation_notice) do
-    'Your loan to Josh for $10.00 has been canceled'
+    'Canceled your loan to Josh for $10.00'
   end
   let(:loan) do
-    FactoryGirl.create(:loan, amount: 10.00)
+    recipient = FactoryGirl.create(:confirmed_user, first_name: 'Josh')
+    FactoryGirl.create(:loan, amount: 10.00, recipient: recipient)
   end
 
   let(:show_loan_page)  { Loans::ShowPage.new }

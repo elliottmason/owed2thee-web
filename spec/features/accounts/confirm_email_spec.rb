@@ -1,11 +1,15 @@
 feature 'Confirm email address', :devise, :js do
   let(:email_address) { user.email_addresses.first }
-  let(:user)          { FactoryGirl.create(:unconfirmed_user) }
+  let(:user) do
+    FactoryGirl.create(:unconfirmed_user,
+                       email_address: 'josh.schramm@gmail.com')
+  end
 
   let(:confirm_email_page)  { Accounts::Emails::ConfirmPage.new }
   let(:home_page)           { HomePage.new }
 
   let(:confirmation_message) do
+    'Confirmed your email address josh.schramm@gmail.com'
   end
 
   def confirm_email_address(confirmation_token = nil)
@@ -28,7 +32,9 @@ feature 'Confirm email address', :devise, :js do
 
   context 'for confirmed user' do
     let(:email_address) do
-      FactoryGirl.create(:unconfirmed_email_address, user: user)
+      FactoryGirl.create(:unconfirmed_email_address,
+                         address: 'josh.schramm@gmail.com',
+                         user: user)
     end
     let(:user) { FactoryGirl.create(:confirmed_user) }
 

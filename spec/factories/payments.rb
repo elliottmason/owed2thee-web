@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :payment do
-    association :creator, factory: :confirmed_user
+    creator { payable.borrowers.first }
     association :payable, factory: :loan
-    payees  { [FactoryGirl.create(:confirmed_user)] }
+    payees  { payable.lenders }
     payer   { creator }
-    payers  { [creator] }
-    amount_cents 1
+    payers  { [payable.borrowers.first] }
+    amount_cents 100
   end
 end

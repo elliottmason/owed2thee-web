@@ -1,9 +1,12 @@
 feature 'Confirm a loan', js: true do
-  let(:confirmation_notice) { 'Dongs' }
   let(:show_loan_page)  { Loans::ShowPage.new }
 
   context 'as as lender' do
-    let(:loan) { FactoryGirl.create(:loan) }
+    let(:confirmation_notice) { 'Confirmed your loan to Josh for $9.00' }
+    let(:loan) do
+      lender = FactoryGirl.create(:confirmed_user, first_name: 'Josh')
+      FactoryGirl.create(:loan, amount: 9.00, creator: lender)
+    end
 
     scenario do
       confirm_loan
@@ -12,6 +15,7 @@ feature 'Confirm a loan', js: true do
   end
 
   context 'as a borrower' do
+    let(:confirmation_notice) { "Confirmed Josh's loan for $9.00" }
     let(:loan) { FactoryGirl.create(:debt) }
 
     scenario do

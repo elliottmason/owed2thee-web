@@ -2,3 +2,13 @@
  *= require_tree .
  *= require_self
  */
+
+.alert-box {
+  &:after {
+    content: '.';
+  }
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
+}

@@ -26,11 +26,9 @@ module Users
     def confirmation_flash_message(email_address)
       return unless email_address && email_address.confirmed?
 
-      confirmable = t('controllers.application.confirm.email_address',
-                      email_address: email_address.address)
       flash[:success] =
-        t('controllers.application.confirm.flash.notice',
-          confirmable: confirmable)
+        t('email_addresses.notices.confirmation',
+          email_address: email_address.address)
     end
   end
 end

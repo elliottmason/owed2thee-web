@@ -50,7 +50,7 @@ feature 'Create a loan', :js do
   end
 
   scenario 'as as signed-in user' do
-    user = FactoryGirl.create(:user, :with_email)
+    user = FactoryGirl.create(:confirmed_user)
     login_as(user, scope: :user, run_callbacks: false)
 
     new_loan_page.load
@@ -68,17 +68,16 @@ feature 'Create a loan', :js do
       creator_email_address: email_address,
       obligor_email_address: email_address
     )
-    expect(new_loan_page).to have_content(
-      'You cannot create a loan with yourself'
-    )
+    expect(new_loan_page) \
+      .to have_content('you cannot create a loan with yourself')
   end
 
-  scenario 'amount zero or less' do
-    new_loan_page.load
-    new_loan_page.loan_form.submit
-    expect(new_loan_page).to have_content(
-      'must be larger than $0.00'
-    )
+  context 'with no amount' do
+    scenario do
+      new_loan_page.load
+      new_loan_page.loan_form.submit
+      expect(new_loan_page).to have_content('must be larger than $0.00')
+    end
   end
 
   scenario 'borrowers are the same' do
@@ -94,9 +93,8 @@ feature 'Create a loan', :js do
         type:                   'debt'
       )
     )
-    expect(new_loan_page).to have_content(
-      'You cannot create a loan with yourself'
-    )
+    expect(new_loan_page) \
+      .to have_content('you cannot create a loan with yourself')
   end
 
   scenario 'lenders are the same' do
@@ -111,8 +109,7 @@ feature 'Create a loan', :js do
         obligor_email_address: user.email_addresses.last.address
       )
     )
-    expect(new_loan_page).to have_content(
-      'You cannot create a loan with yourself'
-    )
+    expect(new_loan_page) \
+      .to have_content('you cannot create a loan with yourself')
   end
 end

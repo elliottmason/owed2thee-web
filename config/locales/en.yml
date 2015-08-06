@@ -1,11 +1,11 @@
 en:
   app:
     notices:
-      cancellation: "%{cancelable} has been canceled"
-      confirmation: "%{confirmable} is now confirmed"
+      cancellation: "Canceled %{cancellable}"
+      confirmation: "Confirmed %{confirmable}"
       dispute:
         dispute: :app.objects.dispute
-        string: "a %{dispute} against %{disputable} has been submitted"
+        string: "%{dispute} against %{disputable} has been submitted"
     objects:
       debt: debt
       dispute: dispute
@@ -22,8 +22,20 @@ en:
       dispute: dispute
       pay: pay
       submit: submit
-
+  email_addresses:
+    notices:
+      confirmation:
+        confirmable: "your email address %{email_address}"
+        string: :app.notices.confirmation
   loans:
+    descriptions:
+      short:
+        as_borrower:
+          loan: :loans.name
+          string: "%{lender}'s %{loan} for %{amount_lent}"
+        as_lender:
+          loan: :loans.name
+          string: "your %{loan} to %{borrower} for %{amount_lent}"
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
@@ -32,13 +44,23 @@ en:
         string: :transfers.errors.identical_users
     name: :app.objects.loan
     notices:
-      cancellation: :app.notices.cancellation
+      cancellation:
+        cancellable: :loans.descriptions.short.as_lender
+        string: :app.notices.cancellation
       confirmation:
-        confirmable: :loans.name
-        string: :app.notices.confirmation
+        as_borrower:
+          confirmable: :as_borrower
+          string: :app.notices.confirmation
+        as_lender:
+          confirmable: :as_lender
+          string: :app.notices.confimration
       dispute:
-        disputable: "%{creator} loan for %{amount}"
-        string: :app.notices.dispute
+        as_borrower:
+          disputable: :loans.descriptions.short.as_borrower
+          string: :app.notices.dispute
+        as_lender:
+          disputable: :loans.descriptions.short.as_lender
+          string: :app.notices.dispute
     # Rails scopes
     show:
       cancel_button: :app.verbs.cancel
@@ -57,13 +79,14 @@ en:
         nonpositive: :transfers.errors.amount.nonpositive
     notices:
       confirmation:
-        payee:
-          confirmable: "%{amount} %{payment} from %{payer}"
-          payment: :app.object.payment
+        as_payee:
+          confirmable: "a %{amount_paid} %{payment} from %{payer}"
+          payment: :app.objects.payment
           string: :app.notices.confirmation
-        payer:
-          confirmable: "Your %{amount} %{payment} to %{payee}"
-          payment: :ap.object.payment
+        as_payer:
+          confirmable: "your %{amount_paid} %{payment} toward %{payable}"
+          payable: :loans.descriptions.short.as_borrower
+          payment: :app.objects.payment
           string: :app.notices.confirmation
 
   transfers:
@@ -71,6 +94,34 @@ en:
       amount:
         nonpositive: must be larger than $0.00
       identical_users: "you cannot create a %{record} with yourself"
+
+  random_phrases:
+    negative:
+      - dang it
+      - error
+      - hold up,
+      - ["I don't think so, Tim.", 0.0078125]
+      - oops
+      - that's no good
+      - uh oh
+    neutral:
+      - done
+      - finished
+      - OK
+      - [verily, 0.0625]
+    positive:
+      - delightful
+      - done
+      - fantastic
+      - [five by five, 0.5]
+      - got it
+      - great
+      - it is so
+      - [marvelous, 0.1]
+      - perfect
+      - splendid
+      - [splendiferous, 0.0078125]
+      - ["you got it, dude", 0.25]
 
   # scoped for Rails
   errors:
