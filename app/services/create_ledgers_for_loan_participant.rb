@@ -1,4 +1,8 @@
 class CreateLedgersForLoanParticipant < BaseService
+  attr_reader :ledgers
+  attr_reader :loan
+  attr_reader :user
+
   def initialize(user = nil, loan = nil)
     @loan = loan
     @user = user
@@ -15,12 +19,6 @@ class CreateLedgersForLoanParticipant < BaseService
   def confirmed_lenders
     @confirmed_lenders = loan.loan_lenders.includes(:user).map(&:user)
   end
-
-  attr_reader :ledgers
-
-  attr_reader :loan
-
-  attr_reader :user
 
   def perform
     ActiveRecord::Base.transaction do

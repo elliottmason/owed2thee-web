@@ -4,8 +4,7 @@ class ConfirmLoanParticipation < ConfirmTransferParticipation
   def initialize(*args)
     super
 
-    subscribe(CreateLedgersForLoanParticipant.new)
-    subscribe(PublishLoan.new)
+    subscribe(LoanParticipationListener.new)
   end
 
   alias_method :loan, :participable

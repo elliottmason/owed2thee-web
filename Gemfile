@@ -1,28 +1,30 @@
 source 'https://rubygems.org'
-ruby '2.2.2'
+ruby '2.2.3'
 
-gem 'rails',                   '4.2.1'
-gem 'bourbon',              '~> 4.2'
-gem 'cells',                '~> 4.0'
-gem 'cells-slim',           '~> 0.0'
+gem 'rails',                '4.2.1'
 gem 'devise',               '~> 3.5'
 gem 'fast_attributes',      '~> 0.7'
 gem 'figaro',               '~> 1.0'
 gem 'high_voltage',         '~> 2.3'
 gem 'jbuilder',             '~> 2.0'
 gem 'jquery-rails',         '~> 4.0'
+gem 'lean-params',          git: 'git@github.com:lleolin/lean-params.git'
 gem 'money-rails',          '~> 1.4'
 gem 'pg',                   '~> 0.18'
+gem 'public_activity',      '~> 1.4'
 gem 'pundit',               '~> 1.0'
 gem 'sass-rails',           '~> 5.0'
 gem 'sendgrid',             '~> 1.2'
 gem 'sidekiq',              '~> 3.3'
-gem 'simple_form',          '~> 3.1'
+gem 'simple_form',          '~> 3.2'
 gem 'slim-rails',           '~> 3.0'
 gem 'statesman',            '~> 1.3.0'
 gem 'uglifier',             '~> 2.7'
-gem 'weighted_randomizer',  '~> 0.1.2'
 gem 'wisper',               '~> 1.6'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-bourbon', '~> 4.2'
+end
 
 group :development do
   gem 'better_errors'
@@ -30,7 +32,7 @@ group :development do
   gem 'guard-livereload', '~> 2.4', require: false
   gem 'guard-rails'
   gem 'guard-rspec'
-  gem 'letter_opener',    '~> 1.4'
+  gem 'letter_opener', '~> 1.4'
   gem 'quiet_assets'
   gem 'rack-livereload'
   gem 'rails_layout'
@@ -59,6 +61,6 @@ group :test do
   gem 'database_cleaner',     '~> 1.4'
   gem 'launchy',              '~> 2.4'
   gem 'poltergeist',          '~> 1.6'
-  gem 'simplecov',            '~> 0.10',  require: false
+  gem 'simplecov',            '~> 0.10', require: false
   gem 'site_prism',           '~> 2.7'
 end

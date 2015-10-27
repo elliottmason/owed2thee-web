@@ -7,7 +7,7 @@ task :stats do
 
   ::STATS_DIRECTORIES = []
   %w(app spec).each do |type|
-    dirs =  Dir.entries(type).select do |entry|
+    dirs = Dir.entries(type).select do |entry|
       File.directory?(File.join(type, entry)) &&
       entry != '.' &&
       entry != '..' &&

@@ -4,6 +4,8 @@ class CreateLoan < BaseService
   def initialize(creator, params)
     @creator  = creator
     @params   = params
+
+    subscribe(LoanListener.new)
   end
 
   def borrowers

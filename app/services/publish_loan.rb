@@ -4,11 +4,7 @@ class PublishLoan < BaseService
   def initialize(loan = nil)
     @loan = loan
 
-    subscribe(NotifyLoanParticipants.new)
-  end
-
-  def confirm_loan_participation_successful(_, loan)
-    self.class.with(loan)
+    subscribe(LoanListener.new)
   end
 
   def perform

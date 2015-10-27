@@ -1,8 +1,9 @@
 class Transfer < ActiveRecord::Base
+  include PublicActivity::Model
   include Transitional
   include Uuidable
 
-  belongs_to :creator,  class_name: 'User'
+  belongs_to :creator, class_name: 'User'
   belongs_to :recipient,  polymorphic: true
   belongs_to :sender,     polymorphic: true
   has_many :groupings, as: :groupable

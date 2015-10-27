@@ -1,17 +1,17 @@
-class LoanQuery
+class LoanQuery < BaseQuery
   PER_PAGE = 15
 
-  def initialize(relation = Loan.all)
-    @relation = relation.extending(Scopes)
+  attr_reader :relation
+
+  def initialize
+    super(Loan.all)
   end
 
-  def self.paginated_for_user(user, page = nil)
+  def self.paginated_for_user(user, page = 1)
     new.relation  \
       .published  \
       .user(user) \
       .page(page) \
-      .eager_load(:comments)    \
-      .eager_load(:transitions) \
       .order('transfers.created_at DESC')
   end
 
@@ -19,15 +19,8 @@ class LoanQuery
     Loan.where(uuid: uuid).first!
   end
 
-  attr_reader :relation
-
   module Scopes
-    def page(page, per_page = PER_PAGE)
-      limit = per_page
-      offset = (page - 1) * per_page
-
-      limit(limit).offset(offset)
-    end
+    include Paginated
 
     def published
       in_state(:published)

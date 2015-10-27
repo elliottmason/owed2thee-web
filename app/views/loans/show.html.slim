@@ -1,4 +1,4 @@
-= cell(:loan, @loan, { current_user: current_user })
+= render 'description', locals: { loan: @loan }
 
 ul.button-group.even-3
 - if policy(@loan).confirm?

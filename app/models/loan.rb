@@ -28,10 +28,6 @@ class Loan < Transfer
 
   alias_method :loan_participants, :transfer_participants
 
-  def lender?(user)
-    lenders.include?(user)
-  end
-
   private
 
   def borrowers_must_not_be_lenders

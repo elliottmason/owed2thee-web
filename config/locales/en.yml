@@ -1,20 +1,33 @@
+# Elliott M. marked his loan to you as fully paid
+# You sent $10.00 to Elliott M. using 0.03448BTC
+# You confirmed: Elliott M. lent you $10.00
+# Elliott M. commented on his $10.00 loan to you
+# You commented on your $10.00 loan from Elliott
+# You disputed: Elliott M. lent you $10.00
+# You submitted a loan: lent Josh $10.00
+# Elliott M. submitted a loan: lent Josh $10.00
+# Elliott M. submitted a loan: lent you $10.00
+
 en:
   app:
+    adjectives:
+      canceled: canceled
+      confirmed: confirmed
+      disputed: disputed
+      paid: paid
+      submitted: submitted
     notices:
-      cancellation: "Canceled %{cancellable}"
-      confirmation: "Confirmed %{confirmable}"
+      cancellation: "canceled %{cancellable}"
+      confirmation: "confirmed %{confirmable}"
       dispute:
-        dispute: :app.objects.dispute
+        dispute: :app.nouns.dispute
         string: "%{dispute} against %{disputable} has been submitted"
-    objects:
+    nouns:
+      cancellation: cancellation
+      confirmation: confirmation
       debt: debt
       dispute: dispute
       loan: loan
-      payment: payment
-    states:
-      cancellation: cancellation
-      confirmation: confirmation
-      dispute: dispute
       payment: payment
     verbs:
       cancel: cancel
@@ -27,8 +40,15 @@ en:
       confirmation:
         confirmable: "your email address %{email_address}"
         string: :app.notices.confirmation
+
+  loan:
+    created: :loans.descriptions.activity.created
+
   loans:
     descriptions:
+      activity:
+        loan: :loans.name
+        created: "%{creator} submitted a %{loan}: lent %{borrower} %{amount_lent}"
       short:
         as_borrower:
           loan: :loans.name
@@ -42,7 +62,7 @@ en:
       identical_users:
         record: :loans.name
         string: :transfers.errors.identical_users
-    name: :app.objects.loan
+    name: :app.nouns.loan
     notices:
       cancellation:
         cancellable: :loans.descriptions.short.as_lender
@@ -77,16 +97,17 @@ en:
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
+    name: :app.nouns.payment
     notices:
       confirmation:
         as_payee:
           confirmable: "a %{amount_paid} %{payment} from %{payer}"
-          payment: :app.objects.payment
+          payment: :payments.name
           string: :app.notices.confirmation
         as_payer:
           confirmable: "your %{amount_paid} %{payment} toward %{payable}"
           payable: :loans.descriptions.short.as_borrower
-          payment: :app.objects.payment
+          payment: :payments.name
           string: :app.notices.confirmation
 
   transfers:

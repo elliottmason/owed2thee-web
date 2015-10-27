@@ -1,4 +1,7 @@
 class FindOrCreateLedger < BaseService
+  attr_reader :user_a
+  attr_reader :user_b
+
   class << self
     alias_method :between, :with
   end
@@ -17,8 +20,4 @@ class FindOrCreateLedger < BaseService
     ledger.save if ledger.new_record?
     @succesful = ledger.persisted?
   end
-
-  attr_reader :user_a
-
-  attr_reader :user_b
 end

@@ -2,17 +2,17 @@ doctype html
 html
   head
     meta[name="viewport" content="width=device-width, initial-scale=1.0"]
-    title
-      = content_for?(:title) ? yield(:title) : 'Owed2Thee'
-    meta name="description" content="#{content_for?(:description) ? yield(:description) : 'Owed2thee Web'}"
-    == stylesheet_link_tag "application", media: 'all'
+    title Owed2Thee
+    meta name="description" content="Owed2Thee"
+    == stylesheet_link_tag 'application', media: 'all'
     == javascript_include_tag 'application'
-    == csrf_meta_tags
+    == csrf_meta_tag
+
   body
     header.main-header
       h1
-        a href="/" Owed2Thee
-      == render 'layouts/navigation'
+        a href='/' Owed2Thee
+      == render partial: 'layouts/navigation'
     main[role="main"]
-      == render 'layouts/messages'
+      == render partial: 'layouts/messages'
       == yield

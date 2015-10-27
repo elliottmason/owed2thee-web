@@ -1,6 +1,6 @@
 class LoansController < ApplicationController
   before_action :authenticate_user!, only: %i(show)
-  before_filter :retrieve_loan, except: %i(create new)
+  before_action :retrieve_loan, except: %i(create new)
 
   def cancel
     service = CancelLoan.with(@loan)

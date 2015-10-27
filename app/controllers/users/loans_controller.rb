@@ -1,21 +1,17 @@
 module Users
   class LoansController < BaseController
     def index
-      loans = LoanQuery.paginated_for_user(current_user, page)
-      @loans = GroupLoansByDate.with(loans)
+      loans = LoanQuery.paginated_for_user(current_user, index_params.page)
+      @loans = GroupRecordsByCreationDate.with(loans)
+
+      activities = ActivityQuery.paginated_for_user(current_user, index_params.page)
+      @activities = GroupRecordsByCreationDate.with(activities)
     end
 
     private
 
-    def page
-      return @_page if @_page
-
-      @_page = case params[:page]
-               when NilClass then 1
-               else params[:page].to_i
-              end
-      @_page = 1 if @_page < 1
-      @_page
+    def index_params
+      @index_params ||= LoansParams.new(params)
     end
   end
 end
