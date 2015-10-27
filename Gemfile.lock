@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/lleolin/lean-params.git
+  remote: git://github.com/lleolin/lean-params.git
   revision: 9ce3618d4ece8e02820e485a16208a705b77670e
   specs:
     lean-params (0.0.1.pre)
