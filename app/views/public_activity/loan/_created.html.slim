@@ -1,0 +1,5 @@
+.activity-feed-item
+  - view = PublicActivity::Loan::CreatedView.new(activity, current_user)
+  p = activity.text(amount_lent: view.amount_lent,
+                    borrowers:   view.borrowers,
+                    creator:     view.creator)

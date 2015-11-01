@@ -6,9 +6,10 @@ class ActivityQuery < BaseQuery
   end
 
   def self.paginated_for_user(user, page = 1)
-    new.relation        \
-      .recipient(user)  \
-      .page(page)       \
+    new
+      .relation
+      .recipient(user)
+      .page(page)
       .order('activities.created_at DESC')
   end
 

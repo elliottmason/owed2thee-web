@@ -1,25 +1,31 @@
 class FindOrCreateUserByEmailAddress < BaseService
+  attr_reader :email_address
+  attr_reader :new_user
   attr_reader :user
 
-  def initialize(email_address)
-    @email_address = email_address
+  def initialize(email_address_string)
+    @email_address_string = email_address_string
   end
 
   def perform
+    create_user
+
     @successful = user.present?
   end
 
-  def email_address
-    return @email_address if @email_address.is_a?(EmailAddress)
+  alias_method :new_user?, :new_user
 
-    @email_address = \
-      EmailAddress.where(address: @email_address).first ||
-      CreateUserWithEmailAddress.with(@email_address).email_address
+  private
+
+  def create_user
+    find_or_create_email_address
+    @user = email_address.user if email_address
   end
 
-  def user
-    return @user if @user
-
-    @user = email_address.user if email_address
+  def find_or_create_email_address
+    @email_address = EmailAddress.where(address: @email_address_string).first
+    @new_user = true unless @email_address
+    @email_address ||=
+      CreateUserWithEmailAddress.with(@email_address_string).email_address
   end
 end

@@ -16,6 +16,10 @@ en:
       disputed: disputed
       paid: paid
       submitted: submitted
+    default_display_name:
+      string: 'an %{title} %{user}'
+      title: :app.title
+      user: :app.nouns.user
     notices:
       cancellation: "canceled %{cancellable}"
       confirmation: "confirmed %{confirmable}"
@@ -29,20 +33,20 @@ en:
       dispute: dispute
       loan: loan
       payment: payment
+      user: user
     verbs:
       cancel: cancel
       confirm: confirm
       dispute: dispute
       pay: pay
       submit: submit
+    title: Owed2Thee
+
   email_addresses:
     notices:
       confirmation:
         confirmable: "your email address %{email_address}"
         string: :app.notices.confirmation
-
-  loan:
-    created: :loans.descriptions.activity.created
 
   loans:
     descriptions:
@@ -149,3 +153,8 @@ en:
     attributes:
       amount:
         greater_than: :transfers.errors.amount.nonpositive
+
+  # scoped for PublicActivity
+  activity:
+    loan:
+      created: '%{creator} submitted a loan: lent %{borrowers} %{amount_lent}'

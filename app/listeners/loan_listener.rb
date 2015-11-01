@@ -1,6 +1,5 @@
 class LoanListener
   def create_loan_successful(_loan)
-    # record creator "started" a loan?
   end
 
   def publish_loan_successful(loan)

@@ -6,6 +6,8 @@ class Transfer < ActiveRecord::Base
   belongs_to :creator, class_name: 'User'
   belongs_to :recipient,  polymorphic: true
   belongs_to :sender,     polymorphic: true
+  has_many :transfer_email_addresses
+  has_many :email_addresses, through: :transfer_email_addresses
   has_many :groupings, as: :groupable
   has_many :groups, through: :groupings
   has_many :transfer_participants, as: :participable

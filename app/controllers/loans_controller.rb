@@ -18,7 +18,8 @@ class LoansController < ApplicationController
     service = CreateLoan.with(current_user, params[:loan])
 
     if service.successful?
-      sign_in_creator(service)
+      establish_creator_session(creator: service.creator, loan: service.loan,
+                                sign_in: service.unregistered_creator?)
       redirect_to(service.loan)
     else
       @loan = service.form
@@ -57,17 +58,17 @@ class LoansController < ApplicationController
            lender:        @loan.creator.first_name)
   end
 
+  def establish_creator_session(creator: nil, loan: nil, sign_in: false)
+    if sign_in
+      sign_in(creator)
+    else
+      session[:created_loan_id] = loan.id
+      session[:email_address]   = creator.primary_email_address
+    end
+  end
+
   def retrieve_loan
     @loan = LoanQuery.uuid(params[:uuid])
     authorize(@loan)
-  end
-
-  def sign_in_creator(service)
-    if !user_signed_in? && service.unregistered_creator?
-      sign_in(service.creator)
-    else
-      session[:created_loan_id] = service.loan.id
-      session[:email_address]   = service.creator_email_address
-    end
   end
 end

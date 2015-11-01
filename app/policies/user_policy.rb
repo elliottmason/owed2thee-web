@@ -11,6 +11,5 @@ class UserPolicy
   private
 
   attr_reader :current_user
-
   attr_reader :target_user
 end

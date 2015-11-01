@@ -1,7 +1,6 @@
 # More info at https://github.com/guard/guard#readme
 
 clearing :on
-directories %w(app lib config spec)
 
 guard :bundler do
   require 'guard/bundler'
@@ -15,14 +14,7 @@ guard :bundler do
   files.each { |file| watch(helper.real_path(file)) }
 end
 
-guard 'rails' do
-  ignore(%r{^(config/routes\.rb$)})
-
-  watch('Gemfile.lock')
-  watch(%r{^(config|lib)/.*})
-end
-
-guard 'livereload' do
+guard :livereload do
   watch(%r{app/views/.+\.(erb|haml|slim)$})
   watch(%r{app/helpers/.+\.rb})
   watch(%r{public/.+\.(css|js|html)})
@@ -80,4 +72,13 @@ guard :rspec, all_after_pass: true,
   # watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$}) do |m|
   #   Dir[File.join("**/#{m[1]}.feature")][0] || "spec/acceptance"
   # end
+end
+
+guard :shell do
+  require 'guard/shell'
+
+  ignore(%r{^(config/routes\.rb$)})
+
+  watch('Gemfile.lock') { ::Bundler.with_clean_env { `invoker reload owed2thee` } }
+  watch(%r{^(config|lib)/.*}) { ::Bundler.with_clean_env { `invoker reload owed2thee` } }
 end

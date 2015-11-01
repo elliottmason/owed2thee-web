@@ -8,10 +8,11 @@ class LoanQuery < BaseQuery
   end
 
   def self.paginated_for_user(user, page = 1)
-    new.relation  \
-      .published  \
-      .user(user) \
-      .page(page) \
+    new
+      .relation
+      .published
+      .user(user)
+      .page(page)
       .order('transfers.created_at DESC')
   end
 

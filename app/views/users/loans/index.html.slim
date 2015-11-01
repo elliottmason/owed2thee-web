@@ -5,4 +5,4 @@ section.activity-feed
     section
       h3 = date
       - activities.each do |activity|
-        p there should be an activity here
+        = render_activity(activity)

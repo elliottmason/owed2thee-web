@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151026172624) do
+ActiveRecord::Schema.define(version: 20151029042709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,6 +118,13 @@ ActiveRecord::Schema.define(version: 20151026172624) do
 
   add_index "payments", ["payable_id", "payable_type"], name: "index_payments_on_payable_id_and_payable_type", using: :btree
   add_index "payments", ["payer_id"], name: "index_payments_on_payer_id", using: :btree
+
+  create_table "transfer_email_addresses", force: :cascade do |t|
+    t.integer "email_address_id", null: false
+    t.integer "transfer_id",      null: false
+  end
+
+  add_index "transfer_email_addresses", ["email_address_id", "transfer_id"], name: "index_transfer_email_addresses_on_foreign_keys", using: :btree
 
   create_table "transfer_participants", force: :cascade do |t|
     t.integer  "user_id",           null: false

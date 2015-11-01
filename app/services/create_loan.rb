@@ -1,6 +1,11 @@
 class CreateLoan < BaseService
   include Wisper::Publisher
 
+  attr_reader :loan
+  attr_reader :unregistered_creator
+
+  delegate :creator_email_address, to: :form
+
   def initialize(creator, params)
     @creator  = creator
     @params   = params
@@ -9,14 +14,12 @@ class CreateLoan < BaseService
   end
 
   def borrowers
-    type == :debt ? [creator] : obligors
+    @borrowers ||= { debt: [creator], loan: obligors }[type]
   end
 
   def creator
-    @creator ||= find_creator_by_email_address || create_creator
+    @creator ||= find_creator_by_email_address
   end
-
-  delegate :creator_email_address, to: :form
 
   def form
     @form ||= LoanForm.new(@params)
@@ -27,25 +30,13 @@ class CreateLoan < BaseService
   end
 
   def lenders
-    type == :loan ? [creator] : obligors
-  end
-
-  def loan
-    return @loan if @loan
-
-    @loan = Loan.new do |l|
-      l.borrower  = borrowers.first
-      l.creator   = creator
-      l.lender    = lenders.first
-      l.amount    = form.amount
-    end
+    @lenders ||= { debt: obligors, loan: [creator] }[type]
   end
 
   def obligors
     return @obligors if @obligors
 
-    @obligors = []
-    @obligors += find_obligors_by_email_addresses
+    @obligors = find_obligors_by_email_addresses
     @obligors.uniq!
     @obligors
   end
@@ -69,36 +60,51 @@ class CreateLoan < BaseService
     form.type.to_sym
   end
 
-  def unregistered_creator?
-    @unregistered_creator
-  end
+  alias_method :unregistered_creator?, :unregistered_creator
 
   alias_method :user, :creator
 
   private
 
-  def broadcast_to_listeners
-    broadcast(:create_loan_successful, loan)
+  def assign_loan_relationships
+    @loan.creator         = creator
+    @loan.borrowers       = borrowers
+    @loan.borrower        = borrowers.first
+    @loan.lenders         = lenders
+    @loan.lender          = lenders.first
+    @loan.email_addresses = email_addresses
   end
 
-  def create_creator
-    @unregistered_creator = true
-    CreateUserWithEmailAddress.with(creator_email_address).user
+  def broadcast_to_listeners
+    broadcast(:create_loan_successful, self)
+  end
+
+  def build_loan
+    @loan = Loan.new(amount: form.amount)
+    assign_loan_relationships
   end
 
   def create_loan
-    loan.borrowers  = borrowers
-    loan.lenders    = lenders
+    build_loan
     loan.save!
     loan.groups << group
+
     loan.valid?
   end
 
+  def email_addresses
+    @email_addresses ||= []
+  end
+
   def find_creator_by_email_address
-    EmailAddress.where(address: creator_email_address).first.try(:user)
+    finder = FindOrCreateUserByEmailAddress.with(creator_email_address)
+    @unregistered_creator = finder.new_user?
+    finder.user
   end
 
   def find_obligors_by_email_addresses
-    [FindOrCreateUserByEmailAddress.with(form.obligor_email_address).user]
+    finder = FindOrCreateUserByEmailAddress.with(form.obligor_email_address)
+    email_addresses << finder.email_address
+    [finder.user]
   end
 end
