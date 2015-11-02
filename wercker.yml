@@ -7,13 +7,7 @@ box: ruby:2.2.3
 # You can also use services such as databases. Read more on our dev center:
 # http://devcenter.wercker.com/docs/services/index.html
 services:
-    - id: postgres
-      env:
-        POSTGRES_PASSWORD: password
-        POSTGRES_USER: owed2thee
-
-    # - mongodb
-    # http://devcenter.wercker.com/docs/services/mongodb.html
+    - postgres
 
 # This is the build pipeline. Pipelines are the core of wercker
 # Read more about pipelines on our dev center
@@ -33,6 +27,9 @@ build:
               sudo cp phantomjs-1.9.2-linux-x86_64/bin/phantomjs /usr/local/bin
         - bundle-install
         - rails-database-yml
+        - script:
+            name: db setup
+            code: bundle exec rake db:schema:load RAILS_ENV=test
         - script:
             name: rspec
             code: bundle exec rspec
