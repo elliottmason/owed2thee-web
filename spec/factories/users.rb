@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :user do
-    factory :confirmed_user,  traits: [:confirmed, :with_name]
+    factory :confirmed_user, traits: [:confirmed, :with_name]
     factory :unconfirmed_user
     factory :user_with_email
 

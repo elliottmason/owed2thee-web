@@ -24,8 +24,7 @@ class User < ActiveRecord::Base
   def self.find_for_database_authentication(conditions)
     email_address = EmailAddress \
                     .in_state(:confirmed) \
-                    .where(address: conditions[:email]) \
-                    .first
+                    .find_by(address: conditions[:email])
     email_address.user if email_address
   end
 
@@ -42,7 +41,7 @@ class User < ActiveRecord::Base
   end
 
   def primary_email_address
-    email_addresses.first.address
+    email_addresses.first
   end
 
   private

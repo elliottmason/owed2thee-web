@@ -1,12 +1,11 @@
 class ConfirmTransferParticipation < BaseService
-  def initialize(user, participable)
-    @participable = participable
-    @user         = user
-  end
-
-  attr_reader :participable
-
+  attr_reader :transfer
   attr_reader :user
+
+  def initialize(user, transfer)
+    @transfer = transfer
+    @user     = user
+  end
 
   def perform
     return unless participant
@@ -17,7 +16,7 @@ class ConfirmTransferParticipation < BaseService
   private
 
   def participant
-    @participant ||= TransferParticipant.where(participable:  participable,
-                                               user:          user).first
+    @participant ||= TransferParticipant.where(transfer:  transfer,
+                                               user:      user).first
   end
 end

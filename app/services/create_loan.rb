@@ -98,6 +98,7 @@ class CreateLoan < BaseService
 
   def find_creator_by_email_address
     finder = FindOrCreateUserByEmailAddress.with(creator_email_address)
+    email_addresses << finder.email_address
     @unregistered_creator = finder.new_user?
     finder.user
   end

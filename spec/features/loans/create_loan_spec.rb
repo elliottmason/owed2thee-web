@@ -12,13 +12,13 @@ feature 'Create a loan', :js do
   scenario 'as a signed-out user' do
     user = FactoryGirl.create(:confirmed_user)
     obligor_email_address = \
-      FactoryGirl.create(:confirmed_user).primary_email_address
+      FactoryGirl.create(:confirmed_user).primary_email_address.address
 
     new_loan_page.load
     new_loan_page.loan_form.submit(
       FactoryGirl.attributes_for(
         :loan_form,
-        creator_email_address: user.primary_email_address,
+        creator_email_address: user.primary_email_address.address,
         obligor_email_address: obligor_email_address
       )
     )
@@ -35,13 +35,13 @@ feature 'Create a loan', :js do
     user = FactoryGirl.create(:unconfirmed_user)
 
     obligor_email_address = \
-      FactoryGirl.create(:confirmed_user).primary_email_address
+      FactoryGirl.create(:confirmed_user).primary_email_address.address
 
     new_loan_page.load
     new_loan_page.loan_form.submit(
       FactoryGirl.attributes_for(
         :loan_form,
-        creator_email_address: user.primary_email_address,
+        creator_email_address: user.primary_email_address.address,
         obligor_email_address: obligor_email_address
       )
     )

@@ -5,6 +5,8 @@ class ConfirmUser < BaseService
 
   def initialize(user = nil)
     @user = user
+
+    subscribe(UserListener.new)
   end
 
   def confirm_email_address_successful(email_address)
@@ -14,10 +16,6 @@ class ConfirmUser < BaseService
   def perform
     @successful = user.confirm!
 
-    broadcast(:confirm_user_successful) if successful?
-  end
-
-  def successful?
-    @successful
+    broadcast(:confirm_user_successful, user) if successful?
   end
 end

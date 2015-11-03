@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151029042709) do
+ActiveRecord::Schema.define(version: 20151103003426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -127,16 +127,15 @@ ActiveRecord::Schema.define(version: 20151029042709) do
   add_index "transfer_email_addresses", ["email_address_id", "transfer_id"], name: "index_transfer_email_addresses_on_foreign_keys", using: :btree
 
   create_table "transfer_participants", force: :cascade do |t|
-    t.integer  "user_id",           null: false
-    t.integer  "participable_id",   null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.integer  "user_id",     null: false
+    t.integer  "transfer_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "type"
-    t.string   "participable_type", null: false
   end
 
-  add_index "transfer_participants", ["participable_id", "participable_type", "user_id"], name: "index_transfer_participants_participable_user_id", unique: true, using: :btree
-  add_index "transfer_participants", ["participable_id", "participable_type"], name: "index_transfer_participants_on_participable", using: :btree
+  add_index "transfer_participants", ["transfer_id", "user_id"], name: "index_transfer_participants_on_transfer_id_and_user_id", using: :btree
+  add_index "transfer_participants", ["transfer_id"], name: "index_transfer_participants_on_transfer_id", using: :btree
   add_index "transfer_participants", ["user_id"], name: "index_transfer_participants_on_user_id", using: :btree
 
   create_table "transfers", force: :cascade do |t|

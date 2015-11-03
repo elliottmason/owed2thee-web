@@ -8,10 +8,6 @@ class CreateLedgersForLoanParticipant < BaseService
     @user = user
   end
 
-  def confirm_loan_participation_successful(user, loan)
-    self.class.with(user, loan)
-  end
-
   def confirmed_borrowers
     @confirmed_borrowers = loan.loan_borrowers.includes(:user).map(&:user)
   end

@@ -8,9 +8,9 @@ class Payment < Transfer
   belongs_to :payable,  foreign_key:  'recipient_id',
                         foreign_type: 'recipient_type',
                         polymorphic:  true
-  has_many :payment_payees, as: :participable
+  has_many :payment_payees, foreign_key: 'transfer_id'
   has_many :payees, source: :user, through: :payment_payees
-  has_many :payment_payers, as: :participable
+  has_many :payment_payers, foreign_key: 'transfer_id'
   has_many :payers, source: :user, through: :payment_payers
 
   validates :payers,  exclusion:  { in: :payees },

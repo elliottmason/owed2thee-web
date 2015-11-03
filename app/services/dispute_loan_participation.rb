@@ -14,8 +14,4 @@ class DisputeLoanParticipation < BaseService
   def perform
     @successful = loan_participant.dispute!
   end
-
-  def successful?
-    @successful
-  end
 end

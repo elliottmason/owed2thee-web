@@ -10,7 +10,7 @@ class Transfer < ActiveRecord::Base
   has_many :email_addresses, through: :transfer_email_addresses
   has_many :groupings, as: :groupable
   has_many :groups, through: :groupings
-  has_many :transfer_participants, as: :participable
+  has_many :transfer_participants
   has_many :participants, class_name: 'User',
                           source:     :user,
                           through:    :transfer_participants

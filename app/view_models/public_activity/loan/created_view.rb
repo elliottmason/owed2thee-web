@@ -10,7 +10,7 @@ module PublicActivity
       end
 
       def amount_lent
-        loan.amount
+        loan.amount.symbol + loan.amount.to_s
       end
 
       def borrowers
@@ -28,6 +28,7 @@ module PublicActivity
         return @creator if @creator
 
         @creator = UserPresenter.new(loan.creator, current_user, loan)
+                   .display_name
       end
 
       private

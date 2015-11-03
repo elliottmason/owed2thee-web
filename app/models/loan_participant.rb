@@ -1,4 +1,3 @@
 class LoanParticipant < TransferParticipant
-  belongs_to :loan, foreign_key:  'participable_id',
-                    foreign_type: 'participable_type'
+  belongs_to :loan, foreign_key: 'transfer_id'
 end

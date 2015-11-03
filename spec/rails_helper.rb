@@ -10,6 +10,7 @@ SimpleCov.start do
   add_group 'Mailers',        'app/mailers'
   add_group 'Models',         'app/models'
   add_group 'Policies',       'app/policies'
+  add_group 'Presenters',     'app/presenters'
   add_group 'Queries',        'app/queries'
   add_group 'Services',       'app/services'
   add_group 'State Machines', 'app/state_machines'
@@ -44,6 +45,9 @@ Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+  config.include Devise::TestHelpers, type: :controller
+  config.include Devise::TestHelpers, type: :view
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   # config.fixture_path = "#{::Rails.root}/spec/fixtures"
 

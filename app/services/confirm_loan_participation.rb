@@ -7,7 +7,7 @@ class ConfirmLoanParticipation < ConfirmTransferParticipation
     subscribe(LoanParticipationListener.new)
   end
 
-  alias_method :loan, :participable
+  alias_method :loan, :transfer
 
   def perform
     super

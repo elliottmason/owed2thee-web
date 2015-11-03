@@ -13,11 +13,10 @@ class Loan < Transfer
   belongs_to :lender,   foreign_key:  'sender_id',
                         foreign_type: 'sender_type',
                         polymorphic:  true
-
-  has_many :loan_borrowers, as: :participable
+  has_many :loan_borrowers, foreign_key: 'transfer_id'
   has_many :borrowers, class_name: 'User', through: :loan_borrowers
   has_many :comments, as: :commentable
-  has_many :loan_lenders, as: :participable
+  has_many :loan_lenders, foreign_key: 'transfer_id'
   has_many :lenders, class_name: 'User', through: :loan_lenders
 
   validate :borrowers_must_not_be_lenders

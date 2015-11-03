@@ -5,7 +5,7 @@ class TransferParticipant < ActiveRecord::Base
   include Transitional
 
   belongs_to :email, class_name: 'EmailAddress'
-  belongs_to :participable, polymorphic: true
+  belongs_to :transfer
   belongs_to :user
 
   transitional :confirmation, state_machine_class_name: 'DisputeStateMachine'

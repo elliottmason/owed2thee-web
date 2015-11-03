@@ -20,8 +20,8 @@ class PaymentPolicy
   private
 
   def participant
-    @participant ||= TransferParticipant.where(participable:  payment,
-                                               user_id:       user.id).first
+    @participant ||= TransferParticipant.where(transfer:  payment,
+                                               user_id:   user.id).first
   end
 
   attr_reader :payment
