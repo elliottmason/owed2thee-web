@@ -1,12 +1,14 @@
+# you submitted a loan: lent Josh Schramm $10.00
+# Josh schramm confirmed a loan:
+
 # Elliott M. marked his loan to you as fully paid
 # You sent $10.00 to Elliott M. using 0.03448BTC
 # You confirmed: Elliott M. lent you $10.00
 # Elliott M. commented on his $10.00 loan to you
 # You commented on your $10.00 loan from Elliott
-# You disputed: Elliott M. lent you $10.00
-# You submitted a loan: lent Josh $10.00
-# Elliott M. submitted a loan: lent Josh $10.00
-# Elliott M. submitted a loan: lent you $10.00
+# You disputed Elliott Mason lent you $10.00
+# You submitted a loan: lent Josh Shcramm $10.00
+# Elliott Mason submitted a loan: lent you $10.00
 
 en:
   app:
@@ -157,4 +159,5 @@ en:
   # scoped for PublicActivity
   activity:
     loan:
-      created: '%{creator} submitted a loan: lent %{borrowers} %{amount_lent}'
+      confirmed: '%{actor} confirmed: %{lenders} lent %{borrowers} %{amount_lent}'
+      created: '%{actor} submitted a loan: %{lenders} lent %{borrowers} %{amount_lent}'

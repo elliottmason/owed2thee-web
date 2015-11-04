@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
   include Uuidable
   include Wisper::Publisher
 
+  has_many :user_contacts
+  has_many :contacts, class_name: 'User', through: :user_contacts
   has_many :email_addresses
   has_many :loan_borrowers, foreign_key: :user_id
   has_many :debts, class_name: 'Loan', source: :loan, through: :loan_borrowers

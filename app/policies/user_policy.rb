@@ -5,9 +5,10 @@ class UserPolicy
     @loan         = loan
   end
 
+  # For privacy reasons, prevent
   def view_name?
     (loan && loan.creator_id == target_user.id) ||
-      Ledger.between(current_user, target_user).exists?
+      UserContactQuery.between(current_user, target_user).exists?
   end
 
   private

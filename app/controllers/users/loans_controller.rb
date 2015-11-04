@@ -4,7 +4,8 @@ module Users
       loans = LoanQuery.paginated_for_user(current_user, index_params.page)
       @loans = GroupRecordsByCreationDate.with(loans)
 
-      activities = ActivityQuery.paginated_for_user(current_user, index_params.page)
+      activities = ActivityQuery.paginated_for_user(current_user,
+                                                    index_params.page)
       @activities = GroupRecordsByCreationDate.with(activities)
     end
 
