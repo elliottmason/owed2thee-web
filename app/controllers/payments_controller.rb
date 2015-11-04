@@ -31,19 +31,13 @@ class PaymentsController < ApplicationController
   private
 
   def confirmation_notice
-    user, key = if @payment.payer == current_user
-                  [@payment.payable.lender.first_name, :as_payer]
-                else
-                  [@payment.payer.first_name, :as_payee]
-                end
-    type = key == :as_payer ? :payee : :payer
-
-    flash[:notice] = I18n.t("payments.notices.confirmation.#{key}",
-                            amount_lent: @payment.payable.amount.format,
-                            amount_paid: @payment.amount.format,
-                            borrower: user,
-                            lender:   user,
-                            type =>   user)
+    payment = PaymentPresenter.new(@payment, current_user)
+    flash[:notice] = I18n.t("payments.notices.confirmation.#{payment.i18n_key}",
+                            amount_lent:  payment.amount_lent,
+                            amount_paid:  payment.amount_paid,
+                            borrowers:    payment.borrowers,
+                            lenders:      payment.lenders,
+                            payers:       payment.payers)
   end
 
   def retrieve_loan

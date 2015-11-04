@@ -12,23 +12,7 @@
 
 en:
   app:
-    adjectives:
-      canceled: canceled
-      confirmed: confirmed
-      disputed: disputed
-      paid: paid
-      submitted: submitted
-    default_display_name:
-      string: 'an %{title} %{user}'
-      title: :app.title
-      user: :app.nouns.user
-    notices:
-      cancellation: "canceled %{cancellable}"
-      confirmation: "confirmed %{confirmable}"
-      dispute:
-        dispute: :app.nouns.dispute
-        string: "%{dispute} against %{disputable} has been submitted"
-    nouns:
+    concepts:
       cancellation: cancellation
       confirmation: confirmation
       debt: debt
@@ -36,39 +20,46 @@ en:
       loan: loan
       payment: payment
       user: user
+    default_display_name:
+      string: 'an %{title} %{user}'
+      title: :app.title
+      user: :app.concepts.user
+    notices:
+      cancellation: "You canceled %{cancellable}"
+      confirmation: "You confirmed %{confirmable}"
+      dispute: "Your dispute against %{disputable} has been submitted"
     verbs:
       cancel: cancel
       confirm: confirm
       dispute: dispute
       pay: pay
       submit: submit
+    states:
+      canceled: canceled
+      confirmed: confirmed
+      disputed: disputed
+      paid: paid
+      submitted: submitted
     title: Owed2Thee
 
   email_addresses:
     notices:
       confirmation:
-        confirmable: "your email address %{email_address}"
+        confirmable: "your email address: %{email_address}"
         string: :app.notices.confirmation
 
   loans:
     descriptions:
-      activity:
-        loan: :loans.name
-        created: "%{creator} submitted a %{loan}: lent %{borrower} %{amount_lent}"
       short:
-        as_borrower:
-          loan: :loans.name
-          string: "%{lender}'s %{loan} for %{amount_lent}"
-        as_lender:
-          loan: :loans.name
-          string: "your %{loan} to %{borrower} for %{amount_lent}"
+        as_borrower: "%{lenders}'s loan for %{amount_lent}"
+        as_lender: "your loan to %{borrowers} for %{amount_lent}"
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
       identical_users:
         record: :loans.name
         string: :transfers.errors.identical_users
-    name: :app.nouns.loan
+    name: :app.concepts.loan
     notices:
       cancellation:
         cancellable: :loans.descriptions.short.as_lender
@@ -79,7 +70,7 @@ en:
           string: :app.notices.confirmation
         as_lender:
           confirmable: :as_lender
-          string: :app.notices.confimration
+          string: :app.notices.confirmation
       dispute:
         as_borrower:
           disputable: :loans.descriptions.short.as_borrower
@@ -103,17 +94,15 @@ en:
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
-    name: :app.nouns.payment
+    name: :app.concepts.payment
     notices:
       confirmation:
         as_payee:
-          confirmable: "a %{amount_paid} %{payment} from %{payer}"
-          payment: :payments.name
+          confirmable: "a %{amount_paid} payment from %{payers}"
           string: :app.notices.confirmation
         as_payer:
-          confirmable: "your %{amount_paid} %{payment} toward %{payable}"
+          confirmable: "your %{amount_paid} payment toward %{payable}"
           payable: :loans.descriptions.short.as_borrower
-          payment: :payments.name
           string: :app.notices.confirmation
 
   transfers:

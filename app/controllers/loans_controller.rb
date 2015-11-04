@@ -44,18 +44,20 @@ class LoansController < ApplicationController
   private
 
   def cancellation_notice
+    loan = LoanPresenter.new(@loan, current_user)
     I18n.t('loans.notices.cancellation',
-           amount_lent: @loan.amount.format,
-           borrower:    @loan.borrower.first_name,
-           lender:      @loan.lender.first_name)
+           amount_lent: loan.amount_lent,
+           borrowers:   loan.borrowers,
+           lenders:     loan.lenders)
   end
 
   def dispute_notice
-    key = @loan.borrower == current_user ? :as_borrower : :as_lender
-    I18n.t("loans.notices.dispute.#{key}",
-           amount_lent:   @loan.amount.format,
-           borrower:      @loan.borrower.first_name,
-           lender:        @loan.creator.first_name)
+    loan = LoanPresenter.new(@loan, current_user)
+    I18n.t("loans.notices.dispute.#{loan.i18n_key}",
+           amount_lent: loan.amount_lent,
+           borrowers:   loan.borrowers,
+           creator:     loan.creator,
+           lenders:     loan.lenders)
   end
 
   def establish_creator_session(creator: nil, loan: nil, sign_in: false)

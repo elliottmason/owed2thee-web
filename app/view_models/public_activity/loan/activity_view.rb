@@ -15,7 +15,7 @@ module PublicActivity
       end
 
       def amount_lent
-        loan.amount.symbol + loan.amount.to_s
+        loan.amount.format
       end
 
       def borrowers

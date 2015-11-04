@@ -9,7 +9,7 @@ feature 'Confirm email address', :devise, :js do
   let(:home_page)           { HomePage.new }
 
   let(:confirmation_message) do
-    'Confirmed your email address josh.schramm@gmail.com'
+    'You confirmed your email address: josh.schramm@gmail.com'
   end
 
   def confirm_email_address(confirmation_token = nil)

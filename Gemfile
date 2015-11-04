@@ -63,5 +63,5 @@ group :test do
   gem 'launchy',              '~> 2.4'
   gem 'poltergeist',          '~> 1.6'
   gem 'simplecov',            '~> 0.10', require: false
-  gem 'site_prism',           '~> 2.7'
+  gem 'site_prism',           '~> 2.8'
 end

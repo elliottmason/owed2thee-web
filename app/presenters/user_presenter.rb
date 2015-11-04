@@ -1,7 +1,7 @@
 class UserPresenter < Burgundy::Item
   alias_method :user, :item
 
-  def initialize(user, viewer, transfer)
+  def initialize(user, viewer, transfer = nil)
     super(user)
     @viewer   = viewer
     @transfer = transfer
@@ -20,14 +20,14 @@ class UserPresenter < Burgundy::Item
     @display_name ||= full_name if can_view_full_name?
 
     @display_name ||= email_address
-    @display_name ||= I18n.t('app.default_user')
+    @display_name ||= I18n.t('app.default_display_name')
   end
 
   def email_address
     return @email_address if @email_address
 
     @email_address = EmailAddressQuery.for_transfer_participant(transfer, user)
-                     .address
+                     .try(:address)
   end
 
   def full_name

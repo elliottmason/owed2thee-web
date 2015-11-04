@@ -54,8 +54,8 @@ describe 'users/loans/index.html.slim' do
 
       it do
         expect(rendered).to \
-          have_content('you submitted a loan: you lent ' \
-                       'josh.schramm@gmail.com $40.00')
+          have_content('you submitted a loan: you lent josh.schramm@gmail.com '\
+                       '$40.00')
       end
     end
 
@@ -71,12 +71,12 @@ describe 'users/loans/index.html.slim' do
       it 'has creation item' do
         expect(rendered)
           .to have_content('you submitted a loan: you lent Josh Schramm ' \
-                           '$9000.01')
+                           '$9,000.01')
       end
 
       it 'has confirmation item' do
         expect(rendered)
-          .to have_content('Josh Schramm confirmed: you lent $9000.01')
+          .to have_content('Josh Schramm confirmed: you lent $9,000.01')
       end
     end
   end

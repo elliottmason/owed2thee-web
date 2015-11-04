@@ -1,13 +1,16 @@
 feature 'Cancel a loan', js: true do
   let(:cancellation_notice) do
-    'Canceled your loan to Josh for $10.00'
+    'You canceled your loan to eleo@gmail.com for $10.00'
   end
   let(:loan) do
-    recipient = FactoryGirl.create(:confirmed_user, first_name: 'Josh')
-    FactoryGirl.create(:loan, amount: 10.00, recipient: recipient)
+    recipient = FactoryGirl.create(
+      :confirmed_user,
+      email_address: 'eleo@gmail.com'
+    )
+    FactoryGirl.create(:unpublished_loan, amount: 10.00, recipient: recipient)
   end
 
-  let(:show_loan_page)  { Loans::ShowPage.new }
+  let(:show_loan_page) { Loans::ShowPage.new }
 
   scenario 'as the creator' do
     login_as(loan.creator)

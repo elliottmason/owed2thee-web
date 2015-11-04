@@ -3,10 +3,10 @@ FactoryGirl.define do
     association :creator, factory: :confirmed_user
     amount { Faker::Commerce.price }
 
-    factory :confirmed_loan, traits: %i(confirmed recordable)
+    factory :confirmed_loan, traits: %i(confirmed)
     factory :debt, traits: %i(debt)
-    factory :published_debt, traits: %i(debt published recordable)
-    factory :published_loan, traits: %i(published recordable) do
+    factory :published_debt, traits: %i(debt published)
+    factory :published_loan, traits: %i(published) do
       factory :unconfirmed_loan
     end
     factory :unpublished_loan
@@ -32,18 +32,15 @@ FactoryGirl.define do
     trait :published do
       after(:create) do |loan, _|
         loan.publish!
+        LoanListener.new.publish_loan_successful(loan)
       end
     end
 
     after :build do |loan, _|
       loan.borrowers << loan.recipient
       loan.lenders << loan.sender
-    end
-
-    trait :recordable do
-      after(:create) do |loan, _|
-        RecordTransferActivity.with(loan, :created)
-      end
+      loan.email_addresses << loan.borrowers.map(&:email_addresses).to_a
+      loan.email_addresses << loan.lenders.map(&:email_addresses).to_a
     end
   end
 end
