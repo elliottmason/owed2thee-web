@@ -87,6 +87,7 @@ describe 'users/loans/index.html.slim' do
 
     before do
       DisputeLoanParticipation.with(borrower, loan)
+      ConfirmLoanParticipation.with(borrower, loan)
       assign_activities
       render
     end
@@ -96,7 +97,12 @@ describe 'users/loans/index.html.slim' do
         .to have_content('Elliott Mason submitted a loan: lent you $10.00')
     end
 
-    pending 'has dispute item' do
+    it 'has confirmation item' do
+      expect(rendered)
+        .to have_content('you confirmed: Elliott Mason lent you $10.00')
+    end
+
+    it 'has dispute item' do
       expect(rendered)
         .to have_content("you disputed Elliott Mason's loan to you for $10.00")
     end

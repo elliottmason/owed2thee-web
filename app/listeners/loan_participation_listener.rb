@@ -7,4 +7,8 @@ class LoanParticipationListener
     RecordTransferActivity.with(user, loan, :confirmed) \
       unless loan.creator_id == user.id
   end
+
+  def dispute_loan_participation_successful(user, loan)
+    RecordTransferActivity.with(user, loan, :disputed)
+  end
 end

@@ -9,7 +9,7 @@ class ActivityQuery < BaseQuery
     new
       .relation
       .recipient(user)
-      .page(page)
+      .page(page, PER_PAGE)
       .order('activities.created_at DESC')
   end
 

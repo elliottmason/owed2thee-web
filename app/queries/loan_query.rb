@@ -12,7 +12,7 @@ class LoanQuery < BaseQuery
       .relation
       .published
       .user(user)
-      .page(page)
+      .page(page, PER_PAGE)
       .order('transfers.created_at DESC')
   end
 

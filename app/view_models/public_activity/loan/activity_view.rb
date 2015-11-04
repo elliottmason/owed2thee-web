@@ -10,15 +10,8 @@ module PublicActivity
       end
 
       def actor
-        return @actor if @actor
-
-        actor = case key.gsub('loan.', '')
-                when 'created'
-                  loan.creator
-                when 'confirmed'
-                  activity.owner
-                end
-        @actor = UserPresenter.new(actor, current_user, loan).display_name
+        @actor ||= UserPresenter.new(activity.owner, current_user, loan)
+                   .display_name
       end
 
       def amount_lent
@@ -28,32 +21,32 @@ module PublicActivity
       def borrowers
         return @borrowers if @borrowers
 
+        @borrowers ||= 'you' if loan.borrower == current_user
         @borrowers ||= '' if loan.borrower == activity.owner
-        @borrowers ||= Burgundy::Collection.new(
-          loan.borrowers,
-          UserPresenter,
-          current_user,
-          loan
-        ).map(&:display_name).join(', ')
+        @borrowers ||= join_display_names(loan.borrowers)
       end
 
       def lenders
         return @lenders if @lenders
 
-        @lenders = '' if loan.lender == loan.creator
-        @lenders = 'you' if loan.lender == current_user
-        @lenders ||= Burgundy::Collection.new(
-          loan.lenders,
-          UserPresenter,
-          current_user,
-          loan
-        ).map(&:display_name).join(', ')
+        @lenders ||= 'you' if loan.lender == current_user
+        @lenders ||= '' if loan.lender == activity.owner
+        @lenders ||= join_display_names(loan.lenders)
       end
 
       private
 
       attr_reader :activity
       attr_reader :current_user
+
+      def join_display_names(users)
+        Burgundy::Collection.new(
+          users,
+          UserPresenter,
+          current_user,
+          loan
+        ).map(&:display_name).join(', ')
+      end
     end
   end
 end

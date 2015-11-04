@@ -161,3 +161,4 @@ en:
     loan:
       confirmed: '%{actor} confirmed: %{lenders} lent %{borrowers} %{amount_lent}'
       created: '%{actor} submitted a loan: %{lenders} lent %{borrowers} %{amount_lent}'
+      disputed: "%{actor} disputed %{lenders}'s loan to %{borrowers} for %{amount_lent}"
