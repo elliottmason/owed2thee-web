@@ -12,7 +12,9 @@ class PaymentPresenter < TransferPresenter
   end
 
   def payers
-    @payers ||= join_display_names(payment.payers)
+    return 'your' if viewer == payment.payer
+
+    @payers ||= join_display_names(payment.payers, true)
   end
 
   alias_method :payment, :item

@@ -25,9 +25,15 @@ en:
       title: :app.title
       user: :app.concepts.user
     notices:
-      cancellation: "You canceled %{cancellable}"
-      confirmation: "You confirmed %{confirmable}"
+      cancellation:
+        actor: :app.pronouns.you
+        string: "%{actor} canceled %{cancellable}"
+      confirmation:
+        actor: :app.pronouns.you
+        string: "%{actor} confirmed %{confirmable}"
       dispute: "Your dispute against %{disputable} has been submitted"
+    pronouns:
+      you: "you"
     verbs:
       cancel: cancel
       confirm: confirm
@@ -50,9 +56,10 @@ en:
 
   loans:
     descriptions:
-      short:
-        as_borrower: "%{lenders}'s loan for %{amount_lent}"
-        as_lender: "your loan to %{borrowers} for %{amount_lent}"
+      short: "loan for %{amount_lent}"
+      full: "%{lenders} loan to %{borrowers} for %{amount_lent}"
+      without_borrowers: "%{lenders} loan for %{amount_lent}"
+      without_lenders: "loan to %{borrowers} for %{amount_lent}"
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
@@ -62,22 +69,15 @@ en:
     name: :app.concepts.loan
     notices:
       cancellation:
-        cancellable: :loans.descriptions.short.as_lender
+        cancellable: :loans.descriptions.full
         string: :app.notices.cancellation
       confirmation:
-        as_borrower:
-          confirmable: :as_borrower
-          string: :app.notices.confirmation
-        as_lender:
-          confirmable: :as_lender
-          string: :app.notices.confirmation
+        confirmable: :loans.descriptions.short
+        string: :app.notices.confirmation
       dispute:
-        as_borrower:
-          disputable: :loans.descriptions.short.as_borrower
-          string: :app.notices.dispute
-        as_lender:
-          disputable: :loans.descriptions.short.as_lender
-          string: :app.notices.dispute
+        disputable: :loans.descriptions.without_borrowers
+        string: :app.notices.dispute
+
     # Rails scopes
     show:
       cancel_button: :app.verbs.cancel
@@ -91,19 +91,18 @@ en:
         incorrect: is incorrect.
 
   payments:
+    descriptions:
+      short: "%{payers} %{amount_paid} payment toward %{payable}"
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
     name: :app.concepts.payment
     notices:
       confirmation:
-        as_payee:
-          confirmable: "a %{amount_paid} payment from %{payers}"
-          string: :app.notices.confirmation
-        as_payer:
-          confirmable: "your %{amount_paid} payment toward %{payable}"
-          payable: :loans.descriptions.short.as_borrower
-          string: :app.notices.confirmation
+        confirmable:
+          payable: :loans.descriptions.without_borrowers
+          string: :payments.descriptions.short
+        string: :app.notices.confirmation
 
   transfers:
     errors:
@@ -148,6 +147,22 @@ en:
   # scoped for PublicActivity
   activity:
     loan:
-      confirmed: '%{actor} confirmed: %{lenders} lent %{borrowers} %{amount_lent}'
-      created: '%{actor} submitted a loan: %{lenders} lent %{borrowers} %{amount_lent}'
-      disputed: "%{actor} disputed %{lenders}'s loan to %{borrowers} for %{amount_lent}"
+      canceled:
+        cancellable: :loans.descriptions.full
+        string: :loans.notices.cancellation
+      confirmed:
+        confirmable: :loans.descriptions.full
+        string: :loans.notices.confirmation
+      created:
+        loan: :loans.descriptions.full
+        string: "%{actor} submitted a %{loan}"
+      disputed:
+        loan: :loans.descriptions.without_borrowers
+        string: "%{actor} disputed %{loan}"
+    payment:
+      created:
+        payable: :loans.short.as_borower
+        string: "%{actor} submitted a payment of %{amount_paid} for %{payable}"
+      disputed:
+        payment: :payments.descriptions.short
+        string: "%{actor} disputed %{payers} %{payment}"

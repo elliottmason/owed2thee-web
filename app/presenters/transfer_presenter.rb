@@ -16,14 +16,16 @@ class TransferPresenter < BasePresenter
   def creator
     return @creator if @creator
 
-    @creator = UserPresenter.new(transfer.creator, viewer, transfer)
-               .display_name
+    @creator ||= 'your' if viewer == transfer.creator
+    @creator ||= UserPresenter.new(transfer.creator, viewer, transfer)
+                 .display_name
   end
 
   def lenders
     return @lenders if @lenders
 
-    @lenders ||= join_display_names(loan.lenders)
+    @lenders ||= 'your' if viewer == loan.lender
+    @lenders ||= join_display_names(loan.lenders, true)
   end
 
   alias_method :transfer, :item
@@ -34,12 +36,14 @@ class TransferPresenter < BasePresenter
     object.amount.format
   end
 
-  def join_display_names(users)
-    Burgundy::Collection.new(
+  def join_display_names(users, possessive = false)
+    result = Burgundy::Collection.new(
       users,
       UserPresenter,
       viewer,
       loan
     ).map(&:display_name).join(', ')
+    result += "'s" unless !possessive || result == I18n.t('app.pronouns.you')
+    result
   end
 end

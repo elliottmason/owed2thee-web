@@ -22,7 +22,8 @@ feature 'Confirm a payment', :js do
 
   context 'as a payee' do
     let(:confirmation_notice) do
-      'You confirmed a $1.00 payment from kyle.balderson@gmail.com'
+      "You confirmed kyle.balderson@gmail.com's $1.00 payment toward your " \
+      'loan for $4.44'
     end
 
     scenario do

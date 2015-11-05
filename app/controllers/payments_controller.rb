@@ -32,7 +32,7 @@ class PaymentsController < ApplicationController
 
   def confirmation_notice
     payment = PaymentPresenter.new(@payment, current_user)
-    flash[:notice] = I18n.t("payments.notices.confirmation.#{payment.i18n_key}",
+    flash[:notice] = I18n.t('payments.notices.confirmation',
                             amount_lent:  payment.amount_lent,
                             amount_paid:  payment.amount_paid,
                             borrowers:    payment.borrowers,

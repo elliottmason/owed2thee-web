@@ -53,7 +53,7 @@ class LoansController < ApplicationController
 
   def dispute_notice
     loan = LoanPresenter.new(@loan, current_user)
-    I18n.t("loans.notices.dispute.#{loan.i18n_key}",
+    I18n.t('loans.notices.dispute',
            amount_lent: loan.amount_lent,
            borrowers:   loan.borrowers,
            creator:     loan.creator,
