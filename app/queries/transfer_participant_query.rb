@@ -3,15 +3,15 @@ class TransferParticipantQuery < BaseQuery
     super
   end
 
-  def self.confirmed_creator_for(loan)
+  def self.confirmed_creator_for(transfer)
     new
       .relation
-      .confirmed_creator_for(loan)
+      .confirmed_creator_for(transfer)
   end
 
   module Scopes
-    def confirmed_creator_for(loan)
-      in_state(:confirmed).where(user_id: loan.creator_id)
+    def confirmed_creator_for(transfer)
+      in_state(:confirmed).where(user_id: transfer.creator_id)
     end
   end
 end

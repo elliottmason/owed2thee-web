@@ -1,0 +1,2 @@
+class ConfirmPayment < ConfirmTransfer
+end

@@ -2,5 +2,6 @@
   - activity = ActivityPresenter.new(activity, current_user)
   p = activity.text(actor:       activity.actor,
                     amount_lent: activity.amount_lent,
+                    amount_paid: activity.amount_paid,
                     borrowers:   activity.borrowers,
                     lenders:     activity.lenders)

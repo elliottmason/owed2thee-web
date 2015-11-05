@@ -3,16 +3,14 @@ class ConfirmLoanParticipation < ConfirmTransferParticipation
 
   def initialize(*args)
     super
-
     subscribe(LoanParticipationListener.new)
   end
 
   alias_method :loan, :transfer
 
-  def perform
-    super
+  private
 
-    broadcast(:confirm_loan_participation_successful, user, loan) \
-      if successful?
+  def broadcast_to_listeners
+    broadcast(:confirm_loan_participation_successful, user, loan)
   end
 end

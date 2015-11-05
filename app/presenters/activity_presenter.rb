@@ -12,12 +12,16 @@ class ActivityPresenter < TransferPresenter
     loan.amount.format
   end
 
+  def amount_paid
+    transfer.amount.format
+  end
+
   def borrowers
     return @borrowers if @borrowers
 
     @borrowers ||= 'you'  if viewer == loan.borrower
     @borrowers ||= 'them' if loan.borrower == activity.owner
-    @borrowers ||= join_display_names(loan.borrowers)
+    @borrowers ||= join_display_names(transfer.borrowers)
   end
 
   def lenders
@@ -26,5 +30,14 @@ class ActivityPresenter < TransferPresenter
     super
   end
 
-  alias_method :loan, :trackable
+  def loan
+    case transfer
+    when Loan
+      transfer
+    when Payment
+      transfer.payable
+    end
+  end
+
+  alias_method :transfer, :trackable
 end

@@ -85,10 +85,18 @@ describe 'users/loans/index.html.slim' do
   context 'as participant' do
     let(:current_user) { borrower }
     let(:loan_amount) { 10 }
+    let!(:payment) do
+      CreatePayment.with(
+        borrower,
+        loan,
+        FactoryGirl.attributes_for(:payment_form, amount: 1)
+      ).payment
+    end
 
     before do
       DisputeLoanParticipation.with(borrower, loan)
       ConfirmLoanParticipation.with(borrower, loan)
+      ConfirmPaymentParticipation.with(borrower, payment)
       assign_activities
       render
     end
@@ -106,6 +114,12 @@ describe 'users/loans/index.html.slim' do
     it 'has dispute item' do
       expect(rendered)
         .to have_content("you disputed Elliott Mason's loan for $10.00")
+    end
+
+    it 'has payment item' do
+      expect(rendered)
+        .to have_content("you submitted a $1.00 payment toward Elliott " \
+                         "Mason's loan for $10.00")
     end
   end
 end

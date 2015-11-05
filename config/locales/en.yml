@@ -161,8 +161,8 @@ en:
         string: "%{actor} disputed %{loan}"
     payment:
       created:
-        payable: :loans.short.as_borower
-        string: "%{actor} submitted a payment of %{amount_paid} for %{payable}"
+        payable: :loans.descriptions.without_borrowers
+        string: "%{actor} submitted a %{amount_paid} payment toward %{payable}"
       disputed:
         payment: :payments.descriptions.short
         string: "%{actor} disputed %{payers} %{payment}"

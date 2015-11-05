@@ -32,7 +32,7 @@ FactoryGirl.define do
     trait :published do
       after(:create) do |loan, _|
         loan.publish!
-        LoanListener.new.publish_loan_successful(loan)
+        LoanListener.new.publish_transfer_successful(loan)
       end
     end
 
