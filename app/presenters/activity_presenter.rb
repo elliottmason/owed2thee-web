@@ -39,5 +39,13 @@ class ActivityPresenter < TransferPresenter
     end
   end
 
+  def payers
+    return unless transfer.is_a?(Payment)
+    return @payers if @payers
+
+    @payers ||= 'your' if transfer.payer == viewer
+    @payers ||= join_display_names(transfer.payers)
+  end
+
   alias_method :transfer, :trackable
 end

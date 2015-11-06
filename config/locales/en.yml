@@ -92,7 +92,13 @@ en:
 
   payments:
     descriptions:
-      short: "%{payers} %{amount_paid} payment toward %{payable}"
+      full:
+        payment: :payments.descriptions.short
+        string: "%{payers} %{payment} toward %{payable}"
+      short: "%{amount_paid} payment"
+      without_payers:
+        payment: :payments.descriptions.short
+        string: "%{payers} %{payment}"
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
@@ -101,7 +107,7 @@ en:
       confirmation:
         confirmable:
           payable: :loans.descriptions.without_borrowers
-          string: :payments.descriptions.short
+          string: :payments.descriptions.full
         string: :app.notices.confirmation
 
   transfers:
@@ -160,6 +166,9 @@ en:
         loan: :loans.descriptions.without_borrowers
         string: "%{actor} disputed %{loan}"
     payment:
+      confirmed:
+        confirmable: :payments.descriptions.without_payers
+        string: :payments.notices.confirmation
       created:
         payable: :loans.descriptions.without_borrowers
         string: "%{actor} submitted a %{amount_paid} payment toward %{payable}"

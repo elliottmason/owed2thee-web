@@ -14,15 +14,7 @@ class CreateUserContactsForTransferParticipant < BaseService
   end
 
   def perform
-    ActiveRecord::Base.transaction do
-      begin
-        create_user_contacts
-        @successful = true
-      rescue ActiveRecord::RecordInvalid
-        @successful = false
-        raise ActiveRecord::Rollback
-      end
-    end
+    create_user_contacts
 
     @successful = true
   end
@@ -31,7 +23,7 @@ class CreateUserContactsForTransferParticipant < BaseService
 
   def create_user_contacts
     recipients.map do |recipient|
-      UserContactQuery.between(recipient, contact).first_or_create do |contact|
+      UserContactQuery.between(recipient, contact).first_or_create! do |contact|
         contact.source = transfer
       end
     end

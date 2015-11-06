@@ -97,6 +97,7 @@ describe 'users/loans/index.html.slim' do
       DisputeLoanParticipation.with(borrower, loan)
       ConfirmLoanParticipation.with(borrower, loan)
       ConfirmPaymentParticipation.with(borrower, payment)
+      ConfirmPaymentParticipation.with(creator, payment)
       assign_activities
       render
     end
@@ -118,8 +119,13 @@ describe 'users/loans/index.html.slim' do
 
     it 'has payment item' do
       expect(rendered)
-        .to have_content("you submitted a $1.00 payment toward Elliott " \
+        .to have_content('you submitted a $1.00 payment toward Elliott ' \
                          "Mason's loan for $10.00")
+    end
+
+    it 'has payment confirmation item' do
+      expect(rendered)
+        .to have_content("Elliott Mason confirmed your $1.00 payment")
     end
   end
 end
