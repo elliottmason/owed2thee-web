@@ -21,7 +21,7 @@ class ActivityPresenter < TransferPresenter
 
     @borrowers ||= 'you'  if viewer == loan.borrower
     @borrowers ||= 'them' if loan.borrower == activity.owner
-    @borrowers ||= join_display_names(transfer.borrowers)
+    @borrowers ||= join_display_names(loan.borrowers)
   end
 
   def lenders
@@ -44,7 +44,7 @@ class ActivityPresenter < TransferPresenter
     return @payers if @payers
 
     @payers ||= 'your' if transfer.payer == viewer
-    @payers ||= join_display_names(transfer.payers)
+    @payers ||= join_display_names(transfer.payers, true)
   end
 
   alias_method :transfer, :trackable

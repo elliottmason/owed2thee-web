@@ -26,6 +26,13 @@ describe 'users/loans/index.html.slim' do
       obligor_email_address: borrower_email_address
     )
   end
+  let!(:payment) do
+    CreatePayment.with(
+      borrower,
+      loan,
+      FactoryGirl.attributes_for(:payment_form, amount: 1)
+    ).payment
+  end
 
   def assign_activities
     assign(
@@ -39,6 +46,7 @@ describe 'users/loans/index.html.slim' do
   before do
     sign_in(current_user)
     ConfirmLoanParticipation.for(creator, loan)
+    DisputeLoanParticipation.with(borrower, loan)
   end
 
   context 'as creator' do
@@ -52,10 +60,15 @@ describe 'users/loans/index.html.slim' do
         render
       end
 
-      it do
+      it 'has creation item' do
         expect(rendered).to \
           have_content('you submitted a loan to josh.schramm@gmail.com for ' \
                        '$40.00')
+      end
+
+      it 'has dispute item' do
+        expect(rendered).to \
+          have_content('josh.schramm@gmail.com disputed your loan for $40.00')
       end
     end
 
@@ -64,6 +77,8 @@ describe 'users/loans/index.html.slim' do
 
       before do
         ConfirmLoanParticipation.for(borrower, loan)
+        ConfirmPaymentParticipation.with(borrower, payment)
+        ConfirmPaymentParticipation.with(creator, payment)
         assign_activities
         render
       end
@@ -79,22 +94,19 @@ describe 'users/loans/index.html.slim' do
           .to have_content('Josh Schramm confirmed your loan to them for ' \
                            '$9,000.01')
       end
+
+      it 'has payment item' do
+        expect(rendered)
+          .to have_content('Josh Schramm submitted a $1.00 payment')
+      end
     end
   end
 
   context 'as participant' do
     let(:current_user) { borrower }
     let(:loan_amount) { 10 }
-    let!(:payment) do
-      CreatePayment.with(
-        borrower,
-        loan,
-        FactoryGirl.attributes_for(:payment_form, amount: 1)
-      ).payment
-    end
 
     before do
-      DisputeLoanParticipation.with(borrower, loan)
       ConfirmLoanParticipation.with(borrower, loan)
       ConfirmPaymentParticipation.with(borrower, payment)
       ConfirmPaymentParticipation.with(creator, payment)
@@ -125,7 +137,7 @@ describe 'users/loans/index.html.slim' do
 
     it 'has payment confirmation item' do
       expect(rendered)
-        .to have_content("Elliott Mason confirmed your $1.00 payment")
+        .to have_content('Elliott Mason confirmed your $1.00 payment')
     end
   end
 end
