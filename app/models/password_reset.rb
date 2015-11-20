@@ -1,0 +1,2 @@
+class PasswordReset < TemporarySignin
+end

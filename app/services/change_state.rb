@@ -12,7 +12,6 @@ class ChangeState < BaseService
   end
 
   def allowed?
-    true
   end
 
   alias_method :force?, :force
@@ -28,12 +27,6 @@ class ChangeState < BaseService
   private
 
   def broadcast_to_listeners
-  end
-end
-
-class ConfirmItem < ChangeState
-  def initialize(item, *args)
-    super(item, :confirm, *args)
   end
 end
 

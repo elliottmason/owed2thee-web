@@ -31,7 +31,7 @@ feature 'Create a loan', :js do
     expect(show_loan_page).to be_displayed
   end
 
-  pending 'as a signed-out, unconfirmed user' do
+  scenario 'as a signed-out, unconfirmed user' do
     user = FactoryGirl.create(:unconfirmed_user)
 
     obligor_email_address = \
@@ -45,8 +45,8 @@ feature 'Create a loan', :js do
         obligor_email_address: obligor_email_address
       )
     )
-    expect(sign_in_page).to_not be_displayed
-    expect(show_loan_page).to be_displayed
+    expect(sign_in_page).to be_displayed
+    expect(sign_in_page).to_not have_sign_in_form
   end
 
   scenario 'as as signed-in user' do

@@ -18,8 +18,9 @@ class LoansController < ApplicationController
     service = CreateLoan.with(current_user, params[:loan])
 
     if service.successful?
-      establish_creator_session(creator: service.creator, loan: service.loan,
-                                sign_in: service.unregistered_creator?)
+      establish_creator_session(creator:  service.creator,
+                                loan:     service.loan,
+                                sign_in:  service.unregistered_creator?)
       redirect_to(service.loan)
     else
       @loan = service.form

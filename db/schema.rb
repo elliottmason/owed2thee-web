@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151103185857) do
+ActiveRecord::Schema.define(version: 20151106204732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,6 +118,18 @@ ActiveRecord::Schema.define(version: 20151103185857) do
 
   add_index "payments", ["payable_id", "payable_type"], name: "index_payments_on_payable_id_and_payable_type", using: :btree
   add_index "payments", ["payer_id"], name: "index_payments_on_payer_id", using: :btree
+
+  create_table "temporary_signins", force: :cascade do |t|
+    t.integer  "email_address_id",   null: false
+    t.integer  "user_id",            null: false
+    t.string   "confirmation_token", null: false
+    t.string   "type"
+    t.datetime "expires_at",         null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "temporary_signins", ["confirmation_token"], name: "index_temporary_signins_on_confirmation_token", unique: true, using: :btree
 
   create_table "transfer_email_addresses", force: :cascade do |t|
     t.integer "email_address_id", null: false

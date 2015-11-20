@@ -1,17 +1,7 @@
 Rails.application.routes.draw do
   root to: 'visitors#index'
 
-  devise_for :users,
-             controllers:  { sessions:  'users/sessions'},
-             only:          %i(sessions),
-             path:          '',
-             sign_out_via:  %i(get)
-
-  # devise_for :users,
-  #            controllers: { passwords: 'users/password_resets' },
-  #            only:        %i(passwords),
-  #            path:        'account',
-  #            path_names:  { password: 'password_resets' }
+  devise_for :users, only: []
 
   resources :loans, module: 'users', only: %i(index)
 
@@ -20,12 +10,10 @@ Rails.application.routes.draw do
     resources :payments,  only: %i(create new), param: :uuid
 
     member do
-      patch 'cancel'
-      put 'cancel'
-      patch 'confirm'
-      put 'confirm'
-      patch 'dispute'
-      put 'dispute'
+      %w(cancel confirm dispute).each do |verb|
+        patch(verb)
+        put(verb)
+      end
     end
   end
 
@@ -36,20 +24,45 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :users, as: 'user', path: 'account' do
-    devise_scope :users do
-      resources :password_resets, path: 'password/reset'
-    end
+  namespace :users, as: 'user', path: '' do
+    devise_scope :user do
+      resource :password_reset, only: %i(new),
+                                path: 'account/password',
+                                path_names: {
+                                  new:    'forgot'
+                                } do
+        collection do
+          post 'create', path: 'forgot'
+        end
+      end # resource :password_reset
+
+      resource :session, only: %i(new),
+                         path: '',
+                         path_names: {
+                           new: 'sign_in'
+                         } do
+        collection do
+          post 'create',  path: 'sign_in'
+          get 'create',   path: 'sign_in/(:confirmation_token)'
+        end
+
+        member do
+          delete 'destroy', path: 'sign_out'
+          get 'destroy',    path: 'sign_out'
+        end
+      end # resource :session
+    end # devise_scope :user
 
     resources :email_addresses,
               constraints:  { email_address: /.+(?:@|%40).+\..+/ },
-              path:         'emails',
+              path:         'account/emails',
               only:         %i(edit update),
               param:        :email_address do
       member do
         get 'confirm', path: 'confirm/:confirmation_token'
       end
     end
-    resource :password, only: %i(edit update)
-  end
+
+    resource :password, only: %i(edit update), path: 'account/password'
+  end # namespace :users
 end

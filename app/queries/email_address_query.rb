@@ -3,8 +3,15 @@ class EmailAddressQuery < BaseQuery
     super(relation)
   end
 
+  def self.address(*args)
+    new
+      .relation
+      .address(*args)
+      .first
+  end
+
   def self.for_transfer_participant(transfer, user)
-    return user.email_addresses.first if transfer.creator_id == user.id
+    return user.primary_email_address if transfer.creator_id == user.id
 
     new
       .relation
@@ -14,6 +21,10 @@ class EmailAddressQuery < BaseQuery
   end
 
   module Scopes
+    def address(address)
+      where(address: address)
+    end
+
     def transfer(transfer)
       joins('LEFT JOIN transfer_email_addresses tea ' \
             'ON tea.email_address_id = email_addresses.id')

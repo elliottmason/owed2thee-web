@@ -1,6 +1,6 @@
 class BaseForm
-  extend FastAttributes
   include ActiveModel::Model
+  include Lean::Attributes
 
   def self.model_class_name
     name.gsub(/Form$/, '')

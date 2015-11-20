@@ -1,24 +1,17 @@
 module Users
   class PasswordResetsController < Devise::PasswordsController
-    # GET /resource/password/new
-    # def new
-    #   super
-    # end
+    def create
+      service = FindOrCreatePasswordReset.with(params[:user][:email_address])
 
-    # POST /resource/password
-    # def create
-    #   super
-    # end
+      return unless service.successful?
 
-    # GET /resource/password/edit?reset_password_token=abcdef
-    # def edit
-    #   super
-    # end
+      @password_reset_form = PasswordResetForm.new
+      render :new
+    end
 
-    # PUT /resource/password
-    # def update
-    #   super
-    # end
+    def new
+      @password_reset_form = PasswordResetForm.new
+    end
 
     # protected
 

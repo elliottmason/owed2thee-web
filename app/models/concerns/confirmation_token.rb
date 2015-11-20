@@ -3,8 +3,8 @@ module ConfirmationToken
     base.class_eval do
       before_validation(on: :create) { generate_confirmation_token }
 
-      validates_presence_of   :confirmation_token, on: :create
-      validates_uniqueness_of :confirmation_token, on: :create
+      validates :confirmation_token, presence: true, on: :create
+      validates :confirmation_token, uniqueness: true, on: :create
     end
   end
 
