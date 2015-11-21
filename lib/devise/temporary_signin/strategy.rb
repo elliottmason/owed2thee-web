@@ -5,7 +5,7 @@ module Devise
         signin = TemporarySigninQuery
                  .confirmation_token(params['confirmation_token'])
 
-        return unless signin
+        return fail!(:unauthenticated) unless signin
 
         RedeemTemporarySignin.for(signin)
         success!(signin.user)

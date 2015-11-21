@@ -1,6 +1,15 @@
+- if current_user.password?
+  h2 Change Password
+
+- if current_user.no_password?
+  h2 Set Password
+  p.alert
+    | You haven't set a password yet! Create a password for your account to
+    ' make it easier to sign in.
+
 = simple_form_for @password_form, url: [:user, :password], method: :patch do |f|
   - if current_user.password?
-    = f.input :current_password,        as: :password
+    = f.input :current_password,          as: :password
   = f.input   :new_password,              as: :password
   = f.input   :new_password_confirmation, as: :password
   = f.button  :submit

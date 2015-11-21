@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe Users::SessionsController do
   describe 'GET create' do
-    def make_request
-      get(:create, confirmation_token: confirmation_token)
+    def make_request(confirmation_token = nil)
+      get(:create,
+          confirmation_token: confirmation_token || self.confirmation_token)
     end
 
     before do
@@ -23,25 +24,31 @@ describe Users::SessionsController do
 
       context 'with valid confirmation token' do
         it 'redirect to edit password page' do
-          get :create, confirmation_token: confirmation_token
-
+          make_request
           expect(response).to redirect_to(edit_user_password_path)
         end
       end
 
+      context 'with unknown confirmation token' do
+        it 'with expired confirmation token' do
+          make_request('asdf')
+          expect(response).to redirect_to(new_user_session_path)
+        end
+      end
+
       context 'with expired confirmation token' do
-        it 'returns error response' do
+        it 'redirects to signin page' do
           Timecop.travel(7.days.from_now)
           make_request
-          expect(response.status).to eq 403
+          expect(response).to redirect_to(new_user_session_path)
         end
       end
 
       context 'with redeemed confirmation token' do
-        it 'returns error response' do
+        it 'redirects to signin page' do
           RedeemTemporarySignin.with(password_reset)
           make_request
-          expect(response.status).to eq 403
+          expect(response).to redirect_to(new_user_session_path)
         end
       end
     end
