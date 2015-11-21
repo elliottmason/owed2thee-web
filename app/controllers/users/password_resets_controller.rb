@@ -3,7 +3,7 @@ module Users
     def create
       service = FindOrCreatePasswordReset.with(params[:user][:email_address])
 
-      return unless service.successful?
+      return if service.successful?
 
       @password_reset_form = PasswordResetForm.new
       render :new

@@ -1,11 +1,13 @@
 class TemporarySigninQuery < BaseQuery
   def initialize(relation = TemporarySignin.all)
-    super.unredeemed
+    super
   end
 
   def self.confirmation_token(confirmation_token)
     new
       .relation
+      .unexpired
+      .unredeemed
       .confirmation_token(confirmation_token)
       .first
   end
@@ -13,6 +15,8 @@ class TemporarySigninQuery < BaseQuery
   def self.recent_email_address(email_address)
     new
       .relation
+      .unexpired
+      .unredeemed
       .email_address(email_address)
       .first
   end
@@ -20,6 +24,8 @@ class TemporarySigninQuery < BaseQuery
   def self.user(user)
     new
       .relation
+      .unexpired
+      .unredeemed
       .user(user)
   end
 
@@ -30,6 +36,10 @@ class TemporarySigninQuery < BaseQuery
 
     def email_address(email_address)
       where(email_address: email_address)
+    end
+
+    def unexpired
+      where('expires_at >= ?', Time.now.utc)
     end
 
     def unredeemed

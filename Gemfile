@@ -64,4 +64,5 @@ group :test do
   gem 'poltergeist',          '~> 1.6'
   gem 'simplecov',            '~> 0.10', require: false
   gem 'site_prism',           '~> 2.8'
+  gem 'timecop',              '~> 0.8'
 end

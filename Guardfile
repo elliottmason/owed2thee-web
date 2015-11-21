@@ -17,6 +17,7 @@ end
 guard :livereload do
   watch(%r{app/views/.+\.(erb|haml|slim)$})
   watch(%r{app/helpers/.+\.rb})
+  watch(%r{lib/.+})
   watch(%r{public/.+\.(css|js|html)})
   watch(%r{config/locales/.+\.yml})
   # Rails Assets Pipeline
@@ -40,6 +41,7 @@ guard :rspec, all_after_pass: true,
 
   watch(%r{^app/.+\.(js|rb|slim)$})   { rspec.spec_dir }
   watch(%r{^config/locales/.+\.yml})  { rspec.spec_dir }
+  watch(%r{^lib/.+\.rb$})             { rspec.spec_dir }
 
   # # Ruby files
   # ruby = dsl.ruby
@@ -79,6 +81,7 @@ guard :shell do
 
   ignore(%r{^(config/routes\.rb$)})
 
-  watch('Gemfile.lock') { ::Bundler.with_clean_env { `invoker reload owed2thee` } }
-  watch(%r{^(config|lib)/.*}) { ::Bundler.with_clean_env { `invoker reload owed2thee` } }
+  watch('Gemfile.lock') do
+    ::Bundler.with_clean_env { `invoker reload owed2thee` }
+  end
 end

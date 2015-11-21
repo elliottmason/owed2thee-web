@@ -1,5 +1,11 @@
 class RedeemTemporarySignin < ChangeState
-  def initialize(temporary_sign_in)
-    super(temporary_sign_in, :redeem)
+  def initialize(temporary_signin)
+    super(temporary_signin, :redeem)
   end
+
+  def allowed?
+    temporary_signin.unredeemed?
+  end
+
+  alias_method :temporary_signin, :item
 end

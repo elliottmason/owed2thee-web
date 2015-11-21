@@ -11,7 +11,7 @@ module ConfirmableStateMachine
       state :unconfirmed, initial: true
       state :confirmed
 
-      transition from: :unconfirmed,  to: %i(confirmed)
+      transition from: :unconfirmed, to: %i(confirmed)
     end
   end
 end

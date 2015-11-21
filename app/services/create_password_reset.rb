@@ -12,4 +12,6 @@ class CreatePasswordReset < CreateTemporarySignin
     @temporary_signin = PasswordReset.create!(email_address: email_address,
                                               user: user)
   end
+
+  alias_method :password_reset, :temporary_signin
 end

@@ -25,6 +25,11 @@ module Users
 
     private
 
+    def after_sign_in_path_for(user)
+      return [:edit, :user, :password] if user.no_password?
+      super
+    end
+
     def can_sign_in?
       !tentative_user || policy(tentative_user).sign_in?
     end

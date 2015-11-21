@@ -43,7 +43,7 @@ Rails.application.routes.draw do
                          } do
         collection do
           post 'create',  path: 'sign_in'
-          get 'create',   path: 'sign_in/(:confirmation_token)'
+          get 'create',   path: 'sign_in/:confirmation_token'
         end
 
         member do

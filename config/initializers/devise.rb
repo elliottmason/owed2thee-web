@@ -247,8 +247,9 @@ Devise.setup do |config|
   config.warden do |manager|
     # manager.intercept_401 = false
     manager.strategies.add(:temporary_signin,
-                           Devise::Strategies::TemporarySignin)
+                           Devise::TemporarySignin::Strategy)
     manager.default_strategies(scope: :user).unshift(:temporary_signin)
+    manager.failure_app = Devise::TemporarySignin::Failure
   end
 
   # ==> Mountable engine configurations
