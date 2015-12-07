@@ -16,7 +16,7 @@ class UserPresenter < Burgundy::Item
   def display_name
     return @display_name if @display_name
 
-    @display_name = 'you' if viewer && user.id == viewer.id
+    @display_name ||= 'you' if viewer && user.id == viewer.id
     @display_name ||= full_name if can_view_full_name?
 
     @display_name ||= email_address

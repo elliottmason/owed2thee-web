@@ -1,4 +1,6 @@
-class RedeemTemporarySignin < ChangeState
+class RedeemTemporarySignin < BaseService
+  include ChangeState
+
   def initialize(temporary_signin)
     super(temporary_signin, :redeem)
   end

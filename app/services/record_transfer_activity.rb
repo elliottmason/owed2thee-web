@@ -26,6 +26,6 @@ class RecordTransferActivity < BaseService
   end
 
   def recipients
-    @recipients ||= transfer.participants
+    @recipients ||= [transfer.recipient, transfer.sender]
   end
 end

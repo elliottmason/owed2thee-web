@@ -13,8 +13,8 @@ class CreateLoan < BaseService
     subscribe(LoanListener.new)
   end
 
-  def borrowers
-    @borrowers ||= { debt: [creator], loan: obligors }[type]
+  def borrower
+    @borrower ||= { debt: creator, loan: obligor }[type]
   end
 
   def creator
@@ -29,16 +29,14 @@ class CreateLoan < BaseService
     @group ||= LoanGroup.new
   end
 
-  def lenders
-    @lenders ||= { debt: obligors, loan: [creator] }[type]
+  def lender
+    @lender ||= { debt: obligor, loan: creator }[type]
   end
 
-  def obligors
-    return @obligors if @obligors
+  def obligor
+    return @obligor if @obligor
 
-    @obligors = find_obligors_by_email_addresses
-    @obligors.uniq!
-    @obligors
+    @obligors = find_obligor_by_email_address
   end
 
   def perform
@@ -68,10 +66,8 @@ class CreateLoan < BaseService
 
   def assign_loan_relationships
     @loan.creator         = creator
-    @loan.borrowers       = borrowers
-    @loan.borrower        = borrowers.first
-    @loan.lenders         = lenders
-    @loan.lender          = lenders.first
+    @loan.borrower        = borrower
+    @loan.lender          = lender
     @loan.email_addresses = email_addresses
   end
 
@@ -87,7 +83,6 @@ class CreateLoan < BaseService
   def create_loan
     build_loan
     loan.save!
-    loan.groups << group
 
     loan.valid?
   end
@@ -103,9 +98,9 @@ class CreateLoan < BaseService
     finder.user
   end
 
-  def find_obligors_by_email_addresses
+  def find_obligor_by_email_address
     finder = FindOrCreateUserByEmailAddress.with(form.obligor_email_address)
     email_addresses << finder.email_address
-    [finder.user]
+    finder.user
   end
 end

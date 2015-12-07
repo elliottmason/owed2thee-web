@@ -11,7 +11,7 @@ feature 'Dispute a loan', :devise, :js do
   let(:show_loan_page) { Loans::ShowPage.new }
 
   scenario 'as a borrower' do
-    login_as(loan.borrowers.first)
+    login_as(loan.borrower)
     show_loan_page.load(uuid: loan.uuid)
     show_loan_page.dispute
 

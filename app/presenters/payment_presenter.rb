@@ -1,8 +1,14 @@
 class PaymentPresenter < TransferPresenter
   alias_method :amount_paid, :amount
 
+  def borrowers
+  end
+
+  def lenders
+  end
+
   def loan
-    payment.payable
+    Loan.new
   end
 
   def payers

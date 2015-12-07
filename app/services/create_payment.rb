@@ -19,14 +19,6 @@ class CreatePayment < BaseService
     @form ||= PaymentForm.new(params)
   end
 
-  def payees
-    loan.lenders
-  end
-
-  def payers
-    [creator]
-  end
-
   def perform
     return unless form.valid?
 
@@ -40,7 +32,7 @@ class CreatePayment < BaseService
   def build_payment
     @payment = Payment.new do |payment|
       payment.creator = creator
-      payment.payable = loan
+      payment.payee   = loan.lender
       payment.payer   = creator
       payment.amount  = form.amount
     end
@@ -48,8 +40,6 @@ class CreatePayment < BaseService
 
   def create_payment
     build_payment
-    payment.payees = payees
-    payment.payers = payers
     payment.save
   end
 end

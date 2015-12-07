@@ -1,2 +1,0 @@
-class PaymentPayer < TransferParticipant
-end

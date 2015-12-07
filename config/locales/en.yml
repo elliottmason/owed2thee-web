@@ -58,14 +58,14 @@ en:
     descriptions:
       short: "loan for %{amount_lent}"
       full: "%{lenders} loan to %{borrowers} for %{amount_lent}"
-      without_borrowers: "%{lenders} loan for %{amount_lent}"
+      without_borrowers: "%{lenders}'s loan for %{amount_lent}"
       without_lenders: "loan to %{borrowers} for %{amount_lent}"
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
-      identical_users:
+      identical_obligors:
         record: :loans.name
-        string: :transfers.errors.identical_users
+        string: :transfers.errors.identical_obligors
     name: :app.concepts.loan
     notices:
       cancellation:
@@ -114,7 +114,8 @@ en:
     errors:
       amount:
         nonpositive: must be larger than $0.00
-      identical_users: "you cannot create a %{record} with yourself"
+      identical_obligors: "you cannot create a %{record} with yourself"
+
 
   random_phrases:
     negative:

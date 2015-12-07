@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151106204732) do
+ActiveRecord::Schema.define(version: 20151202180625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -158,17 +158,13 @@ ActiveRecord::Schema.define(version: 20151106204732) do
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.integer  "sender_id",                       null: false
-    t.string   "sender_type",                     null: false
     t.integer  "recipient_id",                    null: false
-    t.string   "recipient_type",                  null: false
     t.string   "type",                            null: false
     t.datetime "transferred_at"
     t.uuid     "uuid",                            null: false
   end
 
   add_index "transfers", ["creator_id"], name: "index_transfers_on_creator_id", using: :btree
-  add_index "transfers", ["recipient_type", "recipient_id"], name: "index_transfers_on_recipient_type_and_recipient_id", using: :btree
-  add_index "transfers", ["sender_type", "sender_id"], name: "index_transfers_on_sender_type_and_sender_id", using: :btree
   add_index "transfers", ["uuid"], name: "index_transfers_on_uuid", unique: true, using: :btree
 
   create_table "transitions", force: :cascade do |t|

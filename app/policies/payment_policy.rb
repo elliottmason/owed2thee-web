@@ -5,34 +5,39 @@ class PaymentPolicy
   end
 
   def confirm?
-    payment_is_unconfirmed? && user_is_participant? &&
-      participant.confirmation.can_transition_to?(:confirmed)
+    puts payment.confirmation.current_state
+
+    payment_is_unconfirmed? &&
+      user_is_participant? &&
+      payment.confirmation.can_transition_to?(:confirmed)
   end
 
   def show?
-    true
-    # case payable
-    # when Loan
-    #   user_is_participant?
-    # end
+    user_is_creator? || user_is_participant?
   end
 
   private
 
-  def participant
-    @participant ||= TransferParticipant.where(transfer:  payment,
-                                               user_id:   user.id).first
-  end
-
   attr_reader :payment
+  attr_reader :user
 
   def payment_is_unconfirmed?
     payment.unconfirmed?
   end
 
-  attr_reader :user
+  def user_is_creator?
+    payment.creator == user
+  end
 
   def user_is_participant?
-    participant
+    user_is_payee? || user_is_payer?
+  end
+
+  def user_is_payee?
+    payment.payee == user
+  end
+
+  def user_is_payer?
+    payment.payer == user
   end
 end

@@ -1,18 +1,9 @@
-# Payments are applied toward unpaid Loans. Similar to Loans, they must be
-# confirmed by the creator to be published and visible, and must be confirmed
-# by the PaymentPayees.
+# Payments are made toward a User and applied toward relevant Loans through
+# LoanPayments
 class Payment < Transfer
-  belongs_to :payer,    foreign_key:  'sender_id',
-                        foreign_type: 'sender_type',
-                        polymorphic:  true
-  belongs_to :payable,  foreign_key:  'recipient_id',
-                        foreign_type: 'recipient_type',
-                        polymorphic:  true
-  has_many :payment_payees, foreign_key: 'transfer_id'
-  has_many :payees, source: :user, through: :payment_payees
-  has_many :payment_payers, foreign_key: 'transfer_id'
-  has_many :payers, source: :user, through: :payment_payers
+  belongs_to :payer,  class_name: 'User',  foreign_key: 'sender_id'
+  belongs_to :payee,  class_name: 'User',  foreign_key: 'recipient_id'
 
-  validates :payers,  exclusion:  { in: :payees },
-                      presence:   true
+  # has_many :loan_payments
+  # has_many :loans, through: :loan_payments
 end

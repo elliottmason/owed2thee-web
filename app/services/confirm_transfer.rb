@@ -1,19 +1,19 @@
 class ConfirmTransfer < ConfirmItem
-  delegate :participants, to: :transfer
-
-  alias_method :transfer, :item
-
-  def confirmed_by_all_participants?
-    participants.in_state(:confirmed).count == participants.count
+  def initialize(transfer, user)
+    @transfer = transfer
+    @user     = user
+    super(transfer)
   end
 
-  def broadcast_to_listeners
-    broadcast(:confirm_transfer_successful, transfer)
+  def perform
+    return PublishTransfer.with(transfer) if user == transfer.creator
+
+    super
   end
 
   private
 
-  def allowed?
-    confirmed_by_all_participants?
+  def broadcast_to_listeners
+    broadcast(:confirm_transfer_successful, transfer, user)
   end
 end

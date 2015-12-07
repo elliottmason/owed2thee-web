@@ -6,7 +6,7 @@ feature 'Create a payment for a loan', :js do
   let(:loan) { FactoryGirl.create(:published_loan) }
 
   scenario 'as a borrower' do
-    login_as(loan.borrowers.first)
+    login_as(loan.borrower)
     show_loan_page.load(uuid: loan.uuid)
     expect(show_loan_page).to have_payment_button
 
@@ -19,13 +19,13 @@ feature 'Create a payment for a loan', :js do
   end
 
   scenario 'as a lender' do
-    login_as(loan.lenders.first)
+    login_as(loan.lender)
     show_loan_page.load(uuid: loan.uuid)
     expect(show_loan_page).to_not have_payment_button
   end
 
   scenario 'invalid params' do
-    login_as(loan.borrowers.first)
+    login_as(loan.borrower)
     new_payment_page.load(uuid: loan.uuid)
 
     new_payment_page.payment_form.submit(amount: '00')

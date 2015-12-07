@@ -1,6 +1,6 @@
 = render 'description', locals: { loan: @loan }
 
-ul.button-group.even-3
+ul.button-group
 - if policy(@loan).confirm?
   li = button_to t('.confirm_button'), [:confirm, @loan], class: 'button', form_class: 'confirm_button', method: :patch
 - if policy(@loan).cancel?

@@ -1,14 +1,14 @@
+# Contains a unique confirmation token that is associated with a User. When
+# redeemed, the user is signed in for the session.
 class TemporarySignin < ActiveRecord::Base
   include Transitional
   include ConfirmationToken
 
   belongs_to :email_address
   belongs_to :user
-  # has_many :temporary_signin_transfers
-  # has_many :unfinished_transfers, through: :temporary_signin_transfers
 
-  validates :expires_at, presence: true
-  validates :user, presence: true
+  validates :expires_at,  presence: true
+  validates :user,        presence: true
 
   before_validation :set_expires_at, on: :create
 

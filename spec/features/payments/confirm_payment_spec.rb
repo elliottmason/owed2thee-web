@@ -1,21 +1,15 @@
 feature 'Confirm a payment', :js do
   let(:payment) do
-    borrower = FactoryGirl.create(
+    payer = FactoryGirl.create(
       :confirmed_user,
       email_address: 'kyle.balderson@gmail.com'
     )
-    lender = FactoryGirl.create(
+    payee = FactoryGirl.create(
       :confirmed_user,
       first_name: 'Josh',
-      last_name: 'Schramm'
+      last_name:  'Schramm'
     )
-    loan = FactoryGirl.create(
-      :confirmed_loan,
-      amount:    4.44,
-      borrower:  borrower,
-      creator:   lender
-    )
-    FactoryGirl.create(:payment, amount: 1, payable: loan)
+    FactoryGirl.create(:payment, amount: 1, payee: payee, payer: payer)
   end
 
   let(:show_payment_page) { Payments::ShowPage.new }
@@ -27,7 +21,7 @@ feature 'Confirm a payment', :js do
     end
 
     scenario do
-      login_as(payment.payees.first)
+      login_as(payment.payee)
       show_payment_page.load(uuid: payment.uuid)
       show_payment_page.confirm
 

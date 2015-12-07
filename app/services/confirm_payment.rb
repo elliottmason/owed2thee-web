@@ -1,2 +1,3 @@
-class ConfirmPayment < ConfirmTransfer
+class ConfirmPayment < ChangePaymentState
+  transition :confirm
 end

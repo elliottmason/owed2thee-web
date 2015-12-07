@@ -28,8 +28,10 @@ class LoanQuery < BaseQuery
     end
 
     def user(user)
-      joins(:transfer_participants) \
-        .where(transfer_participants: { user_id: user.id })
+      where(
+        'recipient_id = ? OR creator_id = ? OR sender_id = ?',
+        *([user] * 3)
+      )
     end
   end
 end

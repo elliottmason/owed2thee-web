@@ -1,16 +1,16 @@
 class LoansController < ApplicationController
   before_action :authenticate_user!, only: %i(show)
-  before_action :retrieve_loan, except: %i(create new)
+  before_action :retrieve_loan, only: %i(cancel confirm dispute show)
 
   def cancel
-    service = CancelLoan.with(@loan)
+    service = CancelLoan.with(@loan, current_user)
     flash[:notice] = cancellation_notice if service.successful?
     redirect_to([@loan])
   end
 
   def confirm
-    service = ConfirmLoanParticipation.with(current_user, @loan)
-    flash[:notice] = '' if service.successful?
+    service = ConfirmLoan.with(@loan, current_user)
+    flash[:notice] = confirmation_notice if service.successful?
     redirect_to([@loan])
   end
 
@@ -29,7 +29,7 @@ class LoansController < ApplicationController
   end
 
   def dispute
-    service = DisputeLoanParticipation.with(current_user, @loan)
+    service = DisputeLoan.with(@loan, current_user)
     flash[:notice] = dispute_notice if service.successful?
     redirect_to([@loan])
   end
@@ -48,17 +48,20 @@ class LoansController < ApplicationController
     loan = LoanPresenter.new(@loan, current_user)
     I18n.t('loans.notices.cancellation',
            amount_lent: loan.amount_lent,
-           borrowers:   loan.borrowers,
-           lenders:     loan.lenders)
+           borrowers:   loan.borrower,
+           lenders:     loan.lender)
+  end
+
+  def confirmation_notice
   end
 
   def dispute_notice
     loan = LoanPresenter.new(@loan, current_user)
     I18n.t('loans.notices.dispute',
            amount_lent: loan.amount_lent,
-           borrowers:   loan.borrowers,
+           borrowers:   loan.borrower,
            creator:     loan.creator,
-           lenders:     loan.lenders)
+           lenders:     loan.lender)
   end
 
   def establish_creator_session(creator: nil, loan: nil, sign_in: false)

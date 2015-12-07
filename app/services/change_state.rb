@@ -1,37 +1,39 @@
-class ChangeState < BaseService
-  include Wisper::Publisher
+module ChangeState
+  def self.included(base)
+    base.class_eval do
+      include PublishToListeners
+      extend ClassMethods
+    end
+  end
 
   attr_reader :force
   attr_reader :item
-  attr_reader :to_state
-
-  def initialize(item, to_state, force = false)
-    @force    = force
-    @item     = item
-    @to_state = to_state
-  end
 
   def allowed?
+    transition.present?
   end
 
   alias_method :force?, :force
 
   def perform
-    return unless allowed? || force?
+    return unless force? || allowed?
 
-    @successful = item.send(:"#{to_state}!")
+    puts 'changing state of: ' + item.inspect + ' to ' + transition.inspect
 
-    broadcast_to_listeners if successful?
+    @successful = item.send(:"#{transition}!")
+
+    puts @successful
   end
 
-  private
-
-  def broadcast_to_listeners
+  def transition
+    self.class.transition
   end
-end
 
-class PublishItem < ChangeState
-  def initialize(item, *args)
-    super(item, :publish, *args)
+  module ClassMethods
+    def transition(to_state = nil)
+      return @transition unless to_state
+
+      @transition ||= to_state.to_sym
+    end
   end
 end

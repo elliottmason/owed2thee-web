@@ -37,10 +37,8 @@ FactoryGirl.define do
     end
 
     after :build do |loan, _|
-      loan.borrowers << loan.recipient
-      loan.lenders << loan.sender
-      loan.email_addresses << loan.borrowers.map(&:email_addresses).to_a
-      loan.email_addresses << loan.lenders.map(&:email_addresses).to_a
+      loan.email_addresses << loan.borrower.primary_email_address
+      loan.email_addresses << loan.lender.primary_email_address
     end
   end
 end

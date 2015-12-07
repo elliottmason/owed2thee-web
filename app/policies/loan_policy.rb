@@ -14,21 +14,14 @@ class LoanPolicy
   end
 
   def confirm?
-    ((user_is_creator? || loan_is_published?) &&
-      user_is_unconfirmed_participant?) &&
+    (user_is_creator? || (loan_is_published? && user_is_recipient?)) &&
       loan_is_confirmable?
   end
 
   def dispute?
-    !user_is_creator? && user_is_participant? &&
-      loan_is_disputable?
+    loan_is_disputable? &&
+      user_is_participant? && !user_is_creator?
   end
-
-  # def edit?
-  #   user_is_creator? ||
-  #     (loan_is_published? && loan_is_unconfirmed? &&
-  #     user_is_unconfirmed_obligor?)
-  # end
 
   def pay?
     loan_is_unpaid? && user_is_borrower?
@@ -42,53 +35,49 @@ class LoanPolicy
 
   attr_reader :loan
 
-  def loan_participant
-    @loan_participant ||= LoanParticipant.where(loan: loan, user: user).first
-  end
-
   def loan_is_cancelable?
     loan.publicity.can_transition_to?(:canceled)
   end
 
   def loan_is_confirmable?
-    loan_participant.confirmation.can_transition_to?(:confirmed)
+    loan.confirmation.can_transition_to?(:confirmed)
   end
 
   def loan_is_disputable?
-    loan_participant.confirmation.can_transition_to?(:disputed)
+    loan.confirmation.can_transition_to?(:disputed)
   end
 
-  # def loan_is_disputed?
-  #   loan.disputed?
-  # end
-
   def loan_is_published?
-    @loan.published?
+    loan.published?
   end
 
   def loan_is_unconfirmed?
-    !@loan.confirmed?
+    !loan.confirmed?
   end
 
   def loan_is_unpaid?
-    !@loan.fully_paid?
+    !loan.fully_paid?
   end
 
   def user_is_borrower?
-    loan_participant.is_a?(LoanBorrower)
+    loan.borrower == @user
   end
 
   def user_is_creator?
     loan.creator == @user
   end
 
+  def user_is_lender?
+    loan.lender == @user
+  end
+
   def user_is_participant?
-    loan_participant
+    user_is_borrower? || user_is_lender?
   end
 
   attr_reader :user
 
-  def user_is_unconfirmed_participant?
-    user_is_participant? && !loan_participant.confirmed?
+  def user_is_recipient?
+    loan.recipient == @user
   end
 end

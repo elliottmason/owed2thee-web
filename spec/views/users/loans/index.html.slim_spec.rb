@@ -45,8 +45,8 @@ describe 'users/loans/index.html.slim' do
 
   before do
     sign_in(current_user)
-    ConfirmLoanParticipation.for(creator, loan)
-    DisputeLoanParticipation.with(borrower, loan)
+    PublishLoan.with(loan, creator)
+    DisputeLoan.with(loan, borrower)
   end
 
   context 'as creator' do
@@ -76,9 +76,9 @@ describe 'users/loans/index.html.slim' do
       let(:loan_amount) { 9000.01 }
 
       before do
-        ConfirmLoanParticipation.for(borrower, loan)
-        ConfirmPaymentParticipation.with(borrower, payment)
-        ConfirmPaymentParticipation.with(creator, payment)
+        ConfirmLoan.with(loan, borrower)
+        ConfirmPayment.with(payment, borrower)
+        ConfirmPayment.with(payment, creator)
         assign_activities
         render
       end
@@ -105,14 +105,6 @@ describe 'users/loans/index.html.slim' do
   context 'as participant' do
     let(:current_user) { borrower }
     let(:loan_amount) { 10 }
-
-    before do
-      ConfirmLoanParticipation.with(borrower, loan)
-      ConfirmPaymentParticipation.with(borrower, payment)
-      ConfirmPaymentParticipation.with(creator, payment)
-      assign_activities
-      render
-    end
 
     it 'has creation item' do
       expect(rendered)

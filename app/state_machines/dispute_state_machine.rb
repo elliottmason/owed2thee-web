@@ -9,5 +9,4 @@ class DisputeStateMachine < ConfirmationStateMachine
 
   transition from: :unconfirmed,  to: %i(disputed)
   transition from: :disputed,     to: %i(confirmed)
-  transition from: :confirmed,    to: %i(disputed)
 end

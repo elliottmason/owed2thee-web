@@ -1,6 +1,2 @@
-class PublishLoan < PublishTransfer
-  def initialize(*args)
-    super
-    subscribe(LoanListener.new)
-  end
+class PublishLoan < ChangeLoanState
 end

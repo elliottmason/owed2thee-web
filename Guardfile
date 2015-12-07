@@ -38,6 +38,7 @@ guard :rspec, all_after_pass: true,
   watch(rspec.spec_helper)  { rspec.spec_dir }
   watch(rspec.spec_support) { rspec.spec_dir }
   watch(rspec.spec_files)
+  watch(%r{^spec/factories/.+\.rb$})  { rspec.spec_dir }
 
   watch(%r{^app/.+\.(js|rb|slim)$})   { rspec.spec_dir }
   watch(%r{^config/locales/.+\.yml})  { rspec.spec_dir }

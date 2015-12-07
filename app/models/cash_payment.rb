@@ -1,2 +1,0 @@
-class CashPayment < Payment
-end

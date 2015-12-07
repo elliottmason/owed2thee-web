@@ -1,10 +1,10 @@
 class PaymentsController < ApplicationController
-  before_filter :authenticate_user!
-  before_filter :retrieve_loan, only: %i(create new)
-  before_filter :retrieve_payment, only: %i(confirm show)
+  before_action :authenticate_user!
+  before_action :retrieve_loan, only: %i(create new)
+  before_action :retrieve_payment, only: %i(confirm show)
 
   def confirm
-    service = ConfirmPaymentParticipation.with(current_user, @payment)
+    service = ConfirmPayment.with(@payment, current_user)
     flash[:notice] = confirmation_notice if service.successful?
     redirect_to(@payment)
   end
