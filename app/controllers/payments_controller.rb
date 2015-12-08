@@ -1,7 +1,7 @@
 class PaymentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :retrieve_loan, only: %i(create new)
-  before_action :retrieve_payment, only: %i(confirm show)
+  before_action :retrieve_payment,  only: %i(confirm show)
+  before_action :retrieve_payee,    only: %i(create new)
 
   def confirm
     service = ConfirmPayment.with(@payment, current_user)
@@ -10,7 +10,7 @@ class PaymentsController < ApplicationController
   end
 
   def create
-    service = CreatePayment.with(current_user, @loan, params[:payment])
+    service = CreatePayment.with(current_user, @payee, params[:payment])
 
     if service.successful?
       redirect_to(service.payment)
@@ -33,16 +33,14 @@ class PaymentsController < ApplicationController
   def confirmation_notice
     payment = PaymentPresenter.new(@payment, current_user)
     flash[:notice] = I18n.t('payments.notices.confirmation',
-                            amount_lent:  payment.amount_lent,
                             amount_paid:  payment.amount_paid,
-                            borrowers:    payment.borrowers,
-                            lenders:      payment.lenders,
-                            payers:       payment.payers)
+                            payee:        payment.payee,
+                            payer:        payment.payer)
   end
 
-  def retrieve_loan
-    @loan = LoanQuery.uuid(params[:loan_uuid])
-    authorize(@loan, :pay?)
+  def retrieve_payee
+    @payee = UserQuery.uuid!(params[:user_uuid])
+    authorize(@payee, :pay?)
   end
 
   def retrieve_payment

@@ -5,11 +5,8 @@ class PaymentPolicy
   end
 
   def confirm?
-    puts payment.confirmation.current_state
-
-    payment_is_unconfirmed? &&
-      user_is_participant? &&
-      payment.confirmation.can_transition_to?(:confirmed)
+    (user_is_creator? && payment_is_publishable?) ||
+      (payment_is_confirmable? && user_is_participant? && !user_is_creator?)
   end
 
   def show?
@@ -21,8 +18,12 @@ class PaymentPolicy
   attr_reader :payment
   attr_reader :user
 
-  def payment_is_unconfirmed?
-    payment.unconfirmed?
+  def payment_is_confirmable?
+    payment.confirmation.can_transition_to?(:confirmed)
+  end
+
+  def payment_is_publishable?
+    payment.publicity.can_transition_to?(:published)
   end
 
   def user_is_creator?

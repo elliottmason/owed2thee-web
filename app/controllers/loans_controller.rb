@@ -48,8 +48,8 @@ class LoansController < ApplicationController
     loan = LoanPresenter.new(@loan, current_user)
     I18n.t('loans.notices.cancellation',
            amount_lent: loan.amount_lent,
-           borrowers:   loan.borrower,
-           lenders:     loan.lender)
+           borrower:    loan.borrower,
+           lender:      loan.lender)
   end
 
   def confirmation_notice
@@ -59,9 +59,9 @@ class LoansController < ApplicationController
     loan = LoanPresenter.new(@loan, current_user)
     I18n.t('loans.notices.dispute',
            amount_lent: loan.amount_lent,
-           borrowers:   loan.borrower,
+           borrower:    loan.borrower,
            creator:     loan.creator,
-           lenders:     loan.lender)
+           lender:      loan.lender)
   end
 
   def establish_creator_session(creator: nil, loan: nil, sign_in: false)

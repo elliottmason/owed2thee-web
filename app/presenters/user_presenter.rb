@@ -13,14 +13,19 @@ class UserPresenter < Burgundy::Item
     full_name && UserPolicy.new(viewer, user, transfer).view_name?
   end
 
-  def display_name
+  def display_name(possessive: false)
     return @display_name if @display_name
 
-    @display_name ||= 'you' if viewer && user.id == viewer.id
-    @display_name ||= full_name if can_view_full_name?
+    if user_is_viewer?
+      @display_name = possessive ? 'your' : 'you'
+    else
+      @display_name = full_name if can_view_full_name?
+      @display_name ||= email_address
+      @display_name ||= I18n.t('app.default_display_name')
+      @display_name += "'s" if possessive
+    end
 
-    @display_name ||= email_address
-    @display_name ||= I18n.t('app.default_display_name')
+    @display_name
   end
 
   def email_address
@@ -35,6 +40,10 @@ class UserPresenter < Burgundy::Item
 
     return unless user.first_name.present? && user.last_name.present?
     @full_name = "#{user.first_name} #{user.last_name}"
+  end
+
+  def user_is_viewer?
+    user == viewer
   end
 
   private

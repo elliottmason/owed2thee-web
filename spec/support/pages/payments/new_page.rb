@@ -4,7 +4,7 @@ module Payments
   class NewPage < SitePrism::Page
     include FormSection
 
-    set_url '/loans{/uuid}/payments/new'
+    set_url '/users{/user_uuid}/payments/new'
 
     form_section :payment,
                  fields:    %i(amount),

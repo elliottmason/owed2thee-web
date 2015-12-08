@@ -6,6 +6,7 @@ class ChangeTransferState < BaseService
   def initialize(transfer, user = nil)
     @item = transfer
     @user = user
+    super
   end
 
   def allowed?

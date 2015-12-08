@@ -11,8 +11,13 @@ class Ledger < ActiveRecord::Base
   monetize :confirmed_balance_cents
   monetize :projected_balance_cents
 
-  def self.between(user_a, user_b)
-    where(user_a: [user_a, user_b], user_b: [user_a, user_b])
+  def confirmed_balance_for(user)
+    return -confirmed_balance if user == user_a
+    return confirmed_balance  if user == user_b
+  end
+
+  def payable?(user)
+    confirmed_balance_for(user) > 0
   end
 
   # TODO: calculate Payments

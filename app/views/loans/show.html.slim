@@ -8,9 +8,4 @@ ul.button-group
 - if policy(@loan).dispute?
   li = button_to t('.dispute_button'), [:dispute, @loan], class: 'button', form_class: 'dispute_button', method: :patch
 - if policy(@loan).pay?
-  li = button_to t('.pay_button'), [:new, @loan, :payment], class: 'button', form_class: 'pay_button', method: :get
-
-- if policy(@loan).comment?
-  = simple_form_for [@loan, @comment_form] do |f|
-    = f.input :body, as: :text
-    = f.button :submit
+  li = button_to t('.pay_button'), [:new, @loan.lender, :payment], class: 'button', form_class: 'pay_button', method: :get

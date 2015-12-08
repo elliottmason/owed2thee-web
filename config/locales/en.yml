@@ -1,15 +1,3 @@
-# you submitted a loan: lent Josh Schramm $10.00
-# Josh schramm confirmed a loan:
-
-# Elliott M. marked his loan to you as fully paid
-# You sent $10.00 to Elliott M. using 0.03448BTC
-# You confirmed: Elliott M. lent you $10.00
-# Elliott M. commented on his $10.00 loan to you
-# You commented on your $10.00 loan from Elliott
-# You disputed Elliott Mason lent you $10.00
-# You submitted a loan: lent Josh Shcramm $10.00
-# Elliott Mason submitted a loan: lent you $10.00
-
 en:
   app:
     concepts:
@@ -57,9 +45,9 @@ en:
   loans:
     descriptions:
       short: "loan for %{amount_lent}"
-      full: "%{lenders} loan to %{borrowers} for %{amount_lent}"
-      without_borrowers: "%{lenders}'s loan for %{amount_lent}"
-      without_lenders: "loan to %{borrowers} for %{amount_lent}"
+      full: "%{lender} loan to %{borrower} for %{amount_lent}"
+      without_borrowers: "%{lender} loan for %{amount_lent}"
+      without_lenders: "loan to %{borrower} for %{amount_lent}"
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
@@ -93,21 +81,22 @@ en:
   payments:
     descriptions:
       full:
-        payment: :payments.descriptions.short
-        string: "%{payers} %{payment} toward %{payable}"
+        payment: :payments.descriptions.without_payer
+        string: "%{payer} %{payment}"
       short: "%{amount_paid} payment"
-      without_payers:
+      without_payee:
         payment: :payments.descriptions.short
-        string: "%{payers} %{payment}"
+        string: "%{payer} %{payment}"
+      without_payer:
+        payment: :payments.descriptions.short
+        string: "%{payment} to %{payee}"
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
     name: :app.concepts.payment
     notices:
       confirmation:
-        confirmable:
-          payable: :loans.descriptions.without_borrowers
-          string: :payments.descriptions.full
+        confirmable: :payments.descriptions.full
         string: :app.notices.confirmation
 
   transfers:
@@ -168,11 +157,11 @@ en:
         string: "%{actor} disputed %{loan}"
     payment:
       confirmed:
-        confirmable: :payments.descriptions.without_payers
+        confirmable: :payments.descriptions.without_payee
         string: :payments.notices.confirmation
       created:
-        payable: :loans.descriptions.without_borrowers
-        string: "%{actor} submitted a %{amount_paid} payment toward %{payable}"
+        payment: :payments.descriptions.without_payer
+        string: "%{actor} submitted a %{payment}"
       disputed:
         payment: :payments.descriptions.short
-        string: "%{actor} disputed %{payers} %{payment}"
+        string: "%{actor} disputed %{payer} %{payment}"

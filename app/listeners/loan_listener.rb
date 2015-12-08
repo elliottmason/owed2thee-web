@@ -1,13 +1,20 @@
 class LoanListener
-  def confirm_transfer_successful(_loan)
+  def create_loan_successful(_loan)
   end
 
-  def create_transfer_successful(_loan)
+  def confirm_loan_successful(loan, user)
+    CreateUserContactsForTransferParticipant.with(loan, user)
+    RecordTransferActivity.with(loan, :confirmed, user)
   end
 
-  def publish_loan_successful(loan)
-    RecordTransferActivity.with(loan, :created)
+  def dispute_loan_successful(loan, user)
+    RecordTransferActivity.with(loan, :disputed, user)
+  end
+
+  def publish_loan_successful(loan, user)
+    CreateLedgersForLoanParticipant.with(loan, user)
+    CreateUserContactsForTransferParticipant.with(loan, user)
     NotifyLoanParticipants.with(loan)
+    RecordTransferActivity.with(loan, :created)
   end
-  alias_method :publish_transfer_successful, :publish_loan_successful
 end

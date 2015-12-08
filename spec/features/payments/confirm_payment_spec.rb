@@ -1,23 +1,48 @@
 feature 'Confirm a payment', :js do
-  let(:payment) do
-    payer = FactoryGirl.create(
-      :confirmed_user,
-      email_address: 'kyle.balderson@gmail.com'
-    )
-    payee = FactoryGirl.create(
+  let(:borrower)  { payer }
+  let(:lender)    { payee }
+  let(:payee) do
+    FactoryGirl.create(
       :confirmed_user,
       first_name: 'Josh',
       last_name:  'Schramm'
     )
-    FactoryGirl.create(:payment, amount: 1, payee: payee, payer: payer)
+  end
+  let(:payer) do
+    FactoryGirl.create(
+      :confirmed_user,
+      email_address:  'kyle.balderson@gmail.com',
+      first_name:     nil,
+      last_name:      nil
+    )
+  end
+  let!(:payment) do
+    CreatePayment.with(
+      payer,
+      payee,
+      FactoryGirl.attributes_for(
+        :payment_form,
+        amount:   1
+      )
+    ).payment
   end
 
   let(:show_payment_page) { Payments::ShowPage.new }
 
+  before do
+    loan = CreateLoan.with(
+      lender,
+      FactoryGirl.attributes_for(
+        :loan_form,
+        obligor_email_address: borrower.primary_email_address.address
+      )
+    ).loan
+    PublishLoan.with(loan, lender)
+  end
+
   context 'as a payee' do
     let(:confirmation_notice) do
-      "You confirmed kyle.balderson@gmail.com's $1.00 payment toward your " \
-      'loan for $4.44'
+      "You confirmed kyle.balderson@gmail.com's $1.00 payment to you"
     end
 
     scenario do
@@ -31,7 +56,7 @@ feature 'Confirm a payment', :js do
 
   context 'as payer' do
     let(:confirmation_notice) do
-      "You confirmed your $1.00 payment toward Josh Schramm's loan for $4.44"
+      'You confirmed your $1.00 payment to Josh Schramm'
     end
 
     scenario do

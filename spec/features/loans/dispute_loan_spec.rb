@@ -5,10 +5,20 @@ feature 'Dispute a loan', :devise, :js do
       first_name: 'Josh',
       last_name: 'Schramm'
     )
-    FactoryGirl.create(:published_loan, amount: 4.44, creator: creator)
+    CreateLoan.with(
+      creator,
+      FactoryGirl.attributes_for(
+        :loan_form,
+        amount: '4.44'
+      )
+    ).loan
   end
 
   let(:show_loan_page) { Loans::ShowPage.new }
+
+  before do
+    PublishLoan.with(loan, loan.creator)
+  end
 
   scenario 'as a borrower' do
     login_as(loan.borrower)

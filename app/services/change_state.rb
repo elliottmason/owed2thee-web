@@ -1,7 +1,7 @@
 module ChangeState
   def self.included(base)
+    base.include BroadcastToListeners
     base.class_eval do
-      include PublishToListeners
       extend ClassMethods
     end
   end
@@ -18,11 +18,8 @@ module ChangeState
   def perform
     return unless force? || allowed?
 
-    puts 'changing state of: ' + item.inspect + ' to ' + transition.inspect
-
     @successful = item.send(:"#{transition}!")
-
-    puts @successful
+    super
   end
 
   def transition

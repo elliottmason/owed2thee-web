@@ -1,21 +1,29 @@
 class TransferPresenter < BasePresenter
   def amount
-    amount_for(item)
+    amount_for(transfer)
   end
 
   def amount_lent
+    return unless loan
+
     amount_for(loan)
   end
 
   def creator
-    return @creator if @creator
+    @creator ||= display_name(transfer.creator)
+  end
 
-    @creator ||= 'your' if viewer == transfer.creator
-    @creator ||= UserPresenter.new(transfer.creator, viewer, transfer)
-                 .display_name
+  def display_name(user, possessive: false)
+    result = UserPresenter
+             .new(user, viewer, transfer)
+             .display_name(possessive: possessive)
   end
 
   alias_method :transfer, :item
+
+  def viewer_is?(type)
+    transfer.send(type) == viewer
+  end
 
   private
 

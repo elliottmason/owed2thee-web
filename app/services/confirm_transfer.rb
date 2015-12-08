@@ -1,4 +1,6 @@
 class ConfirmTransfer < ConfirmItem
+  attr_reader :user
+
   def initialize(transfer, user)
     @transfer = transfer
     @user     = user
@@ -6,7 +8,7 @@ class ConfirmTransfer < ConfirmItem
   end
 
   def perform
-    return PublishTransfer.with(transfer) if user == transfer.creator
+    return PublishTransfer.with(transfer, user) if user == transfer.creator
 
     super
   end

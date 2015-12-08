@@ -16,6 +16,7 @@ describe 'users/loans/index.html.slim' do
                        first_name: 'Elliott',
                        last_name: 'Mason')
   end
+  let(:lender) { creator }
   let(:loan) do
     CreateLoan.with(creator, loan_form).loan
   end
@@ -26,10 +27,12 @@ describe 'users/loans/index.html.slim' do
       obligor_email_address: borrower_email_address
     )
   end
+  let(:payee) { lender }
+  let(:payer) { borrower }
   let!(:payment) do
     CreatePayment.with(
-      borrower,
-      loan,
+      payer,
+      payee,
       FactoryGirl.attributes_for(:payment_form, amount: 1)
     ).payment
   end
@@ -45,17 +48,19 @@ describe 'users/loans/index.html.slim' do
 
   before do
     sign_in(current_user)
-    PublishLoan.with(loan, creator)
-    DisputeLoan.with(loan, borrower)
+
+    ConfirmLoan.with(loan, loan.creator)
   end
 
   context 'as creator' do
     let(:current_user) { creator }
 
-    context 'for a published, but unconfirmed loan' do
+    context 'for a published, but disputed loan' do
       let(:loan_amount) { 40.00 }
 
       before do
+        DisputeLoan.with(loan, loan.borrower)
+
         assign_activities
         render
       end
@@ -72,13 +77,15 @@ describe 'users/loans/index.html.slim' do
       end
     end
 
-    context 'for a confirmed loan' do
+    context 'for a confirmed loan and confirmed payment' do
       let(:loan_amount) { 9000.01 }
 
       before do
-        ConfirmLoan.with(loan, borrower)
-        ConfirmPayment.with(payment, borrower)
-        ConfirmPayment.with(payment, creator)
+        ConfirmLoan.with(loan, loan.borrower)
+        ConfirmPayment.with(payment, payment.creator)
+        # DisputePayment.with(payment, payment.payee)
+        ConfirmPayment.with(payment, payment.payee)
+
         assign_activities
         render
       end
@@ -106,14 +113,19 @@ describe 'users/loans/index.html.slim' do
     let(:current_user) { borrower }
     let(:loan_amount) { 10 }
 
+    before do
+      DisputeLoan.with(loan, loan.borrower)
+      ConfirmLoan.with(loan, loan.borrower)
+      ConfirmPayment.with(payment, payment.payer)
+      ConfirmPayment.with(payment, payment.payee)
+
+      assign_activities
+      render
+    end
+
     it 'has creation item' do
       expect(rendered)
         .to have_content('Elliott Mason submitted a loan to you for $10.00')
-    end
-
-    it 'has confirmation item' do
-      expect(rendered)
-        .to have_content("you confirmed Elliott Mason's loan to you for $10.00")
     end
 
     it 'has dispute item' do
@@ -121,10 +133,14 @@ describe 'users/loans/index.html.slim' do
         .to have_content("you disputed Elliott Mason's loan for $10.00")
     end
 
+    it 'has confirmation item' do
+      expect(rendered)
+        .to have_content("you confirmed Elliott Mason's loan to you for $10.00")
+    end
+
     it 'has payment item' do
       expect(rendered)
-        .to have_content('you submitted a $1.00 payment toward Elliott ' \
-                         "Mason's loan for $10.00")
+        .to have_content('you submitted a $1.00 payment to Elliott Mason')
     end
 
     it 'has payment confirmation item' do

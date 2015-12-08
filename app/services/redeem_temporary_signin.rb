@@ -1,8 +1,10 @@
 class RedeemTemporarySignin < BaseService
   include ChangeState
 
+  transition :redeem
+
   def initialize(temporary_signin)
-    super(temporary_signin, :redeem)
+    @item = temporary_signin
   end
 
   def allowed?

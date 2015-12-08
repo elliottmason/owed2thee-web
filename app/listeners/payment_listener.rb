@@ -1,9 +1,12 @@
 class PaymentListener
-  def create_transfer_successful(_payment)
+  def confirm_payment_successful(payment, user)
+    RecordTransferActivity.with(payment, :confirmed, user)
   end
 
-  def publish_transfer_successful(payment)
-    RecordTransferActivity.with(payment, :created)
-    # Notify payment recipients
+  def create_payment_successful(_payment)
+  end
+
+  def publish_payment_successful(payment, user)
+    RecordTransferActivity.with(payment, :created, user)
   end
 end

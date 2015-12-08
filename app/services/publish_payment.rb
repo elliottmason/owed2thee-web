@@ -1,6 +1,3 @@
-class PublishPayment < PublishTransfer
-  def initialize(*args)
-    super
-    subscribe(PaymentListener.new)
-  end
+class PublishPayment < ChangePaymentState
+  transition :publish
 end

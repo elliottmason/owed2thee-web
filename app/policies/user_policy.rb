@@ -5,6 +5,10 @@ class UserPolicy
     @loan         = loan
   end
 
+  def pay?
+    ledger && ledger.payable?(current_user)
+  end
+
   def sign_in?
     current_user.nil? && target_user.encrypted_password?
   end
@@ -19,4 +23,8 @@ class UserPolicy
   attr_reader :current_user
   attr_reader :loan
   attr_reader :target_user
+
+  def ledger
+    @ledger ||= LedgerQuery.between!(current_user, target_user)
+  end
 end

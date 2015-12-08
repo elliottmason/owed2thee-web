@@ -3,7 +3,7 @@ FactoryGirl.define do
     association :creator, factory: :confirmed_user
     amount { Faker::Commerce.price }
 
-    factory :confirmed_loan, traits: %i(confirmed)
+    factory :confirmed_loan, traits: %i(confirmed published)
     factory :debt, traits: %i(debt)
     factory :published_debt, traits: %i(debt published)
     factory :published_loan, traits: %i(published) do
@@ -13,9 +13,7 @@ FactoryGirl.define do
 
     trait :confirmed do
       after(:create) do |loan, _|
-        loan.publish!
-        loan.participants.each(&:confirm!)
-        loan.confirm!
+        ConfirmLoan.with(loan, loan.borrower)
       end
     end
 
@@ -31,8 +29,7 @@ FactoryGirl.define do
 
     trait :published do
       after(:create) do |loan, _|
-        loan.publish!
-        LoanListener.new.publish_transfer_successful(loan)
+        PublishLoan.with(loan, loan.creator)
       end
     end
 

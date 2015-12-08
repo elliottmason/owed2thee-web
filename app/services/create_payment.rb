@@ -1,18 +1,18 @@
 class CreatePayment < BaseService
-  include Wisper::Publisher
+  include BroadcastToListeners
 
   attr_reader :creator
-  attr_reader :loan
   attr_reader :params
+  attr_reader :payee
   attr_reader :payment
   attr_reader :user
 
-  def initialize(creator, loan, params = {})
-    @creator  = creator
-    @loan     = loan
-    @params   = params
+  subscribe :PaymentListener
 
-    subscribe(PaymentListener.new)
+  def initialize(creator, payee, params = {})
+    @creator  = creator
+    @params   = params
+    @payee    = payee
   end
 
   def form
@@ -22,19 +22,22 @@ class CreatePayment < BaseService
   def perform
     return unless form.valid?
 
-    @successful = create_payment
-
-    broadcast(:create_payment_successful, payment)
+    create_payment
+    @successful = payment.persisted?
   end
 
   private
 
+  def broadcast_to_listeners
+    broadcast(:create_payment_successful, payment)
+  end
+
   def build_payment
     @payment = Payment.new do |payment|
-      payment.creator = creator
-      payment.payee   = loan.lender
-      payment.payer   = creator
       payment.amount  = form.amount
+      payment.creator = creator
+      payment.payee   = payee
+      payment.payer   = creator
     end
   end
 

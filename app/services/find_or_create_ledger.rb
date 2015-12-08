@@ -12,8 +12,8 @@ class FindOrCreateLedger < BaseService
   end
 
   def ledger
-    @ledger ||= Ledger.between(user_a, user_b).first ||
-                Ledger.create!(user_a: user_a, user_b: user_b)
+    @ledger ||= LedgerQuery.between(user_a, user_b)
+                .first_or_create(user_a: user_a, user_b: user_b)
   end
 
   def perform

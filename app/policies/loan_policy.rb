@@ -8,14 +8,9 @@ class LoanPolicy
     user_is_creator? && loan_is_unconfirmed? && loan_is_cancelable?
   end
 
-  def comment?
-    user_is_creator? ||
-      (user_is_participant? && loan_is_published?)
-  end
-
   def confirm?
-    (user_is_creator? || (loan_is_published? && user_is_recipient?)) &&
-      loan_is_confirmable?
+    (user_is_creator? && loan_is_publishable?) ||
+      (loan_is_published? && user_is_recipient? && !user_is_creator?)
   end
 
   def dispute?
@@ -34,6 +29,7 @@ class LoanPolicy
   private
 
   attr_reader :loan
+  attr_reader :user
 
   def loan_is_cancelable?
     loan.publicity.can_transition_to?(:canceled)
@@ -45,6 +41,10 @@ class LoanPolicy
 
   def loan_is_disputable?
     loan.confirmation.can_transition_to?(:disputed)
+  end
+
+  def loan_is_publishable?
+    loan.publicity.can_transition_to?(:published)
   end
 
   def loan_is_published?
@@ -60,24 +60,22 @@ class LoanPolicy
   end
 
   def user_is_borrower?
-    loan.borrower == @user
+    loan.borrower == user
   end
 
   def user_is_creator?
-    loan.creator == @user
+    loan.creator == user
   end
 
   def user_is_lender?
-    loan.lender == @user
+    loan.lender == user
   end
 
   def user_is_participant?
     user_is_borrower? || user_is_lender?
   end
 
-  attr_reader :user
-
   def user_is_recipient?
-    loan.recipient == @user
+    loan.recipient == user
   end
 end

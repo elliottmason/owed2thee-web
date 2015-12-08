@@ -1,3 +1,3 @@
 class DisputeLoan < ChangeLoanState
-  include DisputeItem
+  transition :dispute
 end

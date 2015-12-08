@@ -4,19 +4,18 @@ class CreateUserContactsForTransferParticipant < BaseService
   attr_reader :contact
   attr_reader :transfer
 
-  def initialize(contact, transfer)
+  def initialize(transfer, contact)
     @contact  = contact
     @transfer = transfer
   end
 
   def recipients
-    @recipients ||= transfer.participants - [contact]
+    @recipients ||=
+      [transfer.creator, transfer.recipient, transfer.sender] - [contact]
   end
 
   def perform
-    create_user_contacts
-
-    @successful = true
+    @successful = true if create_user_contacts
   end
 
   private

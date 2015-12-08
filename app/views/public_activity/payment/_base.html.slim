@@ -1,0 +1,5 @@
+- activity = Activities::PaymentPresenter.new(activity, current_user)
+= activity.text(actor:       activity.actor,
+                amount_paid: activity.amount_paid,
+                payee:       activity.payee,
+                payer:       activity.payer)

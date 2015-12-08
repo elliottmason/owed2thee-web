@@ -1,0 +1,5 @@
+- activity = Activities::LoanPresenter.new(activity, current_user)
+= activity.text(actor:       activity.actor,
+                amount_lent: activity.amount_lent,
+                borrower:    activity.borrower,
+                lender:      activity.lender)

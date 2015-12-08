@@ -1,5 +1,5 @@
 class ChangePaymentState < ChangeTransferState
-  subscribe :PaymentListener
+  subscribe PaymentListener.new
 
   alias_method :payment, :transfer
 end

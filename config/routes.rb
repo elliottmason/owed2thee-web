@@ -7,7 +7,6 @@ Rails.application.routes.draw do
 
   resources :loans, only: %i(create new show), param: :uuid do
     resources :comments,  only: %i(create), module: 'loans'
-    resources :payments,  only: %i(create new), param: :uuid
 
     member do
       %w(cancel confirm dispute).each do |verb|
@@ -17,11 +16,15 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :payments, only: %i(show), param: :uuid do
+  resources :payments, only: %i(create new show), param: :uuid do
     member do
       patch 'confirm'
       put 'confirm'
     end
+  end
+
+  resources :users, param: :uuid do
+    resources :payments, only: %i(create new)
   end
 
   namespace :users, as: 'user', path: '' do
