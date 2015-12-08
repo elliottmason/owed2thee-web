@@ -9,13 +9,16 @@ class LoanPolicy
   end
 
   def confirm?
-    (user_is_creator? && loan_is_publishable?) ||
-      (loan_is_confirmable? && user_is_recipient? && !user_is_creator?)
+    loan_is_confirmable? && user_is_recipient? && !user_is_creator?
   end
 
   def dispute?
     loan_is_disputable? &&
       user_is_participant? && !user_is_creator?
+  end
+
+  def publish?
+    user_is_creator? && loan_is_publishable?
   end
 
   def show?

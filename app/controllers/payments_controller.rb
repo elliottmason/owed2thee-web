@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :retrieve_payment,  only: %i(confirm show)
+  before_action :retrieve_payment,  only: %i(confirm publish show)
   before_action :retrieve_payee,    only: %i(create new)
 
   def confirm
@@ -22,6 +22,12 @@ class PaymentsController < ApplicationController
 
   def new
     @payment_form = PaymentForm.new
+  end
+
+  def publish
+    service = PublishPayment.with(@payment, current_user)
+    flash[:notice] = confirmation_notice if service.successful?
+    redirect_to(@payment)
   end
 
   def show

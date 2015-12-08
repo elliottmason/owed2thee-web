@@ -3,6 +3,7 @@ feature 'Confirm a loan', js: true do
 
   context 'as as lender' do
     let(:confirmation_notice) { 'Confirmed your loan to Josh for $9.00' }
+    let(:current_user) { loan.lender }
     let(:loan) do
       lender = FactoryGirl.create(:confirmed_user, first_name: 'Josh')
       FactoryGirl.create(:loan, amount: 9.00, creator: lender)
@@ -16,7 +17,8 @@ feature 'Confirm a loan', js: true do
 
   context 'as a borrower' do
     let(:confirmation_notice) { "Confirmed Josh's loan for $9.00" }
-    let(:loan) { FactoryGirl.create(:debt) }
+    let(:current_user) { loan.borrower }
+    let(:loan) { FactoryGirl.create(:published_loan) }
 
     scenario do
       confirm_loan
@@ -25,7 +27,7 @@ feature 'Confirm a loan', js: true do
   end
 
   def confirm_loan
-    login_as(loan.creator)
+    login_as(current_user)
     show_loan_page.load(uuid: loan.uuid)
     show_loan_page.confirm
   end

@@ -1,2 +1,4 @@
+- if policy(@payment).publish?
+  = li = button_to t('.publish_button').capitalize, [:publish, @payment], method: :patch, class: 'button'
 - if policy(@payment).confirm?
-  = li = button_to 'Confirm', [:confirm, @payment],  method: :patch, class: 'button'
+  = li = button_to t('.confirm_button').capitalize, [:confirm, @payment], method: :patch, class: 'button'

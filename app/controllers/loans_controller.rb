@@ -1,17 +1,17 @@
 class LoansController < ApplicationController
   before_action :authenticate_user!, only: %i(show)
-  before_action :retrieve_loan, only: %i(cancel confirm dispute show)
+  before_action :retrieve_loan, only: %i(cancel confirm dispute publish show)
 
   def cancel
     service = CancelLoan.with(@loan, current_user)
     flash[:notice] = cancellation_notice if service.successful?
-    redirect_to([@loan])
+    redirect_to(@loan)
   end
 
   def confirm
     service = ConfirmLoan.with(@loan, current_user)
     flash[:notice] = confirmation_notice if service.successful?
-    redirect_to([@loan])
+    redirect_to(@loan)
   end
 
   def create
@@ -31,7 +31,7 @@ class LoansController < ApplicationController
   def dispute
     service = DisputeLoan.with(@loan, current_user)
     flash[:notice] = dispute_notice if service.successful?
-    redirect_to([@loan])
+    redirect_to(@loan)
   end
 
   def new
@@ -40,6 +40,12 @@ class LoansController < ApplicationController
 
   def show
     @comment_form = CommentForm.new
+  end
+
+  def publish
+    service = PublishLoan.with(@loan, current_user)
+    flash[:notice] = confirmation_notice if service.successful?
+    redirect_to([@loan])
   end
 
   private

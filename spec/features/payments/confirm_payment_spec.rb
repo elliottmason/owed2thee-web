@@ -1,5 +1,6 @@
 feature 'Confirm a payment', :js do
   let(:borrower)  { payer }
+  let(:creator)   { payer }
   let(:lender)    { payee }
   let(:payee) do
     FactoryGirl.create(
@@ -43,6 +44,10 @@ feature 'Confirm a payment', :js do
   context 'as a payee' do
     let(:confirmation_notice) do
       "You confirmed kyle.balderson@gmail.com's $1.00 payment to you"
+    end
+
+    before do
+      PublishPayment.with(payment, creator)
     end
 
     scenario do

@@ -1,6 +1,8 @@
 = render 'description', locals: { loan: @loan }
 
 ul.button-group
+- if policy(@loan).publish?
+  li = button_to t('.publish_button'), [:publish, @loan], class: 'button', form_class: 'confirm_button', method: :patch
 - if policy(@loan).confirm?
   li = button_to t('.confirm_button'), [:confirm, @loan], class: 'button', form_class: 'confirm_button', method: :patch
 - if policy(@loan).cancel?

@@ -7,17 +7,19 @@ Rails.application.routes.draw do
 
   resources :loans, only: %i(create new show), param: :uuid do
     member do
-      %w(cancel confirm dispute).each do |verb|
-        patch(verb)
-        put(verb)
+      %w(cancel confirm dispute publish).each do |action|
+        patch(action)
+        put(action)
       end
     end
   end
 
   resources :payments, only: %i(create new show), param: :uuid do
     member do
-      patch 'confirm'
-      put 'confirm'
+      %w(confirm publish).each do |action|
+        patch(action)
+        put(action)
+      end
     end
   end
 

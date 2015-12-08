@@ -72,6 +72,7 @@ en:
       confirm_button: :app.verbs.confirm
       dispute_button: :app.verbs.dispute
       pay_button: :app.verbs.pay
+      publish_button: :app.verbs.confirm
 
   passwords:
     errors:
@@ -99,40 +100,16 @@ en:
         confirmable: :payments.descriptions.full
         string: :app.notices.confirmation
 
+    # Rails scopes
+    show:
+      confirm_button: :app.verbs.confirm
+      publish_button: :app.verbs.confirm
+
   transfers:
     errors:
       amount:
         nonpositive: must be larger than $0.00
       identical_obligors: "you cannot create a %{record} with yourself"
-
-
-  random_phrases:
-    negative:
-      - dang it
-      - error
-      - hold up,
-      - ["I don't think so, Tim.", 0.0078125]
-      - oops
-      - that's no good
-      - uh oh
-    neutral:
-      - done
-      - finished
-      - OK
-      - [verily, 0.0625]
-    positive:
-      - delightful
-      - done
-      - fantastic
-      - [five by five, 0.5]
-      - got it
-      - great
-      - it is so
-      - [marvelous, 0.1]
-      - perfect
-      - splendid
-      - [splendiferous, 0.0078125]
-      - ["you got it, dude", 0.25]
 
   # scoped for Rails
   errors:

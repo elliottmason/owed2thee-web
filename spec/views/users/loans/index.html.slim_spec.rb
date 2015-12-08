@@ -49,7 +49,7 @@ describe 'users/loans/index.html.slim' do
   before do
     sign_in(current_user)
 
-    ConfirmLoan.with(loan, loan.creator)
+    PublishLoan.with(loan, loan.creator)
   end
 
   context 'as creator' do
@@ -82,7 +82,7 @@ describe 'users/loans/index.html.slim' do
 
       before do
         ConfirmLoan.with(loan, loan.borrower)
-        ConfirmPayment.with(payment, payment.creator)
+        PublishPayment.with(payment, payment.creator)
         # DisputePayment.with(payment, payment.payee)
         ConfirmPayment.with(payment, payment.payee)
 
@@ -116,7 +116,7 @@ describe 'users/loans/index.html.slim' do
     before do
       DisputeLoan.with(loan, loan.borrower)
       ConfirmLoan.with(loan, loan.borrower)
-      ConfirmPayment.with(payment, payment.payer)
+      PublishPayment.with(payment, payment.payer)
       ConfirmPayment.with(payment, payment.payee)
 
       assign_activities
