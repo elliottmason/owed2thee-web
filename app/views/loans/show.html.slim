@@ -7,5 +7,5 @@ ul.button-group
   li = button_to t('.cancel_button'),  [:cancel,  @loan], class: 'button', form_class: 'cancel_button', method: :patch
 - if policy(@loan).dispute?
   li = button_to t('.dispute_button'), [:dispute, @loan], class: 'button', form_class: 'dispute_button', method: :patch
-- if policy(@loan).pay?
+- if policy(@loan.lender).pay?
   li = button_to t('.pay_button'), [:new, @loan.lender, :payment], class: 'button', form_class: 'pay_button', method: :get

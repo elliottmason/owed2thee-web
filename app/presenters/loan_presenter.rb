@@ -10,12 +10,4 @@ class LoanPresenter < TransferPresenter
   end
 
   alias_method :loan, :item
-
-  def viewer_is_borrower?
-    viewer_is?(:borrower)
-  end
-
-  def viewer_is_lender?
-    viewer_is?(:lender)
-  end
 end

@@ -7,7 +7,8 @@ module Activities
     def borrower
       return @borrower if @borrower
 
-      @borrower = 'them' if loan.borrower == activity.owner && activity.owner != viewer
+      @borrower = 'them' \
+        if loan.borrower == activity.owner && activity.owner != viewer
       @borrower ||= display_name_for(loan.borrower)
     end
 

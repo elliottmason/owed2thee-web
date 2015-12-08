@@ -2,7 +2,6 @@
 # Each EmailAddress record contains a unique email address and the model
 # contains a state machine that tracks its confirmation status.
 class EmailAddress < ActiveRecord::Base
-  include ConfirmationToken
   include Transitional
 
   belongs_to :user
@@ -11,6 +10,8 @@ class EmailAddress < ActiveRecord::Base
                       uniqueness: { conditions: -> { in_state(:confirmed) } }
 
   transitional :confirmation
+
+  include ConfirmationToken
 
   def to_param
     address

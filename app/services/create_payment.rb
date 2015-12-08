@@ -24,6 +24,7 @@ class CreatePayment < BaseService
 
     create_payment
     @successful = payment.persisted?
+    super
   end
 
   private

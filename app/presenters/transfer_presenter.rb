@@ -14,16 +14,12 @@ class TransferPresenter < BasePresenter
   end
 
   def display_name(user, possessive: false)
-    result = UserPresenter
-             .new(user, viewer, transfer)
-             .display_name(possessive: possessive)
+    UserPresenter
+      .new(user, viewer, transfer)
+      .display_name(possessive: possessive)
   end
 
   alias_method :transfer, :item
-
-  def viewer_is?(type)
-    transfer.send(type) == viewer
-  end
 
   private
 

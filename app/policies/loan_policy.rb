@@ -10,16 +10,12 @@ class LoanPolicy
 
   def confirm?
     (user_is_creator? && loan_is_publishable?) ||
-      (loan_is_published? && user_is_recipient? && !user_is_creator?)
+      (loan_is_confirmable? && user_is_recipient? && !user_is_creator?)
   end
 
   def dispute?
     loan_is_disputable? &&
       user_is_participant? && !user_is_creator?
-  end
-
-  def pay?
-    loan_is_unpaid? && user_is_borrower?
   end
 
   def show?
@@ -36,7 +32,7 @@ class LoanPolicy
   end
 
   def loan_is_confirmable?
-    loan.confirmation.can_transition_to?(:confirmed)
+    loan_is_published? && loan.confirmation.can_transition_to?(:confirmed)
   end
 
   def loan_is_disputable?
@@ -53,10 +49,6 @@ class LoanPolicy
 
   def loan_is_unconfirmed?
     !loan.confirmed?
-  end
-
-  def loan_is_unpaid?
-    !loan.fully_paid?
   end
 
   def user_is_borrower?

@@ -6,8 +6,6 @@ Rails.application.routes.draw do
   resources :loans, module: 'users', only: %i(index)
 
   resources :loans, only: %i(create new show), param: :uuid do
-    resources :comments,  only: %i(create), module: 'loans'
-
     member do
       %w(cancel confirm dispute).each do |verb|
         patch(verb)

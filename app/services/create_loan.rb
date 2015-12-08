@@ -1,5 +1,5 @@
 class CreateLoan < BaseService
-  include Wisper::Publisher
+  include BroadcastToListeners
 
   attr_reader :loan
   attr_reader :unregistered_creator
@@ -25,10 +25,6 @@ class CreateLoan < BaseService
     @form ||= LoanForm.new(@params)
   end
 
-  def group
-    @group ||= LoanGroup.new
-  end
-
   def lender
     @lender ||= { debt: obligor, loan: creator }[type]
   end
@@ -51,7 +47,7 @@ class CreateLoan < BaseService
       end
     end
 
-    broadcast_to_listeners if successful?
+    super
   end
 
   def type

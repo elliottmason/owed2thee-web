@@ -12,13 +12,17 @@ class LoanParticipationMailer < ApplicationMailer
     end
   end
 
-  def email(participant)
-    @participant        = participant
+  def email(loan, recipient)
+    @loan               = loan
+    @recipient          = recipient
     @confirmation_link  = confirmation_link
     mail(to: to, subject: subject)
   end
 
   private
+
+  attr_reader :loan
+  attr_reader :recipient
 
   def creator
     loan.creator
@@ -27,12 +31,6 @@ class LoanParticipationMailer < ApplicationMailer
   def creator_email_address
     creator.email_addresses.first
   end
-
-  def loan
-    @loan ||= participant.loan
-  end
-
-  attr_reader :participant
 
   def recipient_email_address
     @recipient_email_address ||= recipient.email_addresses.first
@@ -45,9 +43,5 @@ class LoanParticipationMailer < ApplicationMailer
 
   def to
     recipient_email_address.address
-  end
-
-  def recipient
-    @recipient ||= participant.user
   end
 end

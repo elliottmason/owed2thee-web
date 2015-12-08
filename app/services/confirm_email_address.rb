@@ -1,11 +1,13 @@
 class ConfirmEmailAddress < BaseService
-  include Wisper::Publisher
+  include BroadcastToListeners
+
+  delegate :user, to: :email_address, allow_nil: true
+
+  subscribe ConfirmUser.new
 
   def initialize(email_address, confirmation_token)
-    @email_address      = email_address
     @confirmation_token = confirmation_token
-
-    subscribe(ConfirmUser.new)
+    @email_address      = email_address
   end
 
   def email_address
@@ -23,12 +25,14 @@ class ConfirmEmailAddress < BaseService
 
     email_address.confirm!
 
-    broadcast(:confirm_email_address_successful, email_address) if successful?
+    super
+  end
+
+  def broadcast_to_listeners
+    broadcast(:confirm_email_address_successful, email_address)
   end
 
   def successful?
     email_address.present? && email_address.confirmed?
   end
-
-  delegate :user, to: :email_address, allow_nil: true
 end
