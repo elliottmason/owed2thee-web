@@ -25,6 +25,9 @@ build:
               wget https://phantomjs.googlecode.com/files/phantomjs-1.9.2-linux-x86_64.tar.bz2
               tar xfj phantomjs-1.9.2-linux-x86_64.tar.bz2
               sudo cp phantomjs-1.9.2-linux-x86_64/bin/phantomjs /usr/local/bin
+        - script:
+            name: bundler config
+            code: bundle config build.nokogiri --use-system-libraries
         - bundle-install
         - rails-database-yml
         - script:
