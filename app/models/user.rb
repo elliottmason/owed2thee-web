@@ -6,8 +6,9 @@ class User < ActiveRecord::Base
   has_many :user_contacts
   has_many :contacts, class_name: 'User', through: :user_contacts
   has_many :email_addresses
-  has_many :debts, foreign_key: :recipient_id
+  has_many :debts, class_name: 'Loan', foreign_key: :recipient_id
   has_many :loans, foreign_key: :sender_id
+  has_many :payments, foreign_key: :sender_id
 
   validates :email_addresses, presence: true
 

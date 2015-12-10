@@ -3,7 +3,7 @@ FactoryGirl.define do
     association :creator, factory: :confirmed_user
     amount { Faker::Commerce.price }
 
-    factory :confirmed_loan, traits: %i(confirmed published)
+    factory :confirmed_loan, traits: %i(published confirmed)
     factory :debt, traits: %i(debt)
     factory :published_debt, traits: %i(debt published)
     factory :published_loan, traits: %i(published) do

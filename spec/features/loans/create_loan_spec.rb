@@ -9,26 +9,29 @@ feature 'Create a loan', :js do
     expect(show_loan_page).to be_displayed
   end
 
-  scenario 'as a signed-out user' do
-    user = FactoryGirl.create(:confirmed_user)
-    obligor_email_address = \
-      FactoryGirl.create(:confirmed_user).primary_email_address.address
+  context 'as a signed-out-user' do
+    let(:borrower)  { FactoryGirl.create(:confirmed_user) }
+    let(:creator)   { FactoryGirl.create(:confirmed_user) }
+    let(:ledger)    { LedgerQuery.between!(borrower, creator) }
 
-    new_loan_page.load
-    new_loan_page.loan_form.submit(
-      FactoryGirl.attributes_for(
-        :loan_form,
-        creator_email_address: user.primary_email_address.address,
-        obligor_email_address: obligor_email_address
+    scenario 'with signin password' do
+      new_loan_page.load
+      new_loan_page.loan_form.submit(
+        FactoryGirl.attributes_for(
+          :loan_form,
+          amount: 10,
+          creator_email_address: creator.primary_email_address.address,
+          obligor_email_address: borrower.primary_email_address.address
+        )
       )
-    )
-    expect(sign_in_page).to be_displayed
+      expect(sign_in_page).to be_displayed
 
-    sign_in_page.sign_in_form.submit(
-      password: user.password
-    )
+      sign_in_page.sign_in_form.submit(
+        password: creator.password
+      )
 
-    expect(show_loan_page).to be_displayed
+      expect(show_loan_page).to be_displayed
+    end
   end
 
   scenario 'as a signed-out, unconfirmed user' do

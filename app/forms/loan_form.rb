@@ -21,7 +21,7 @@ class LoanForm < BaseForm
   end
 
   def emails_most_not_be_identical
-    errors.add(:base, I18n.t('loans.errors.identical_obligors')) \
+    errors.add(:base, I18n.t('loans.errors.identical_participants')) \
       if emails_identical?
   end
 end

@@ -51,9 +51,9 @@ en:
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
-      identical_obligors:
+      identical_participants:
         record: :loans.name
-        string: :transfers.errors.identical_obligors
+        string: :transfers.errors.identical_participants
     name: :app.concepts.loan
     notices:
       cancellation:
@@ -109,7 +109,7 @@ en:
     errors:
       amount:
         nonpositive: must be larger than $0.00
-      identical_obligors: "you cannot create a %{record} with yourself"
+      identical_participants: "you cannot create a %{record} with yourself"
 
   # scoped for Rails
   errors:
