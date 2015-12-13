@@ -9,8 +9,11 @@ feature 'Confirm a loan', js: true do
       FactoryGirl.create(:loan, amount: 9.00, creator: lender)
     end
 
-    scenario do
+    before do
       confirm_loan
+    end
+
+    scenario do
       expect_loan_confirmation
     end
   end
@@ -20,8 +23,11 @@ feature 'Confirm a loan', js: true do
     let(:current_user) { loan.borrower }
     let(:loan) { FactoryGirl.create(:published_loan) }
 
-    scenario do
+    before do
       confirm_loan
+    end
+
+    scenario do
       expect_loan_confirmation
     end
   end

@@ -24,6 +24,6 @@ class FindOrCreatePasswordReset < BaseService
   end
 
   def retrieve_email_address
-    @email_address = EmailAddressQuery.address(email_address_string)
+    @email_address = EmailAddressQuery.address!(email_address_string)
   end
 end

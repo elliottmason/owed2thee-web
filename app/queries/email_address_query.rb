@@ -7,17 +7,23 @@ class EmailAddressQuery < BaseQuery
     new
       .relation
       .address(*args)
-      .first
+  end
+
+  def self.address!(*args)
+    address(*args).first
   end
 
   def self.for_transfer_participant(transfer, user)
-    return user.primary_email_address if transfer.creator_id == user.id
-
     new
       .relation
       .transfer(transfer)
       .user(user)
-      .first
+  end
+
+  def self.for_transfer_participant!(transfer, user)
+    return user.primary_email_address if transfer.creator_id == user.id
+
+    for_transfer_participant(transfer, user).first
   end
 
   module Scopes

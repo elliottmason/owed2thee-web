@@ -47,8 +47,13 @@ feature 'Confirm email address', :devise, :js do
     end
   end
 
-  scenario 'with bad confirmation token' do
-    confirm_email_address('wrongtoken')
-    expect(home_page).to be_displayed
+  context 'with bad confirmation token' do
+    before do
+      confirm_email_address('wrongtoken')
+    end
+
+    scenario do
+      expect(home_page).to be_displayed
+    end
   end
 end

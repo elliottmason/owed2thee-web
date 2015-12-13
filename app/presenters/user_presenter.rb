@@ -31,7 +31,7 @@ class UserPresenter < Burgundy::Item
   def email_address
     return @email_address if @email_address
 
-    @email_address = EmailAddressQuery.for_transfer_participant(transfer, user)
+    @email_address = EmailAddressQuery.for_transfer_participant!(transfer, user)
                      .try(:address)
   end
 

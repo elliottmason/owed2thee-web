@@ -29,11 +29,11 @@ class LoanParticipationMailer < ApplicationMailer
   end
 
   def creator_email_address
-    creator.email_addresses.first
+    creator.primary_email_address
   end
 
   def recipient_email_address
-    @recipient_email_address ||= recipient.email_addresses.first
+    @recipient_email_address ||= recipient.primary_email_address
   end
 
   def subject

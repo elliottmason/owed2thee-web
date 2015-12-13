@@ -1,10 +1,10 @@
-feature 'Set login password', :devise, :js do
+feature 'Setting login password', :devise, :js do
   let(:edit_password_page) { Accounts::Passwords::EditPage.new }
 
-  context 'with no existing password' do
+  context 'with no current password' do
     let(:user) { FactoryGirl.create(:unconfirmed_user) }
 
-    scenario do
+    before do
       login_as(user)
       edit_password_page.load
 
@@ -12,13 +12,16 @@ feature 'Set login password', :devise, :js do
         new_password:               'abcd1234',
         new_password_confirmation:  'abcd1234'
       )
-
-      expect(edit_password_page).to be_displayed
-      # expect flash message
     end
+
+    scenario do
+      expect(edit_password_page).to be_displayed
+    end
+
+    pending 'expect flash message'
   end
 
-  context 'with existing password' do
+  context 'with an extant password' do
     let(:user) { FactoryGirl.create(:confirmed_user) }
 
     before do
@@ -26,25 +29,29 @@ feature 'Set login password', :devise, :js do
       edit_password_page.load
     end
 
-    scenario 'valid current password' do
-      edit_password_page.password_form.submit(
-        current_password:           user.password,
-        new_password:               'abcd1234',
-        new_password_confirmation:  'abcd1234'
-      )
+    context 'and correct current password' do
+      before do
+        edit_password_page.password_form.submit(
+          current_password:           user.password,
+          new_password:               'abcd1234',
+          new_password_confirmation:  'abcd1234'
+        )
+      end
 
-      expect(edit_password_page).to be_displayed
-      # expect flash message
+      scenario { expect(edit_password_page).to be_displayed }
+      pending 'expect flash message'
     end
 
-    scenario 'with incorrect current password' do
-      edit_password_page.password_form.submit(
-        current_password:           'butts',
-        new_password:               'abcd1234',
-        new_password_confirmation:  'abcd1234'
-      )
-      expect(edit_password_page).to_not be_displayed
-      # expect error flash message
+    context 'but incorrect current password' do
+      before do
+        edit_password_page.password_form.submit(
+          current_password:           'butts',
+          new_password:               'abcd1234',
+          new_password_confirmation:  'abcd1234'
+        )
+      end
+      scenario { expect(edit_password_page).to_not be_displayed }
+      pending 'expect flash message'
     end
   end
 end

@@ -23,7 +23,7 @@ FactoryGirl.define do
     end
 
     trait :loan do
-      association :borrower, factory: :confirmed_user
+      association :borrower, factory: :unconfirmed_user
       lender { creator }
     end
 
