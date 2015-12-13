@@ -1,5 +1,6 @@
 class PaymentListener
   def confirm_payment_successful(payment, user)
+    RecalculateLedger.with(*payment.participants)
     RecordTransferActivity.with(payment, :confirmed, user)
   end
 
@@ -7,6 +8,7 @@ class PaymentListener
   end
 
   def publish_payment_successful(payment, user)
+    RecalculateLedger.with(*payment.participants)
     RecordTransferActivity.with(payment, :created, user)
   end
 end
