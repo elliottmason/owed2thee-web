@@ -1,8 +1,5 @@
-class PaymentPolicy
-  def initialize(user, payment)
-    @payment  = payment
-    @user     = user
-  end
+class PaymentPolicy < ApplicationPolicy
+  alias_method :payment, :record
 
   def confirm?
     payment_is_confirmable? && user_is_participant? && !user_is_creator?
@@ -17,9 +14,6 @@ class PaymentPolicy
   end
 
   private
-
-  attr_reader :payment
-  attr_reader :user
 
   def payment_is_confirmable?
     payment_is_published? && payment.confirmation.can_transition_to?(:confirmed)

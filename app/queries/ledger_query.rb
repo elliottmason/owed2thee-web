@@ -1,4 +1,4 @@
-class LedgerQuery < BaseQuery
+class LedgerQuery < ApplicationQuery
   def initialize(relation = Ledger.all)
     super
   end

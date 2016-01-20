@@ -1,4 +1,4 @@
-class UserPolicy
+class UserPolicy < ApplicationPolicy
   def initialize(current_user, target_user = nil, loan = nil)
     @current_user = current_user
     @target_user  = target_user

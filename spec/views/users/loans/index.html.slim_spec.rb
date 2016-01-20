@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'users/loans/index.html.slim' do
   include ApplicationHelper
@@ -41,7 +41,7 @@ describe 'users/loans/index.html.slim' do
     assign(
       :activities,
       GroupRecordsByCreationDate.with(
-        ActivityQuery.paginated_for_user(current_user, 1)
+        ActivityQuery.for_user(current_user)
       )
     )
   end

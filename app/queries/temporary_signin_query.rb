@@ -1,4 +1,4 @@
-class TemporarySigninQuery < BaseQuery
+class TemporarySigninQuery < ApplicationQuery
   def initialize(relation = TemporarySignin.all)
     super
   end

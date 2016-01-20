@@ -1,5 +1,8 @@
 module Users
   class PasswordResetsController < Devise::PasswordsController
+    skip_after_action :verify_authorized
+    skip_after_action :verify_policy_scoped
+
     def create
       service = FindOrCreatePasswordReset.with(params[:user][:email_address])
 

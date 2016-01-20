@@ -1,11 +1,14 @@
 module Users
   class LoansController < BaseController
     def index
-      loans = LoanQuery.paginated_for_user(current_user, index_params.page)
+      authorize(:Activity)
+      authorize(Loan)
+
+      loans = policy_scope(Loan).page(index_params.page)
       @loans = GroupRecordsByCreationDate.with(loans)
 
-      activities = ActivityQuery.paginated_for_user(current_user,
-                                                    index_params.page)
+      activities = policy_scope(:Activity) \
+                   .page(index_params.page)
       @activities = GroupRecordsByCreationDate.with(activities)
     end
 

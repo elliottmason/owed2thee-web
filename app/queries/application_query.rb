@@ -1,4 +1,4 @@
-class BaseQuery
+class ApplicationQuery
   attr_reader :relation
 
   def initialize(relation)

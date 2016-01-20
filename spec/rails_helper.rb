@@ -7,6 +7,7 @@ SimpleCov.start do
   add_group 'Controllers',    'app/controllers'
   add_group 'Forms',          'app/forms'
   add_group 'Helpers',        'app/helpers'
+  add_group 'Junk Drawer',    'lib'
   add_group 'Listeners',      'app/listeners'
   add_group 'Mailers',        'app/mailers'
   add_group 'Models',         'app/models'
@@ -17,7 +18,6 @@ SimpleCov.start do
   add_group 'Services',       'app/services'
   add_group 'State Machines', 'app/state_machines'
   add_group 'Validators',     'app/validators'
-  add_group 'View Models',    'app/view_models'
 end
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'

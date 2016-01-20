@@ -1,4 +1,4 @@
-class UserQuery < BaseQuery
+class UserQuery < ApplicationQuery
   def initialize(relation = User.all)
     super
   end

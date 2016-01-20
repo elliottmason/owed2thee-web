@@ -1,4 +1,4 @@
-class TransferQuery < BaseQuery
+class TransferQuery < ApplicationQuery
   def initialize(relation = Transfer.all)
     super
   end

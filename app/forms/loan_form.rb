@@ -6,7 +6,7 @@ class LoanForm < BaseForm
   attribute :obligor_email_address,   String
   attribute :type,                    String
 
-  validate :emails_most_not_be_identical
+  validate :emails_must_not_be_identical
   validates :amount, numericality: { greater_than: 0.00 }
   validates :obligor_email_address, presence: true
   validates :type, inclusion: %w(debt loan)
@@ -20,7 +20,7 @@ class LoanForm < BaseForm
       !creator_email_address.blank?
   end
 
-  def emails_most_not_be_identical
+  def emails_must_not_be_identical
     errors.add(:base, I18n.t('loans.errors.identical_participants')) \
       if emails_identical?
   end

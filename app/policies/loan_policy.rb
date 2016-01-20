@@ -1,7 +1,8 @@
-class LoanPolicy
-  def initialize(user, loan)
-    @user = user
-    @loan = loan
+class LoanPolicy < ApplicationPolicy
+  alias_method :loan, :record
+
+  def index?
+    user.present?
   end
 
   def cancel?
@@ -12,9 +13,17 @@ class LoanPolicy
     loan_is_confirmable? && user_is_recipient? && !user_is_creator?
   end
 
+  def create?
+    true
+  end
+
   def dispute?
     loan_is_disputable? &&
       user_is_participant? && !user_is_creator?
+  end
+
+  def new?
+    create?
   end
 
   def publish?
@@ -22,13 +31,12 @@ class LoanPolicy
   end
 
   def show?
+    # can see any loan you've personally created irrespective of publicity
+    # can see any loan you're involved in if it's published
     user_is_creator? || (loan_is_published? && user_is_participant?)
   end
 
   private
-
-  attr_reader :loan
-  attr_reader :user
 
   def loan_is_cancelable?
     loan.publicity.can_transition_to?(:canceled)
@@ -72,5 +80,11 @@ class LoanPolicy
 
   def user_is_recipient?
     loan.recipient == user
+  end
+
+  class Scope < Scope
+    def resolve
+      LoanQuery.for_user(user)
+    end
   end
 end

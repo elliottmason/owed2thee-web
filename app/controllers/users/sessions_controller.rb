@@ -1,5 +1,8 @@
 module Users
   class SessionsController < Devise::SessionsController
+    skip_after_action :verify_authorized
+    skip_after_action :verify_policy_scoped
+
     helper_method :can_sign_in?
 
     def new

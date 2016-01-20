@@ -1,28 +1,27 @@
-class LoanQuery < BaseQuery
-  PER_PAGE = 15
+class LoanQuery < ApplicationQuery
+  include Kaminari::ConfigurationMethods
 
   attr_reader :relation
 
-  def initialize
-    super(Loan.all)
+  paginates_per 10
+
+  def initialize(relation = Loan.all)
+    super
   end
 
-  def self.paginated_for_user(user, page = 1)
+  def self.for_user(user)
     new
       .relation
       .published
       .user(user)
-      .page(page, PER_PAGE)
       .order('transfers.created_at DESC')
   end
 
-  def self.uuid(uuid)
+  def self.uuid!(uuid)
     Loan.where(uuid: uuid).first!
   end
 
   module Scopes
-    include Paginated
-
     def published
       in_state(:published)
     end

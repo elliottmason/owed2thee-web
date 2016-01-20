@@ -1,6 +1,8 @@
 class LoansController < ApplicationController
   before_action :authenticate_user!, only: %i(show)
   before_action :retrieve_loan, only: %i(cancel confirm dispute publish show)
+  before_action :authorize_loan
+  after_action :verify_authorized
 
   def cancel
     service = CancelLoan.with(@loan, current_user)
@@ -50,6 +52,10 @@ class LoansController < ApplicationController
 
   private
 
+  def authorize_loan
+    authorize(@loan || Loan)
+  end
+
   def cancellation_notice
     loan = LoanPresenter.new(@loan, current_user)
     I18n.t('loans.notices.cancellation',
@@ -80,7 +86,6 @@ class LoansController < ApplicationController
   end
 
   def retrieve_loan
-    @loan = LoanQuery.uuid(params[:uuid])
-    authorize(@loan)
+    @loan = LoanQuery.uuid!(params[:uuid])
   end
 end

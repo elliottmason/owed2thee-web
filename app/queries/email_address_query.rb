@@ -1,4 +1,4 @@
-class EmailAddressQuery < BaseQuery
+class EmailAddressQuery < ApplicationQuery
   def initialize(relation = EmailAddress.all)
     super(relation)
   end
