@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.2.3'
 
-gem 'rails',                '4.2.1'
+gem 'rails',                '4.2.5'
 gem 'burgundy',             '~> 0.2'
 gem 'devise',               '~> 3.5'
 gem 'fast_attributes',      '~> 0.7'
@@ -51,7 +51,6 @@ group :development, :test do
   gem 'pry-rails',          '~> 0.3'
   gem 'pry-rescue',         '~> 1.4'
   gem 'rspec-rails',        '~> 3.2'
-  gem 'rubocop',            '~> 0.32'
   gem 'spring',             '~> 1.3'
   gem 'thin',               '~> 1.6'
   gem 'web-console',        '~> 2.0'
@@ -63,7 +62,7 @@ group :test do
   gem 'database_cleaner',     '~> 1.4'
   gem 'launchy',              '~> 2.4'
   gem 'poltergeist',          '~> 1.6'
-  gem 'simplecov',            '~> 0.10', require: false
-  gem 'site_prism',           '~> 2.8'
+  gem 'simplecov',            '~> 0.10',  require: false
+  gem 'site_prism',           '~> 2.8',   require: false
   gem 'timecop',              '~> 0.8'
 end

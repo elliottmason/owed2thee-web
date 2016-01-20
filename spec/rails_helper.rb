@@ -40,7 +40,10 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir \
+  .glob(Rails.root.join('spec/support/**/*.rb')) \
+  .sort_by { |file| [file.count('/'), file] } \
+  .each { |file| require file }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.

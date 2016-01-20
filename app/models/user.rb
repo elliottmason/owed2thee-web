@@ -47,8 +47,8 @@ class User < ActiveRecord::Base
 
   private
 
-  # Devise voodoo
-  def email_changed?
-    false
-  end
+  # # Devise voodoo (no longer necessary?)
+  # def email_changed?
+  #   false
+  # end
 end

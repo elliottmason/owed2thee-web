@@ -17,7 +17,7 @@ class Ledger < ActiveRecord::Base
   end
 
   def payable?(user)
-    confirmed_balance_for(user) > 0
+    confirmed_balance_for(user).nonzero?.is_a?(Money)
   end
 
   def projected_balance_for(user)

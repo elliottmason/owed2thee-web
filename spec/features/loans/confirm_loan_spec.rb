@@ -1,5 +1,7 @@
-feature 'Confirm a loan', js: true do
-  let(:show_loan_page)  { Loans::ShowPage.new }
+require 'rails_helper'
+
+feature 'Confirm a loan', :js do
+  let(:show_loan_page) { Loans::ShowPage.new }
 
   context 'as as lender' do
     let(:confirmation_notice) { 'Confirmed your loan to Josh for $9.00' }

@@ -1,4 +1,4 @@
-feature 'Cancelling a loan', js: true do
+feature 'Cancelling a loan', :js do
   let(:cancellation_notice) do
     'You canceled your loan to eleo@gmail.com for $10.00'
   end
