@@ -6,6 +6,7 @@ en:
       debt: debt
       dispute: dispute
       loan: loan
+      password: password
       payment: payment
       user: user
     default_display_name:
@@ -21,7 +22,7 @@ en:
         string: "%{actor} confirmed %{confirmable}"
       dispute: "Your dispute against %{disputable} has been submitted"
     pronouns:
-      you: "you"
+      you: you
     verbs:
       cancel: cancel
       confirm: confirm
@@ -78,6 +79,10 @@ en:
     errors:
       current_password:
         incorrect: is incorrect.
+    name: :app.concepts.password
+    notices:
+      update_failure: 'Your new password could not be accepted. You should try again.'
+      update_success: 'Your new password has been set and is now active.'
 
   payments:
     descriptions:

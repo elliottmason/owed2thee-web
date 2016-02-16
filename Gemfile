@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.2.3'
 
-gem 'rails',                '4.2.5'
+gem 'rails',                '4.2.5.1'
 gem 'burgundy',             '~> 0.2'
 gem 'devise',               '~> 3.5'
 gem 'fast_attributes',      '~> 0.7'
@@ -30,10 +30,10 @@ end
 
 group :development do
   gem 'better_errors'
-  gem 'guard-bundler'
+  gem 'guard-bundler',              require: false
   gem 'guard-livereload', '~> 2.4', require: false
-  gem 'guard-rspec'
-  gem 'guard-shell'
+  gem 'guard-pow',                  require: false
+  gem 'guard-rspec',                require: false
   gem 'letter_opener', '~> 1.4'
   gem 'quiet_assets'
   gem 'rack-livereload'
@@ -42,6 +42,7 @@ group :development do
   gem 'rb-fsevent', require: false
   gem 'rb-inotify', require: false
   gem 'spring-commands-rspec'
+  gem 'web-console', '~> 2.0'
 end
 
 group :development, :test do
@@ -53,7 +54,6 @@ group :development, :test do
   gem 'rspec-rails',        '~> 3.2'
   gem 'spring',             '~> 1.3'
   gem 'thin',               '~> 1.6'
-  gem 'web-console',        '~> 2.0'
 end
 
 group :test do

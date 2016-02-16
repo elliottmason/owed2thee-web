@@ -2,7 +2,6 @@ class LoansController < ApplicationController
   before_action :authenticate_user!, only: %i(show)
   before_action :retrieve_loan, only: %i(cancel confirm dispute publish show)
   before_action :authorize_loan
-  after_action :verify_authorized
 
   def cancel
     service = CancelLoan.with(@loan, current_user)

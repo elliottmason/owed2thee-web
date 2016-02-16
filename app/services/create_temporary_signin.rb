@@ -4,9 +4,17 @@ class CreateTemporarySignin < BaseService
   attr_reader :temporary_signin
   attr_reader :user
 
-  def initialize(user)
+  def initialize(email_address, user)
+    @email_address = email_address
     @user = user
     subscribe_to_listeners
+  end
+
+  def email_address
+    return unless @email_address
+    return @email_address if @email_address.is_a?(EmailAddress)
+
+    @email_address = EmailAddressQuery.address!(@email_address)
   end
 
   def perform
@@ -30,7 +38,10 @@ class CreateTemporarySignin < BaseService
   end
 
   def create_temporary_signin
-    @temporary_signin = TemporarySignin.create!(user: user)
+    @temporary_signin = TemporarySignin.create!(
+      email_address:  email_address,
+      user:           user
+    )
   end
 
   def subscribe_to_listeners

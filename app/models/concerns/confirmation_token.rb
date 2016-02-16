@@ -9,7 +9,7 @@ module ConfirmationToken
   end
 
   def generate_confirmation_token
-    self[:confirmation_token] = SecureRandom.base64(32)
+    self[:confirmation_token] = SecureRandom.urlsafe_base64(32)
   end
 
   def confirm!

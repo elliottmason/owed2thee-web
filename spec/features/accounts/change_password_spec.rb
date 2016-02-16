@@ -1,5 +1,8 @@
 feature 'Setting login password', :devise, :js do
+  let(:current_password) { user.password }
   let(:edit_password_page) { Accounts::Passwords::EditPage.new }
+  let(:failure_notice) { I18n.t('passwords.notices.update_failure') }
+  let(:success_notice) { I18n.t('passwords.notices.update_success') }
 
   context 'with no current password' do
     let(:user) { FactoryGirl.create(:unconfirmed_user) }
@@ -14,11 +17,10 @@ feature 'Setting login password', :devise, :js do
       )
     end
 
-    scenario do
+    scenario 'is successful' do
       expect(edit_password_page).to be_displayed
+      expect(edit_password_page).to have_content success_notice
     end
-
-    pending 'expect flash message'
   end
 
   context 'with an extant password' do
@@ -32,14 +34,16 @@ feature 'Setting login password', :devise, :js do
     context 'and correct current password' do
       before do
         edit_password_page.password_form.submit(
-          current_password:           user.password,
+          current_password:           current_password,
           new_password:               'abcd1234',
           new_password_confirmation:  'abcd1234'
         )
       end
 
-      scenario { expect(edit_password_page).to be_displayed }
-      pending 'expect flash message'
+      scenario 'is successful' do
+        expect(edit_password_page).to be_displayed
+        expect(edit_password_page).to have_content success_notice
+      end
     end
 
     context 'but incorrect current password' do
@@ -50,8 +54,11 @@ feature 'Setting login password', :devise, :js do
           new_password_confirmation:  'abcd1234'
         )
       end
-      scenario { expect(edit_password_page).to_not be_displayed }
-      pending 'expect flash message'
+
+      scenario 'is unsuccessful' do
+        expect(edit_password_page).to_not be_displayed
+        expect(edit_password_page).to have_content failure_notice
+      end
     end
   end
 end

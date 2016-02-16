@@ -78,12 +78,16 @@ guard :rspec, all_after_pass: true,
   # end
 end
 
-guard :shell do
-  require 'guard/shell'
-
-  ignore(%r{^(config/routes\.rb$)})
-
-  watch('Gemfile.lock') do
-    ::Bundler.with_clean_env { `invoker reload owed2thee` }
-  end
+guard 'pow' do
+  watch('.powrc')
+  watch('.powenv')
+  watch('.rspec')
+  watch('.rvmrc')
+  watch('.ruby-version')
+  watch('Gemfile')
+  watch('Gemfile.lock')
+  watch('config/application.rb')
+  watch('config/environment.rb')
+  watch(%r{^config/environments/.*\.rb$})
+  watch(%r{^config/initializers/.*\.rb$})
 end

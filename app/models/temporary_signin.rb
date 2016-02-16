@@ -7,8 +7,9 @@ class TemporarySignin < ActiveRecord::Base
   belongs_to :email_address
   belongs_to :user
 
-  validates :expires_at,  presence: true
-  validates :user,        presence: true
+  validates :email_address, presence: true
+  validates :expires_at,    presence: true
+  validates :user,          presence: true
 
   before_validation :set_expires_at, on: :create
 
