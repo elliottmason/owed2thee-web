@@ -1,0 +1,7 @@
+h2 Request a Loan
+= simple_form_for @loan_request_form do |f|
+  = render partial: '/form_errors', locals: { resource: @loan_request_form }
+  = f.input :amount_requested, as: :integer, input_html: { max: 1000, min: 0, placeholder: '10.00', step: '0.01' }, label: 'amount in dollars', required: true
+  = f.input :disbursement_deadline, as: :date, html5: true
+  = f.input :repayment_deadline, as: :date, html5: true
+  = f.button :submit, 'Submit Request', class: 'button button--submit'

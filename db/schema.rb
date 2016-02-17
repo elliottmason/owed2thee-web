@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20160217011157) do
 
   create_table "loan_requests", force: :cascade do |t|
     t.integer  "creator_id",                                    null: false
+    t.uuid     "uuid",                                          null: false
     t.money    "amount_requested",      scale: 2,               null: false
     t.money    "amount_borrowed",       scale: 2, default: 0.0, null: false
     t.money    "amount_repaid",         scale: 2, default: 0.0, null: false
@@ -115,6 +116,7 @@ ActiveRecord::Schema.define(version: 20160217011157) do
   end
 
   add_index "loan_requests", ["creator_id"], name: "index_loan_requests_on_creator_id", using: :btree
+  add_index "loan_requests", ["uuid"], name: "index_loan_requests_on_uuid", unique: true, using: :btree
 
   create_table "payments", force: :cascade do |t|
     t.integer  "creator_id"

@@ -6,6 +6,16 @@
 
 @include foundation-flex-grid;
 
+.alert-box {
+  &:after {
+    content: '.';
+  }
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
+}
+
 .quick-signup {
   @include flex-grid-row;
   @include flex-grid-row-align(center, middle);

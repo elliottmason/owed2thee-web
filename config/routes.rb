@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   devise_for :users, only: []
 
+  resources :loan_requests, param: :uuid
+
   resources :loans, module: 'users', only: %i(index)
 
   resources :loans, only: %i(create new show), param: :uuid do

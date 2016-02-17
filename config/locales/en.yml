@@ -6,6 +6,7 @@ en:
       debt: debt
       dispute: dispute
       loan: loan
+      loan_request: 'loan request'
       password: password
       payment: payment
       user: user
@@ -13,14 +14,17 @@ en:
       string: 'an %{title} %{user}'
       title: :app.title
       user: :app.concepts.user
+    errors:
+      creation: 'There was a problem saving your %{creatable}'
     notices:
       cancellation:
         actor: :app.pronouns.you
         string: "%{actor} canceled %{cancellable}"
       confirmation:
         actor: :app.pronouns.you
-        string: "%{actor} confirmed %{confirmable}"
-      dispute: "Your dispute against %{disputable} has been submitted"
+        string: '%{actor} confirmed %{confirmable}'
+      creation: 'Your %{creatable} has been saved'
+      dispute: 'Your dispute against %{disputable} has been submitted'
     pronouns:
       you: you
     verbs:
@@ -40,15 +44,26 @@ en:
   email_addresses:
     notices:
       confirmation:
-        confirmable: "your email address: %{email_address}"
+        confirmable: 'your email address: %{email_address}'
         string: :app.notices.confirmation
+
+  loan_requests:
+    errors:
+      creation:
+        creatable: :loan_requests.name
+        string: :app.errors.creation
+    name: :app.concepts.loan_request
+    notices:
+      creation:
+        creatable: :loan_requests.name
+        string: :app.notices.creation
 
   loans:
     descriptions:
-      short: "loan for %{amount_lent}"
-      full: "%{lender} loan to %{borrower} for %{amount_lent}"
-      without_borrowers: "%{lender} loan for %{amount_lent}"
-      without_lenders: "loan to %{borrower} for %{amount_lent}"
+      short: 'loan for %{amount_lent}'
+      full: '%{lender} loan to %{borrower} for %{amount_lent}'
+      without_borrowers: '%{lender} loan for %{amount_lent}'
+      without_lenders: 'loan to %{borrower} for %{amount_lent}'
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
@@ -88,14 +103,14 @@ en:
     descriptions:
       full:
         payment: :payments.descriptions.without_payer
-        string: "%{payer} %{payment}"
-      short: "%{amount_paid} payment"
+        string: '%{payer} %{payment}'
+      short: '%{amount_paid} payment'
       without_payee:
         payment: :payments.descriptions.short
-        string: "%{payer} %{payment}"
+        string: '%{payer} %{payment}'
       without_payer:
         payment: :payments.descriptions.short
-        string: "%{payment} to %{payee}"
+        string: '%{payment} to %{payee}'
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
@@ -136,14 +151,14 @@ en:
         string: "%{actor} submitted a %{loan}"
       disputed:
         loan: :loans.descriptions.without_borrowers
-        string: "%{actor} disputed %{loan}"
+        string: '%{actor} disputed %{loan}'
     payment:
       confirmed:
         confirmable: :payments.descriptions.without_payee
         string: :payments.notices.confirmation
       created:
         payment: :payments.descriptions.without_payer
-        string: "%{actor} submitted a %{payment}"
+        string: '%{actor} submitted a %{payment}'
       disputed:
         payment: :payments.descriptions.short
-        string: "%{actor} disputed %{payer} %{payment}"
+        string: '%{actor} disputed %{payer} %{payment}'

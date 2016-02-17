@@ -18,6 +18,8 @@ class LoansController < ApplicationController
   def create
     service = CreateLoan.with(current_user, params[:loan])
 
+    flash_message_for_create(service.successful?)
+
     if service.successful?
       establish_creator_session(creator:  service.creator,
                                 loan:     service.loan,
@@ -81,6 +83,14 @@ class LoansController < ApplicationController
     else
       session[:created_loan_id] = loan.id
       session[:email_address]   = creator.primary_email_address.address
+    end
+  end
+
+  def flash_message_for_create(successful = false)
+    if successful
+      flash[:success] = t('loans.notices.create_success')
+    else
+      flash[:error] = t('loans.notices.create_failure')
     end
   end
 

@@ -1,10 +1,13 @@
 class LoanRequest < ActiveRecord::Base
+  include Uuidable
+
   belongs_to :creator, class_name: 'User'
 
   has_many :loans
 
   validate :disbursement_deadline_must_be_future
   validate :repayment_deadline_must_be_after_disbursement
+  validates :amount_requested, numericality: { greater_than: 0.0 }
   validates :creator, presence: true
 
   private
@@ -25,7 +28,8 @@ class LoanRequest < ActiveRecord::Base
   def repayment_deadline_must_be_after_disbursement
     return unless repayment_deadline.present?
 
-    if disbursement_deadline && repayment_deadline < disbursement_deadline + 1.day
+    if disbursement_deadline &&
+       repayment_deadline < disbursement_deadline + 1.day
       errors.add(:repayment_deadline, 'must be at least a day from the day of' \
         ' disbursement')
     else

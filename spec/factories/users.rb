@@ -15,7 +15,7 @@ FactoryGirl.define do
     end
 
     trait :confirmed do
-      password { SecureRandom.hex(8) }
+      password 'password'
 
       after(:create) do |user, _|
         email_address = user.email_addresses.first
