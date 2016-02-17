@@ -1,4 +1,4 @@
-class PasswordForm < BaseForm
+class PasswordForm < ApplicationForm
   I18N_ERRORS_SCOPE = 'activerecord.errors.models.password_form'
 
   include ActiveModel::Validations

@@ -1,4 +1,4 @@
-class CommentForm < BaseForm
+class CommentForm < ApplicationForm
   include ActiveModel::Validations
 
   attribute :body,    String

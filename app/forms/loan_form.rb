@@ -1,4 +1,4 @@
-class LoanForm < BaseForm
+class LoanForm < ApplicationForm
   include ActiveModel::Validations
 
   attribute :amount,                  Float

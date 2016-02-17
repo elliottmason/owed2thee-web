@@ -1,4 +1,4 @@
-class BaseForm
+class ApplicationForm
   include ActiveModel::Model
   include Lean::Attributes
 

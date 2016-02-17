@@ -1,4 +1,4 @@
-class SignInForm < BaseForm
+class SignInForm < ApplicationForm
   include Lean::Attributes
 
   attribute :email,     String

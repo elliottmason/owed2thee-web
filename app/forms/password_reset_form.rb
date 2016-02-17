@@ -1,3 +1,3 @@
-class PasswordResetForm < BaseForm
+class PasswordResetForm < ApplicationForm
   attribute :email_address, :string
 end
