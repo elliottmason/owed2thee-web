@@ -1,18 +1,19 @@
 doctype html
-html
+html lang="en"
   head
+    meta[charset="utf-8"]
     meta[name="viewport" content="width=device-width, initial-scale=1.0"]
-    title Owed2Thee
+    title = page_title
     meta name="description" content="Owed2Thee"
     == stylesheet_link_tag 'application', media: 'all'
     == javascript_include_tag 'application'
-    == csrf_meta_tag
+    == csrf_meta_tags
 
   body
     header.main-header
       h1
-        a href='/' Owed2Thee
+        a href="/" Owed2Thee
       == render partial: 'layouts/navigation'
-    main[role="main"]
+    main
       == render partial: 'layouts/messages'
       == yield

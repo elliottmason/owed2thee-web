@@ -1,8 +1,8 @@
 = simple_form_for @loan do |f|
   = render partial: '/form_errors', locals: { resource: @loan }
   - if !user_signed_in?
-    = f.input :creator_email_address, as: :email, input_html: { placeholder: 'your email address' }, label: 'your email address', required: true
-  = f.input :type, collection: [['lent', :loan], ['owe', :debt]], priority: 'owe', include_blank: false, label: false, required: true
-  = f.input :amount, as: :integer, input_html: { max: 1000, min: 0, placeholder: '10.00', step: '0.01' }, label: 'amount in dollars', required: true
-  = f.input :obligor_email_address, as: :email, input_html: { placeholder: 'their email address' }, label: "lender's or borrower's email address"
-  = f.button :submit
+    = f.input :creator_email_address, as: :email, input_html: { placeholder: 'your email address' }, :'aria-label' => 'your email address', label: 'I, ', required: true
+  = f.input :type, collection: [['lent', :loan], ['owe', :debt]], priority: 'owe', include_blank: false, label: 'loan type', required: true
+  = f.input :amount, as: :integer, input_html: { max: 1000, min: 0, placeholder: '10.00', step: '0.01' }, label: '$', :'aria-label' => 'amount in dollars', required: true
+  = f.input :obligor_email_address, as: :email, input_html: { placeholder: 'their email address' }, :'aria-label' => "lender's or borrower's email address", label: 'to'
+  = f.button :submit, 'Submit Loan', class: 'button button--submit'

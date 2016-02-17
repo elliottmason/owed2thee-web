@@ -6,6 +6,7 @@ gem 'burgundy',             '~> 0.2'
 gem 'devise',               '~> 3.5'
 gem 'fast_attributes',      '~> 0.7'
 gem 'figaro',               '~> 1.0'
+gem 'foundation-rails',     '~> 6.1'
 gem 'high_voltage',         '~> 2.3'
 gem 'jbuilder',             '~> 2.0'
 gem 'jquery-rails',         '~> 4.0'
@@ -25,7 +26,6 @@ gem 'uglifier',             '~> 2.7'
 gem 'wisper',               '~> 1.6'
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-bourbon', '~> 4.2'
 end
 
 group :development do

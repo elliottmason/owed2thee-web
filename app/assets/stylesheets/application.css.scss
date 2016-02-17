@@ -1,14 +1,26 @@
-/*
- *= require_tree .
- *= require_self
- */
+//= require_self
+//= require foundation_and_overrides
+//= require_tree .
 
-.alert-box {
-  &:after {
-    content: '.';
+@import 'foundation';
+
+@include foundation-flex-grid;
+
+.quick-signup {
+  @include flex-grid-row;
+  @include flex-grid-row-align(center, middle);
+
+  h2 {
+    display: none;
   }
 
-  &::first-letter {
-    text-transform: capitalize;
+  .button--submit {
+    @include button-expand(true);
+    letter-spacing: 1.15px;
+    text-transform: uppercase;
   }
+}
+
+.new_loan {
+  @include flex-grid-column(12);
 }
