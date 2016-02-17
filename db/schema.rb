@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151202180625) do
+ActiveRecord::Schema.define(version: 20160217011157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,19 @@ ActiveRecord::Schema.define(version: 20151202180625) do
     t.datetime "updated_at",                      null: false
   end
 
+  create_table "loan_requests", force: :cascade do |t|
+    t.integer  "creator_id",                                 null: false
+    t.money    "amount_requested",   scale: 2,               null: false
+    t.money    "amount_borrowed",    scale: 2, default: 0.0, null: false
+    t.money    "amount_repaid",      scale: 2, default: 0.0, null: false
+    t.datetime "disbursal_deadline"
+    t.datetime "repayment_deadline"
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+  end
+
+  add_index "loan_requests", ["creator_id"], name: "index_loan_requests_on_creator_id", using: :btree
+
   create_table "payments", force: :cascade do |t|
     t.integer  "creator_id"
     t.integer  "payable_id",                      null: false
@@ -162,9 +175,11 @@ ActiveRecord::Schema.define(version: 20151202180625) do
     t.string   "type",                            null: false
     t.datetime "transferred_at"
     t.uuid     "uuid",                            null: false
+    t.integer  "loan_request_id"
   end
 
   add_index "transfers", ["creator_id"], name: "index_transfers_on_creator_id", using: :btree
+  add_index "transfers", ["loan_request_id"], name: "index_transfers_on_loan_request_id", using: :btree
   add_index "transfers", ["uuid"], name: "index_transfers_on_uuid", unique: true, using: :btree
 
   create_table "transitions", force: :cascade do |t|
