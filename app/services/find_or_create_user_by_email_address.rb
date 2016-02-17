@@ -1,4 +1,4 @@
-class FindOrCreateUserByEmailAddress < BaseService
+class FindOrCreateUserByEmailAddress < ApplicationService
   attr_reader :email_address
   attr_reader :new_user
   attr_reader :user

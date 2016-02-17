@@ -1,4 +1,4 @@
-class RecalculateLedger < BaseService
+class RecalculateLedger < ApplicationService
   attr_reader :user_a
   attr_reader :user_b
 

@@ -1,4 +1,4 @@
-class RedeemTemporarySignin < BaseService
+class RedeemTemporarySignin < ApplicationService
   include ChangeState
 
   transition :redeem

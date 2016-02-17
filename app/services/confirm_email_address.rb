@@ -1,4 +1,4 @@
-class ConfirmEmailAddress < BaseService
+class ConfirmEmailAddress < ApplicationService
   include BroadcastToListeners
 
   delegate :user, to: :email_address, allow_nil: true

@@ -1,4 +1,4 @@
-class ChangeTransferState < BaseService
+class ChangeTransferState < ApplicationService
   include ChangeState
 
   attr_reader :user

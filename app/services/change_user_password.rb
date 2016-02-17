@@ -1,4 +1,4 @@
-class ChangeUserPassword < BaseService
+class ChangeUserPassword < ApplicationService
   attr_reader :form
   attr_reader :user
 

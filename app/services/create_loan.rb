@@ -1,4 +1,4 @@
-class CreateLoan < BaseService
+class CreateLoan < ApplicationService
   include BroadcastToListeners
 
   attr_reader :loan

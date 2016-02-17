@@ -1,6 +1,6 @@
 # Sends emails to the borrowers or lenders of a Loan, prompting them to confirm
 # the validity of the Loan.
-class NotifyLoanParticipants < BaseService
+class NotifyLoanParticipants < ApplicationService
   attr_reader :loan
 
   def initialize(loan)

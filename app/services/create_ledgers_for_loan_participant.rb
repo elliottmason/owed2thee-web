@@ -1,4 +1,4 @@
-class CreateLedgersForLoanParticipant < BaseService
+class CreateLedgersForLoanParticipant < ApplicationService
   attr_reader :ledgers
   attr_reader :loan
   attr_reader :user

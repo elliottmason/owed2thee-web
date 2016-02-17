@@ -1,4 +1,4 @@
-class CreateUserWithEmailAddress < BaseService
+class CreateUserWithEmailAddress < ApplicationService
   def initialize(email_address)
     @email_address = email_address
   end

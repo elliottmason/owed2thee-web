@@ -1,4 +1,4 @@
-class CreateTemporarySignin < BaseService
+class CreateTemporarySignin < ApplicationService
   include Wisper::Publisher
 
   attr_reader :temporary_signin

@@ -1,4 +1,4 @@
-class CreatePayment < BaseService
+class CreatePayment < ApplicationService
   include BroadcastToListeners
 
   attr_reader :creator

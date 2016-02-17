@@ -1,4 +1,4 @@
-class FindOrCreatePasswordReset < BaseService
+class FindOrCreatePasswordReset < ApplicationService
   attr_reader :email_address
   attr_reader :email_address_string
   attr_reader :password_reset

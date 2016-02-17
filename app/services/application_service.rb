@@ -1,4 +1,4 @@
-class BaseService
+class ApplicationService
   extend ActiveModel::Callbacks
 
   define_model_callbacks :initialize, :perform

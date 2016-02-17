@@ -1,4 +1,4 @@
-class RecordTransferActivity < BaseService
+class RecordTransferActivity < ApplicationService
   attr_reader :action
   attr_reader :activities
   attr_reader :transfer

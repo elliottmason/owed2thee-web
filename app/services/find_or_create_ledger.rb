@@ -1,4 +1,4 @@
-class FindOrCreateLedger < BaseService
+class FindOrCreateLedger < ApplicationService
   attr_reader :user_a
   attr_reader :user_b
 

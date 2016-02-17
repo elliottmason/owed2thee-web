@@ -1,4 +1,4 @@
-class ConfirmUser < BaseService
+class ConfirmUser < ApplicationService
   include Wisper::Publisher
 
   attr_reader :user

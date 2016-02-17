@@ -1,6 +1,6 @@
 # When a User confirms participation in a Loan, we create UserContact records
 # for the other participants pointing back to the confirming User.
-class CreateUserContactsForTransferParticipant < BaseService
+class CreateUserContactsForTransferParticipant < ApplicationService
   attr_reader :contact
   attr_reader :transfer
 
