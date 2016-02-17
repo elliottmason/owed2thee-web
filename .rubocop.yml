@@ -1,5 +1,4 @@
 AllCops:
-  RunRailsCops: true
   Include:
     - '**/Gemfile'
     - '**/Rakefile'
@@ -10,3 +9,5 @@ AllCops:
    - 'vendor/bundle/**/*'
 Documentation:
   Enabled: false
+Rails:
+  Enabled: true
