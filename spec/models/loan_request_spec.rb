@@ -17,9 +17,9 @@ RSpec.describe LoanRequest do
     end
   end
 
-  context 'disbursal deadline is less than a day from now' do
+  context 'disbursement deadline is less than a day from now' do
     before do
-      loan_request.disbursal_deadline = Time.zone.today
+      loan_request.disbursement_deadline = Time.zone.today
     end
 
     it 'is invalid' do
@@ -27,9 +27,9 @@ RSpec.describe LoanRequest do
     end
   end
 
-  context 'repayment deadline is less than the disbursal deadline' do
+  context 'repayment deadline is less than the disbursement deadline' do
     before do
-      loan_request.disbursal_deadline = Time.zone.tomorrow
+      loan_request.disbursement_deadline = Time.zone.tomorrow
       loan_request.repayment_deadline = Time.zone.today
     end
 

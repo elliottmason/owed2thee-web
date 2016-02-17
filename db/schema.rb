@@ -104,14 +104,14 @@ ActiveRecord::Schema.define(version: 20160217011157) do
   end
 
   create_table "loan_requests", force: :cascade do |t|
-    t.integer  "creator_id",                                 null: false
-    t.money    "amount_requested",   scale: 2,               null: false
-    t.money    "amount_borrowed",    scale: 2, default: 0.0, null: false
-    t.money    "amount_repaid",      scale: 2, default: 0.0, null: false
-    t.datetime "disbursal_deadline"
+    t.integer  "creator_id",                                    null: false
+    t.money    "amount_requested",      scale: 2,               null: false
+    t.money    "amount_borrowed",       scale: 2, default: 0.0, null: false
+    t.money    "amount_repaid",         scale: 2, default: 0.0, null: false
+    t.datetime "disbursement_deadline"
     t.datetime "repayment_deadline"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
   end
 
   add_index "loan_requests", ["creator_id"], name: "index_loan_requests_on_creator_id", using: :btree

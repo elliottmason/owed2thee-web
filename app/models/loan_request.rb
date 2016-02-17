@@ -3,16 +3,16 @@ class LoanRequest < ActiveRecord::Base
 
   has_many :loans
 
-  validate :disbursal_deadline_must_be_future
-  validate :repayment_deadline_must_be_after_disbursal
+  validate :disbursement_deadline_must_be_future
+  validate :repayment_deadline_must_be_after_disbursement
   validates :creator, presence: true
 
   private
 
-  def disbursal_deadline_must_be_future
-    return unless disbursal_deadline.present?
+  def disbursement_deadline_must_be_future
+    return unless disbursement_deadline.present?
 
-    must_be_future(:disbursal_deadline)
+    must_be_future(:disbursement_deadline)
   end
 
   # TODO: wish I didn't have to hardcode the offset
@@ -22,10 +22,10 @@ class LoanRequest < ActiveRecord::Base
     end
   end
 
-  def repayment_deadline_must_be_after_disbursal
+  def repayment_deadline_must_be_after_disbursement
     return unless repayment_deadline.present?
 
-    if disbursal_deadline && repayment_deadline < disbursal_deadline + 1.day
+    if disbursement_deadline && repayment_deadline < disbursement_deadline + 1.day
       errors.add(:repayment_deadline, 'must be at least a day from the day of' \
         ' disbursement')
     else
