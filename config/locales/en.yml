@@ -1,6 +1,7 @@
 en:
   app:
     concepts:
+      absolution: absolution
       cancellation: cancellation
       confirmation: confirmation
       debt: debt
@@ -28,6 +29,7 @@ en:
     pronouns:
       you: you
     verbs:
+      absolve: 'mark as paid'
       cancel: cancel
       confirm: confirm
       dispute: dispute
@@ -84,6 +86,7 @@ en:
 
     # Rails scopes
     show:
+      absolve_button: :app.verbs.absolve
       cancel_button: :app.verbs.cancel
       confirm_button: :app.verbs.confirm
       dispute_button: :app.verbs.dispute
@@ -147,7 +150,7 @@ en:
         confirmable: :loans.descriptions.full
         string: :loans.notices.confirmation
       created:
-        loan: :loans.descriptions.full
+        loan: :loans.descriptions.without_lenders
         string: "%{actor} submitted a %{loan}"
       disputed:
         loan: :loans.descriptions.without_borrowers
