@@ -1,8 +1,11 @@
 section.loans-list
 
 section.activity-feed
-  - @activities.each do |date, activities|
+  - @grouped_activities.each do |date, activities|
     section
       h3 = date
       - activities.each do |activity|
-        = render_activity(activity)
+        = link_to [activity.trackable] do
+          = render_activity(activity)
+
+== paginate @activities
