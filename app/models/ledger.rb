@@ -11,18 +11,16 @@ class Ledger < ActiveRecord::Base
   monetize :confirmed_balance_cents
   monetize :projected_balance_cents
 
-  def confirmed_balance_for(user)
-    return confirmed_balance  if user == user_a
-    return -confirmed_balance if user == user_b
+  alias _confirmed_balance confirmed_balance
+  def confirmed_balance(user = nil)
+    return _confirmed_balance if user.nil? || (user.present? && user == user_a)
+    return -_confirmed_balance if user == user_b
   end
 
-  def payable?(user)
-    confirmed_balance_for(user).nonzero?.is_a?(Money)
-  end
-
-  def projected_balance_for(user)
-    return projected_balance  if user == user_a
-    return -projected_balance if user == user_b
+  alias _projected_balance projected_balance
+  def projected_balance(user = nil)
+    return _projected_balance if user.nil? || (user.present? && user == user_a)
+    return -_projected_balance if user == user_b
   end
 
   def sum_confirmed_balance
@@ -42,10 +40,5 @@ class Ledger < ActiveRecord::Base
   def update_balances
     sum_confirmed_balance
     sum_projected_balance
-  end
-
-  def update_balances!
-    update_balances
-    save!
   end
 end
