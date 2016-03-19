@@ -10,5 +10,5 @@ class CreatePasswordReset < CreateTemporarySignin
                                               user:           user)
   end
 
-  alias_method :password_reset, :temporary_signin
+  alias password_reset temporary_signin
 end

@@ -1,5 +1,5 @@
 class ChangeLoanState < ChangeTransferState
   subscribe LoanListener.new
 
-  alias_method :loan, :transfer
+  alias loan transfer
 end

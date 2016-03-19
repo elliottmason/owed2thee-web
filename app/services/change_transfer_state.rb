@@ -13,7 +13,7 @@ class ChangeTransferState < ApplicationService
     super && user.present?
   end
 
-  alias_method :transfer, :item
+  alias transfer item
 
   private
 

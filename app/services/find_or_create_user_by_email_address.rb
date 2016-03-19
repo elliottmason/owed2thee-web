@@ -7,13 +7,13 @@ class FindOrCreateUserByEmailAddress < ApplicationService
     @email_address_string = email_address_string
   end
 
+  alias new_user? new_user
+
   def perform
     create_user
 
     @successful = user.present?
   end
-
-  alias_method :new_user?, :new_user
 
   private
 

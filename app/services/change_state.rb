@@ -13,7 +13,7 @@ module ChangeState
     transition.present?
   end
 
-  alias_method :force?, :force
+  alias force? force
 
   def perform
     return unless force? || allowed?

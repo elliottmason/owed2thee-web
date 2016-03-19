@@ -7,7 +7,7 @@ class ApplicationService
     def with(*args)
       new(*args).tap(&:perform)
     end
-    alias_method :for, :with
+    alias for with
   end
 
   def initialize(*_args)

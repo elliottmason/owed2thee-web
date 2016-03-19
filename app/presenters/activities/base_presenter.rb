@@ -2,7 +2,7 @@ module Activities
   class BasePresenter < ::BasePresenter
     delegate :created_at, :key, :text, :trackable, to: :activity
 
-    alias_method :activity, :item
+    alias activity item
 
     def actor
       @actor ||= display_name_for(activity.owner)
@@ -14,6 +14,8 @@ module Activities
         .display_name(possessive: possessive)
     end
 
-    alias_method :transfer, :trackable
+    def transfer
+      activity.trackable
+    end
   end
 end

@@ -12,6 +12,6 @@ module Activities
       display_name_for(payment.payer, possessive: true)
     end
 
-    alias_method :payment, :transfer
+    alias payment transfer
   end
 end

@@ -54,9 +54,9 @@ class CreateLoan < ApplicationService
     form.type.to_sym
   end
 
-  alias_method :unregistered_creator?, :unregistered_creator
+  alias unregistered_creator? unregistered_creator
 
-  alias_method :user, :creator
+  alias user creator
 
   private
 

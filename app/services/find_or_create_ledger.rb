@@ -3,7 +3,7 @@ class FindOrCreateLedger < ApplicationService
   attr_reader :user_b
 
   class << self
-    alias_method :between, :with
+    alias between with
   end
 
   def initialize(user_a, user_b)
@@ -12,8 +12,8 @@ class FindOrCreateLedger < ApplicationService
   end
 
   def ledger
-    @ledger ||= LedgerQuery.between(user_a, user_b)
-                .first_or_create(user_a: user_a, user_b: user_b)
+    @ledger ||= LedgerQuery.between(user_a, user_b).
+                first_or_create(user_a: user_a, user_b: user_b)
   end
 
   def perform
