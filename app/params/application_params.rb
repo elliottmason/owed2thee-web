@@ -1,4 +1,4 @@
-class BaseParams
+class ApplicationParams
   include Lean::Params
 
   attribute :action,      String
