@@ -5,15 +5,24 @@ Rails.application.routes.draw do
 
   resources :loan_requests, param: :uuid
 
-  resources :loans, module: 'users', only: %i(index)
+  resources :loans, module: 'users', only: [] do
+    collection do
+      get '(:page)', action: :index, as: '', constraints: { page: /[1-9]\d*/ }
+    end
+  end
 
-  resources :loans, only: %i(create new show), param: :uuid do
+  resources :loans,
+            constraints: { uuid: /[a-f0-9\-]{36}/i },
+            only: %i(create new show),
+            param: :uuid do
     member do
       %w(cancel confirm dispute publish).each do |action|
         patch(action)
         put(action)
       end
     end
+
+    resource :absolution, module: 'loans', only: %i(create), path: 'absolve'
   end
 
   resources :payments, only: %i(create new show), param: :uuid do
