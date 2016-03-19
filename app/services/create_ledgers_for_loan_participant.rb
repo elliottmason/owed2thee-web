@@ -9,7 +9,7 @@ class CreateLedgersForLoanParticipant < ApplicationService
   end
 
   def perform
-    @successful =
-      FindOrCreateLedger.between(loan.lender, loan.borrower).ledger.persisted?
+    find_or_create = FindOrCreateLedger.between(loan.lender, loan.borrower)
+    @successful = find_or_create.ledger.persisted?
   end
 end
