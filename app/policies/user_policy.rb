@@ -6,7 +6,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def pay?
-    ledger && ledger.payable?(current_user)
+    ledger && ledger.confirmed_balance(user).nonzero?.is_a?(Money)
   end
 
   def sign_in?

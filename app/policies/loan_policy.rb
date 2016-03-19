@@ -1,8 +1,6 @@
 class LoanPolicy < ApplicationPolicy
-  alias_method :loan, :record
-
-  def index?
-    user.present?
+  def absolve?
+    user_is_lender? && loan_is_confirmed? && loan_is_unpaid?
   end
 
   def cancel?
@@ -22,8 +20,18 @@ class LoanPolicy < ApplicationPolicy
       user_is_participant? && !user_is_creator?
   end
 
+  def index?
+    user.present?
+  end
+
+  alias loan record
+
   def new?
     create?
+  end
+
+  def pay?
+    user_is_borrower? && loan_is_payable? && lender_is_payable?
   end
 
   def publish?
@@ -38,6 +46,10 @@ class LoanPolicy < ApplicationPolicy
 
   private
 
+  def lender_is_payable?
+    UserPolicy.new(user, loan.lender).pay?
+  end
+
   def loan_is_cancelable?
     loan.publicity.can_transition_to?(:canceled)
   end
@@ -46,8 +58,16 @@ class LoanPolicy < ApplicationPolicy
     loan_is_published? && loan.confirmation.can_transition_to?(:confirmed)
   end
 
+  def loan_is_confirmed?
+    loan.confirmed?
+  end
+
   def loan_is_disputable?
     loan.confirmation.can_transition_to?(:disputed)
+  end
+
+  def loan_is_payable?
+    loan.payment.can_transition_to?(:fully_paid)
   end
 
   def loan_is_publishable?
@@ -59,7 +79,11 @@ class LoanPolicy < ApplicationPolicy
   end
 
   def loan_is_unconfirmed?
-    !loan.confirmed?
+    !loan_is_confirmed?
+  end
+
+  def loan_is_unpaid?
+    loan.unpaid?
   end
 
   def user_is_borrower?
