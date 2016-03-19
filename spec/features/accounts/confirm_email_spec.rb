@@ -1,5 +1,6 @@
 feature 'Confirm email address', :devise, :js do
-  let(:email_address) { user.email_addresses.first }
+  let(:confirmation_token)  { email_address.confirmation_token }
+  let(:email_address)       { user.email_addresses.first }
   let(:user) do
     FactoryGirl.create(:unconfirmed_user,
                        email_address: 'josh.schramm@gmail.com')
@@ -12,15 +13,14 @@ feature 'Confirm email address', :devise, :js do
     'You confirmed your email address: josh.schramm@gmail.com'
   end
 
-  def confirm_email_address(confirmation_token = nil)
-    confirmation_token ||= email_address.confirmation_token
+  def confirm_email_address(confirmation_token = self.confirmation_token)
     confirm_email_page.load(
       confirmation_token: confirmation_token,
       email:              email_address.address
     )
   end
 
-  context 'for user with existing activity' do
+  context 'for unconfirmed user' do
     let(:change_password_page) { Accounts::Passwords::EditPage.new }
 
     scenario 'with correct confirmation token' do
@@ -40,16 +40,21 @@ feature 'Confirm email address', :devise, :js do
 
     let(:loans_page) { Loans::IndexPage.new }
 
-    scenario 'with correct confirmation token' do
+    before do
       confirm_email_address
+    end
+
+    scenario 'with correct confirmation token' do
       expect(loans_page).to be_displayed
       expect(loans_page).to have_content(confirmation_message)
     end
   end
 
   context 'with bad confirmation token' do
+    let(:confirmation_token) { 'wrongtoken' }
+
     before do
-      confirm_email_address('wrongtoken')
+      confirm_email_address
     end
 
     scenario do

@@ -4,7 +4,7 @@ describe ConfirmPayment do
   let(:ledger)    { LedgerQuery.between!(*payment.participants) }
   let(:payee)     { payment.payee }
   let(:payer)     { payment.payer }
-  let(:payment)   { FactoryGirl.create(:unconfirmed_payment, amount: 3) }
+  let(:payment)   { create(:unconfirmed_payment, amount: 3) }
   let(:service)   { described_class.new(payment, payer) }
 
   before do
@@ -23,13 +23,13 @@ describe ConfirmPayment do
 
     context 'successful' do
       it 'calculates the confirmed balance between payer and payee' do
-        expect(ledger.confirmed_balance_for(payee).to_i).to eq(-2)
-        expect(ledger.confirmed_balance_for(payer).to_i).to eq(2)
+        expect(ledger.confirmed_balance(payee).to_i).to eq(-2)
+        expect(ledger.confirmed_balance(payer).to_i).to eq(2)
       end
 
       it 'calculates the projected balance between payer and payee' do
-        expect(ledger.projected_balance_for(payee).to_i).to eq(-2)
-        expect(ledger.projected_balance_for(payer).to_i).to eq(2)
+        expect(ledger.projected_balance(payee).to_i).to eq(-2)
+        expect(ledger.projected_balance(payer).to_i).to eq(2)
       end
     end
   end

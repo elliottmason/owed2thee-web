@@ -38,8 +38,9 @@ describe 'users/loans/index.html.slim' do
   end
 
   def assign_activities
+    assign(:activities, ActivityQuery.for_user(current_user).page)
     assign(
-      :activities,
+      :grouped_activities,
       GroupRecordsByCreationDate.with(
         ActivityQuery.for_user(current_user)
       )

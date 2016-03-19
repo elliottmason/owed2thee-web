@@ -1,5 +1,9 @@
 FactoryGirl.define do
   factory :loan, traits: %i(loan) do
+    transient do
+      involving nil
+    end
+
     association :creator, factory: :confirmed_user
     amount { Faker::Commerce.price }
 
@@ -33,7 +37,12 @@ FactoryGirl.define do
       end
     end
 
-    after :build do |loan, _|
+    after :build do |loan, evaluator|
+      if evaluator.involving.present?
+        participant = %i(borrower creator lender).sample
+        loan.send(participant, evaluator.involving)
+      end
+
       loan.email_addresses << loan.borrower.primary_email_address
       loan.email_addresses << loan.lender.primary_email_address
     end

@@ -23,13 +23,13 @@ describe PublishPayment do
 
     context 'successful' do
       it 'calculates the confirmed balance between payer and payee' do
-        expect(ledger.confirmed_balance_for(payee).to_i).to eq(-5)
-        expect(ledger.confirmed_balance_for(payer).to_i).to eq(5)
+        expect(ledger.confirmed_balance(payee).to_i).to eq(-5)
+        expect(ledger.confirmed_balance(payer).to_i).to eq(5)
       end
 
       it 'calculates the projected balance between payer and payee' do
-        expect(ledger.projected_balance_for(payee).to_i).to eq(-2)
-        expect(ledger.projected_balance_for(payer).to_i).to eq(2)
+        expect(ledger.projected_balance(payee).to_i).to eq(-2)
+        expect(ledger.projected_balance(payer).to_i).to eq(2)
       end
     end
   end
