@@ -4,9 +4,9 @@ class LedgerQuery < ApplicationQuery
   end
 
   def self.between(user_a, user_b)
-    new
-      .relation
-      .between(user_a, user_b)
+    new.
+      relation.
+      between(user_a, user_b)
   end
 
   def self.between!(*args)
