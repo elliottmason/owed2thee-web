@@ -14,6 +14,7 @@ class RecalculateLedger < ApplicationService
   def perform
     return unless ledger
 
-    @successful = ledger.update_balances!
+    ledger.update_balances
+    @successful = ledger.save
   end
 end
