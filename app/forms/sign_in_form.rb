@@ -4,7 +4,7 @@ class SignInForm < ApplicationForm
   attribute :email,     String
   attribute :password,  String
 
-  alias_method :email_address, :email
+  alias email_address email
 
   def model_name
     ActiveModel::Name.new(User)

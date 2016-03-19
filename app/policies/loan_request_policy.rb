@@ -1,9 +1,9 @@
 class LoanRequestPolicy < ApplicationPolicy
-  alias_method :loan_request, :record
-
   def create?
     user
   end
+
+  alias loan_request record
 
   def show?
     user && user_is_creator?

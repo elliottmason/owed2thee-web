@@ -24,8 +24,8 @@ class PasswordForm < ApplicationForm
   end
 
   attr_reader :current_password_valid
-  alias_method :current_password_valid?, :current_password_valid
+  alias current_password_valid? current_password_valid
 
   attr_reader :require_current_password
-  alias_method :require_current_password?, :require_current_password
+  alias require_current_password? require_current_password
 end

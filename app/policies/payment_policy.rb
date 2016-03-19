@@ -1,5 +1,5 @@
 class PaymentPolicy < ApplicationPolicy
-  alias_method :payment, :record
+  alias payment record
 
   def confirm?
     payment_is_confirmable? && user_is_participant? && !user_is_creator?
