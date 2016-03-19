@@ -26,6 +26,8 @@ gem 'uglifier',             '~> 2.7'
 gem 'wisper',               '~> 1.6'
 
 source 'https://rails-assets.org' do
+  gem 'rails-assets-foundation-datepicker'
+  gem 'rails-assets-jquery'
 end
 
 group :development do

@@ -1,8 +1,10 @@
 //= require_self
 //= require foundation_and_overrides
+//= require foundation-datepicker
 //= require_tree .
 
 @import 'foundation';
+@import 'foundation-datepicker';
 
 @include foundation-flex-grid;
 
