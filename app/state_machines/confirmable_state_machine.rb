@@ -2,7 +2,7 @@ module ConfirmableStateMachine
   ACTIONS = {
     confirm:    :confirmed,
     unconfirm:  :unconfirm
-  }
+  }.freeze
 
   def self.included(base)
     base.class_eval do
