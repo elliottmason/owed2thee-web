@@ -8,8 +8,8 @@ class RedeemTemporarySignin < ApplicationService
   end
 
   def allowed?
-    temporary_signin.unredeemed?
+    TemporarySigninPolicy.new(temporary_signin).redeem?
   end
 
-  alias_method :temporary_signin, :item
+  alias temporary_signin item
 end
