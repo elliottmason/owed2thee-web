@@ -1,5 +1,5 @@
 class UserPresenter < Burgundy::Item
-  alias_method :user, :item
+  alias user item
 
   def initialize(user, viewer, transfer = nil)
     super(user)
@@ -31,8 +31,9 @@ class UserPresenter < Burgundy::Item
   def email_address
     return @email_address if @email_address
 
-    @email_address = EmailAddressQuery.for_transfer_participant!(transfer, user)
-                     .try(:address)
+    @email_address = EmailAddressQuery.
+                     for_transfer_participant!(transfer, user).
+                     try(:address)
   end
 
   def full_name
@@ -43,7 +44,7 @@ class UserPresenter < Burgundy::Item
   end
 
   def user_is_viewer?
-    user == viewer
+    user.is_a?(viewer.class) && user.id == viewer.id
   end
 
   private

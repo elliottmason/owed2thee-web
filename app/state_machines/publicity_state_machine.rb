@@ -15,5 +15,5 @@ class PublicityStateMachine
   state :deleted
 
   transition from: :unpublished,  to: %i(canceled published)
-  transition from: :published,    to: %i(deleted)
+  transition from: :published,    to: %i(deleted canceled)
 end

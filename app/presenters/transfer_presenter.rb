@@ -1,4 +1,8 @@
 class TransferPresenter < BasePresenter
+  def activities
+    @activities ||= loan.activities.where(recipient: viewer)
+  end
+
   def amount
     amount_for(transfer)
   end
@@ -14,12 +18,12 @@ class TransferPresenter < BasePresenter
   end
 
   def display_name(user, possessive: false)
-    UserPresenter
-      .new(user, viewer, transfer)
-      .display_name(possessive: possessive)
+    UserPresenter.
+      new(user, viewer, transfer).
+      display_name(possessive: possessive)
   end
 
-  alias_method :transfer, :item
+  alias transfer item
 
   private
 

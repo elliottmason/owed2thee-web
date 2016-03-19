@@ -1,4 +1,8 @@
 class LoanListener
+  def cancel_loan_successful(loan, user)
+    RecordTransferActivity.with(loan, :canceled, user)
+  end
+
   def create_loan_successful(_loan)
   end
 

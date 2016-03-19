@@ -1,8 +1,6 @@
 class ActivityQuery < ApplicationQuery
   include Kaminari::ConfigurationMethods
 
-  paginates_per 10
-
   def initialize
     super(PublicActivity::Activity.all)
   end

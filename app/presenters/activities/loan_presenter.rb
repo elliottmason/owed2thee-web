@@ -1,5 +1,5 @@
 module Activities
-  class LoanPresenter < BasePresenter
+  class LoanPresenter < Activities::BasePresenter
     def amount_lent
       loan.amount.format if loan
     end
@@ -7,7 +7,7 @@ module Activities
     def borrower
       return @borrower if @borrower
 
-      @borrower = 'them' \
+      @borrower ||= 'them' \
         if loan.borrower == activity.owner && activity.owner != viewer
       @borrower ||= display_name_for(loan.borrower)
     end
@@ -15,10 +15,10 @@ module Activities
     def lender
       return @lender if @lender
 
-      @lender = '' if loan.lender == activity.owner
+      @lender ||= 'your' if loan.lender == viewer
       @lender ||= display_name_for(loan.lender, possessive: true)
     end
 
-    alias_method :loan, :transfer
+    alias loan transfer
   end
 end

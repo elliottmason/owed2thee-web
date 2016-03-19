@@ -1,13 +1,20 @@
-= render 'description', locals: { loan: @loan }
+.box
+  = render partial: 'description', locals: { loan: loan }
 
-ul.button-group
-- if policy(@loan).publish?
-  li = button_to t('.publish_button'), [:publish, @loan], class: 'button', form_class: 'confirm_button', method: :patch
-- if policy(@loan).confirm?
-  li = button_to t('.confirm_button'), [:confirm, @loan], class: 'button', form_class: 'confirm_button', method: :patch
-- if policy(@loan).cancel?
-  li = button_to t('.cancel_button'),  [:cancel,  @loan], class: 'button', form_class: 'cancel_button', method: :patch
-- if policy(@loan).dispute?
-  li = button_to t('.dispute_button'), [:dispute, @loan], class: 'button', form_class: 'dispute_button', method: :patch
-- if policy(@loan.lender).pay?
-  li = button_to t('.pay_button'), [:new, @loan.lender, :payment], class: 'button', form_class: 'pay_button', method: :get
+  ul.button-group.controls
+    - if policy(@loan).publish?
+      li = button_to t('.publish_button'), [:publish, @loan], class: 'button', form_class: 'confirm_button', method: :patch
+    - if policy(@loan).confirm?
+      li = button_to t('.confirm_button'), [:confirm, @loan], class: 'button', form_class: 'confirm_button', method: :patch
+    - if policy(@loan).cancel?
+      li = button_to t('.cancel_button'),  [:cancel,  @loan], class: 'button', form_class: 'cancel_button', method: :patch
+    - if policy(@loan).dispute?
+      li = button_to t('.dispute_button'), [:dispute, @loan], class: 'button', form_class: 'dispute_button', method: :patch
+    - if policy(@loan).absolve?
+      li = button_to t('.absolve_button'), [@loan, :absolution], class: 'button', form_class: 'absolution_button', method: :post
+    - if policy(@loan).pay?
+      li = button_to t('.pay_button'), [:new, @loan.lender, :payment], class: 'button', form_class: 'pay_button', method: :get
+
+  .activities
+    - loan.activities.each do |activity|
+      = render_activity(activity)

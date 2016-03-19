@@ -3,6 +3,8 @@ class LoansController < ApplicationController
   before_action :retrieve_loan, only: %i(cancel confirm dispute publish show)
   before_action :authorize_loan
 
+  helper_method :loan
+
   def cancel
     service = CancelLoan.with(@loan, current_user)
     flash[:notice] = cancellation_notice if service.successful?
@@ -62,19 +64,18 @@ class LoansController < ApplicationController
     I18n.t('loans.notices.cancellation',
            amount_lent: loan.amount_lent,
            borrower:    loan.borrower,
-           lender:      loan.lender)
+           lender:      loan.lender(possessive: true))
   end
 
   def confirmation_notice
   end
 
   def dispute_notice
-    loan = LoanPresenter.new(@loan, current_user)
     I18n.t('loans.notices.dispute',
            amount_lent: loan.amount_lent,
            borrower:    loan.borrower,
            creator:     loan.creator,
-           lender:      loan.lender)
+           lender:      loan.lender(possessive: true))
   end
 
   def establish_creator_session(creator: nil, loan: nil, sign_in: false)
@@ -92,6 +93,10 @@ class LoansController < ApplicationController
     else
       flash[:error] = t('loans.notices.create_failure')
     end
+  end
+
+  def loan
+    @decorated_loan ||= LoanPresenter.new(@loan, current_user)
   end
 
   def retrieve_loan
