@@ -1,8 +1,4 @@
 class LoanPolicy < ApplicationPolicy
-  def absolve?
-    user_is_lender? && loan_is_confirmed? && loan_is_unpaid?
-  end
-
   def cancel?
     user_is_creator? && loan_is_unconfirmed? && loan_is_cancelable?
   end
@@ -80,10 +76,6 @@ class LoanPolicy < ApplicationPolicy
 
   def loan_is_unconfirmed?
     !loan_is_confirmed?
-  end
-
-  def loan_is_unpaid?
-    loan.unpaid?
   end
 
   def user_is_borrower?
