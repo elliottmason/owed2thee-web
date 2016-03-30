@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 feature 'Submitting a payment to a lender', :js do
   let(:new_payment_page)  { Payments::NewPage.new }
   let(:show_loan_page)    { Loans::ShowPage.new }

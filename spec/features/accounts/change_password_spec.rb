@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 feature 'Setting login password', :devise, :js do
   let(:current_password) { user.password }
   let(:edit_password_page) { Accounts::Passwords::EditPage.new }

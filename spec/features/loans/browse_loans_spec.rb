@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 feature 'Browsing loans', :js do
   let(:loans_index_page) { Loans::IndexPage.new }
   let(:user) { create(:confirmed_user) }

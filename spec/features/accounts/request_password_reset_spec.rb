@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 feature 'Requesting a reset for a forgotten password', :devise, :js do
   let(:email_address) { user.primary_email_address.address }
   let(:sent_email)    { ActionMailer::Base.deliveries[0] }

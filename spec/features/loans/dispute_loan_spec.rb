@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 feature 'Disputing a loan', :devise, :js do
   let(:creator) do
     FactoryGirl.create(

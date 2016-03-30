@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 feature 'Creating a loan request', :js do
   let(:show_loan_request_page)  { LoanRequests::ShowPage.new }
   let(:new_loan_request_page)   { LoanRequests::NewPage.new }

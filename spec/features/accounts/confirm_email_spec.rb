@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 feature 'Confirm email address', :devise, :js do
   let(:confirmation_token) do
     create(:email_address_confirmation, email_address: email_address).

@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 feature 'Confirm a payment', :js do
   let(:borrower)  { payer }
   let(:creator)   { payer }

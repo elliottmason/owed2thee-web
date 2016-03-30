@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 feature 'Signing in', :devise, :js do
   let(:sign_in_page) { SignInPage.new }
 

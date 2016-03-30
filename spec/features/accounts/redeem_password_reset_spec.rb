@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 feature 'Following a link to reset forgotten password', :devise, :js do
   let!(:confirmation_token) { password_reset.confirmation_token }
   let(:email_address)       { user.primary_email_address }
