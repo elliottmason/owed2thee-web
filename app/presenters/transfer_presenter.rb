@@ -1,16 +1,6 @@
-class TransferPresenter < BasePresenter
-  def activities
-    @activities ||= loan.activities.where(recipient: viewer)
-  end
-
+class TransferPresenter < ApplicationPresenter
   def amount
     amount_for(transfer)
-  end
-
-  def amount_lent
-    return unless loan
-
-    amount_for(loan)
   end
 
   def creator

@@ -1,4 +1,14 @@
 class LoanPresenter < TransferPresenter
+  def activities
+    @activities ||= loan.activities.where(recipient: viewer)
+  end
+
+  def amount_lent
+    return unless loan
+
+    amount_for(loan)
+  end
+
   def borrower(*args)
     return @borrower if @borrower
 

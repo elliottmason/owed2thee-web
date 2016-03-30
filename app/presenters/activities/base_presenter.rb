@@ -1,5 +1,5 @@
 module Activities
-  class BasePresenter < ::BasePresenter
+  class BasePresenter < ApplicationPresenter
     delegate :created_at, :key, :text, :trackable, to: :activity
 
     alias activity item

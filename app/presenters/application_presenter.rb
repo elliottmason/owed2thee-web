@@ -1,4 +1,4 @@
-class BasePresenter < Burgundy::Item
+class ApplicationPresenter < Burgundy::Item
   attr_reader :viewer
 
   def initialize(item, viewer = nil)

@@ -1,1 +1,11 @@
-= link_to(@confirmation_link, @confirmation_link)
+p
+  | #{@presenter.creator} submitted a claim stating that they #{@presenter.verb} you #{@presenter.amount}.
+
+p
+  ' You can
+  => link_to('confirm', url_for(@presenter.confirmation_path))
+  ' or
+  => link_to('deny', url_for(@presenter.confirmation_path))
+  ' this #{@presenter.loan_type} on
+  = link_to('Owed2thee', 'https://www.owed2thee.com')
+  | .

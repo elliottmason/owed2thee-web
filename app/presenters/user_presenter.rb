@@ -20,7 +20,7 @@ class UserPresenter < Burgundy::Item
       @display_name = possessive ? 'your' : 'you'
     else
       @display_name = full_name if can_view_full_name?
-      @display_name ||= email_address
+      @display_name ||= email_address # TODO: email policy?
       @display_name ||= I18n.t('app.default_display_name')
       @display_name += "'s" if possessive
     end
