@@ -32,8 +32,8 @@ describe PublishLoan do
 
       it 'sends confirmation email to obligor' do
         expect(ActionMailer::Base.deliveries.size).to eq 1
-        expect(ActionMailer::Base.deliveries[0].to) \
-          .to eq [borrower.primary_email_address.address]
+        expect(ActionMailer::Base.deliveries[0].to).
+          to eq [borrower.primary_email_address.address]
       end
     end
   end

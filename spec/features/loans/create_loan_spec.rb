@@ -88,8 +88,8 @@ feature 'Creating a loan', :js do
     end
 
     scenario do
-      expect(new_loan_page) \
-        .to have_content('you cannot create a loan with yourself')
+      expect(new_loan_page).
+        to have_content('you cannot create a loan with yourself')
     end
   end
 

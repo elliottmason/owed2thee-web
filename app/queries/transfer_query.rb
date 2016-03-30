@@ -4,15 +4,13 @@ class TransferQuery < ApplicationQuery
   end
 
   def self.confirmed
-    new
-      .relation
-      .confirmed
+    new.relation.
+      confirmed
   end
 
   def self.published
-    new
-      .relation
-      .published
+    new.relation.
+      published
   end
 
   module Scopes

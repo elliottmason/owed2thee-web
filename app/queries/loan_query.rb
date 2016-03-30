@@ -1,20 +1,13 @@
 class LoanQuery < ApplicationQuery
-  include Kaminari::ConfigurationMethods
-
-  attr_reader :relation
-
-  paginates_per 10
-
   def initialize(relation = Loan.all)
     super
   end
 
   def self.for_user(user)
-    new
-      .relation
-      .published
-      .user(user)
-      .order('transfers.created_at DESC')
+    new.relation.
+      published.
+      user(user).
+      order('transfers.created_at DESC')
   end
 
   def self.uuid!(uuid)
