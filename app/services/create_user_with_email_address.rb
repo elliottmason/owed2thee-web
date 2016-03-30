@@ -1,4 +1,8 @@
 class CreateUserWithEmailAddress < ApplicationService
+  include BroadcastToListeners
+
+  subscribe EmailAddressListener.new
+
   def initialize(email_address)
     @email_address = email_address
   end
@@ -15,9 +19,16 @@ class CreateUserWithEmailAddress < ApplicationService
   def perform
     user.email_addresses << email_address
     @successful = user.save
+    super
   end
 
   def user
     @user ||= User.new
+  end
+
+  private
+
+  def broadcast_to_listeners
+    broadcast(:create_email_address_successful, email_address)
   end
 end

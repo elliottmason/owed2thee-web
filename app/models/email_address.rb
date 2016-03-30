@@ -5,15 +5,9 @@ class EmailAddress < ActiveRecord::Base
   include Transitional
 
   belongs_to :user
+  has_many :confirmations, class_name: 'EmailAddressConfirmation'
 
-  validates :address, format:     { with: /.+@.+\..+/, on: :create },
-                      uniqueness: { conditions: -> { in_state(:confirmed) } }
+  validates :address, format: { with: /.+@.+\..+/, on: :create }
 
   transitional :confirmation
-
-  include ConfirmationToken
-
-  def to_param
-    address
-  end
 end

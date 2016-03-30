@@ -4,29 +4,33 @@ class TemporarySigninQuery < ApplicationQuery
   end
 
   def self.confirmation_token(confirmation_token)
-    new
-      .relation
-      .unexpired
-      .unredeemed
-      .confirmation_token(confirmation_token)
-      .first
+    new.relation.
+      unexpired.
+      unredeemed.
+      confirmation_token(confirmation_token)
+  end
+
+  def self.confirmation_token!(*args)
+    confirmation_token(*args).first!
   end
 
   def self.recent_email_address(email_address)
-    new
-      .relation
-      .unexpired
-      .unredeemed
-      .email_address(email_address)
-      .first
+    new.relation.
+      unexpired.
+      unredeemed.
+      email_address(email_address).
+      most_recent
+  end
+
+  def self.recent_email_address!(*args)
+    recent_email_address(*args).first!
   end
 
   def self.user(user)
-    new
-      .relation
-      .unexpired
-      .unredeemed
-      .user(user)
+    new.relation.
+      unexpired.
+      unredeemed.
+      user(user)
   end
 
   module Scopes
@@ -36,6 +40,10 @@ class TemporarySigninQuery < ApplicationQuery
 
     def email_address(email_address)
       where(email_address: email_address)
+    end
+
+    def most_recent
+      order('created_at DESC')
     end
 
     def unexpired

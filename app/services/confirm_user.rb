@@ -1,21 +1,25 @@
 class ConfirmUser < ApplicationService
-  include Wisper::Publisher
+  include ChangeState
 
   attr_reader :user
 
-  def initialize(user = nil)
+  subscribe(UserListener.new)
+
+  transition :confirm
+
+  def initialize(user)
     @user = user
-
-    subscribe(UserListener.new)
   end
 
-  def confirm_email_address_successful(email_address)
-    self.class.with(email_address.user)
+  alias item user
+
+  def successful?
+    user.confirmed?
   end
 
-  def perform
-    @successful = user.confirm!
+  private
 
-    broadcast(:confirm_user_successful, user) if successful?
+  def broadcast_to_listeners
+    broadcast(:confirm_user_successful, user)
   end
 end

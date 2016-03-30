@@ -26,6 +26,7 @@ en:
         string: '%{actor} confirmed %{confirmable}'
       creation: 'Your %{creatable} has been saved'
       dispute: 'Your dispute against %{disputable} has been submitted'
+      failure: 'Your %{creatable} could not be saved'
     pronouns:
       you: you
     verbs:
@@ -80,9 +81,15 @@ en:
       confirmation:
         confirmable: :loans.descriptions.short
         string: :app.notices.confirmation
+      creation:
+        creatable: :app.concepts.loan
+        string: :app.notices.creation
       dispute:
         disputable: :loans.descriptions.without_borrowers
         string: :app.notices.dispute
+      failure:
+        creatable: :app.concepts.loan
+        string: :app.notices.failure
 
     # Rails scopes
     show:
@@ -123,7 +130,7 @@ en:
         confirmable: :payments.descriptions.full
         string: :app.notices.confirmation
 
-    # Rails scopes
+    # payments Rails scopes
     show:
       confirm_button: :app.verbs.confirm
       publish_button: :app.verbs.confirm
@@ -134,7 +141,7 @@ en:
         nonpositive: must be larger than $0.00
       identical_participants: "you cannot create a %{record} with yourself"
 
-  # scoped for Rails
+  # Rails scopes
   errors:
     attributes:
       amount:

@@ -2,10 +2,12 @@ module Devise
   module TemporarySignin
     class Strategy < Devise::Strategies::Base
       def authenticate!
-        signin = TemporarySigninQuery
-                 .confirmation_token(params['confirmation_token'])
-
-        return fail!(:unauthenticated) unless signin
+        signin = begin
+                   TemporarySigninQuery.
+                 confirmation_token!(params['confirmation_token'])
+                 rescue ActiveRecord::RecordNotFound
+                   return fail!(:unauthenticated)
+                 end
 
         RedeemTemporarySignin.for(signin)
         success!(signin.user)

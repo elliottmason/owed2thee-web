@@ -1,5 +1,6 @@
 feature 'Requesting a reset for a forgotten password', :devise, :js do
   let(:email_address) { user.primary_email_address.address }
+  let(:sent_email)    { ActionMailer::Base.deliveries[0] }
   let(:user) do
     FactoryGirl.create(:unconfirmed_user,
                        email_address: 'josh.schramm@gmail.com')
@@ -24,7 +25,9 @@ feature 'Requesting a reset for a forgotten password', :devise, :js do
 
     scenario 'sends an email to reset the password' do
       expect(confirmation_page).to be_displayed
-      expect(ActionMailer::Base.deliveries[0].to).to eq [email_address]
+      expect(sent_email.to).to eq [email_address]
+      expect(sent_email.subject).
+        to eq '[Owed2Thee] - How to reset your password'
     end
   end
 

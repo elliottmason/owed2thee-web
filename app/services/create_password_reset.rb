@@ -1,14 +1,16 @@
 class CreatePasswordReset < CreateTemporarySignin
-  attr_reader :email_address
+  alias password_reset record
 
-  def initialize(email_address)
-    super(email_address, email_address.user)
+  subscribe PasswordResetListener.new
+
+  private
+
+  def broadcast_to_listeners
+    broadcast(:create_password_reset_successful, password_reset)
   end
 
-  def create_temporary_signin
-    @temporary_signin = PasswordReset.create!(email_address:  email_address,
-                                              user:           user)
+  def create_record
+    @record = PasswordReset.create!(email_address:  email_address,
+                                    user:           user)
   end
-
-  alias password_reset temporary_signin
 end

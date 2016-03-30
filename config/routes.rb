@@ -3,6 +3,20 @@ Rails.application.routes.draw do
 
   devise_for :users, only: []
 
+  resources :email_address_confirmations,
+            path:   'email_address/confirm',
+            param:  :confirmation_token do
+    scope module: 'email_address_confirmations' do
+      resource :redemption,
+               only: %i(),
+               path: '' do
+        member do
+          get :create
+        end
+      end
+    end
+  end
+
   resources :loan_requests, param: :uuid
 
   resources :loans, module: 'users', only: [] do
@@ -21,8 +35,6 @@ Rails.application.routes.draw do
         put(action)
       end
     end
-
-    resource :absolution, module: 'loans', only: %i(create), path: 'absolve'
   end
 
   resources :payments, only: %i(create new show), param: :uuid do
@@ -71,11 +83,7 @@ Rails.application.routes.draw do
               constraints:  { email_address: /.+(?:@|%40).+\..+/ },
               path:         'account/emails',
               only:         %i(edit update),
-              param:        :email_address do
-      member do
-        get 'confirm', path: 'confirm/:confirmation_token'
-      end
-    end
+              param:        :email_address
 
     resource :password, only: %i(edit update), path: 'account/password'
   end # namespace :users

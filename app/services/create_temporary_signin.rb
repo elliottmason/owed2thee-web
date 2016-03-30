@@ -1,13 +1,12 @@
 class CreateTemporarySignin < ApplicationService
-  include Wisper::Publisher
+  include BroadcastToListeners
 
-  attr_reader :temporary_signin
-  attr_reader :user
+  attr_reader :record
 
-  def initialize(email_address, user)
+  delegate :user, to: :email_address
+
+  def initialize(email_address)
     @email_address = email_address
-    @user = user
-    subscribe_to_listeners
   end
 
   def email_address
@@ -20,9 +19,9 @@ class CreateTemporarySignin < ApplicationService
   def perform
     ActiveRecord::Base.transaction do
       cancel_previous_records
-      create_temporary_signin
+      create_record
     end
-    @successful = temporary_signin.persisted?
+    @successful = record.persisted?
 
     broadcast_to_listeners if successful?
   end
@@ -30,21 +29,17 @@ class CreateTemporarySignin < ApplicationService
   private
 
   def broadcast_to_listeners
-    broadcast(:create_temporary_signin_successful, temporary_signin)
+    broadcast(:create_temporary_signin_successful, record)
   end
 
   def cancel_previous_records
     TemporarySigninQuery.user(user).each(&:cancel!)
   end
 
-  def create_temporary_signin
-    @temporary_signin = TemporarySignin.create!(
+  def create_record
+    @record = TemporarySignin.create!(
       email_address:  email_address,
       user:           user
     )
-  end
-
-  def subscribe_to_listeners
-    subscribe(TemporarySigninListener.new)
   end
 end

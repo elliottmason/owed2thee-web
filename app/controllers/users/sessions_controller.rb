@@ -13,7 +13,7 @@ module Users
         @sign_in_form = SignInForm.new(email: session[:email_address])
       rescue Pundit::NotAuthorizedError
         flash.clear
-        CreateTemporarySignin.for(session[:email_address], tentative_user)
+        CreateTemporarySignin.for(session[:email_address])
       end
     end
 

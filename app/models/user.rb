@@ -37,18 +37,7 @@ class User < ActiveRecord::Base
     encrypted_password.present?
   end
 
-  def new?
-    last_sign_in_at.blank?
-  end
-
   def primary_email_address
     email_addresses.first
   end
-
-  private
-
-  # # Devise voodoo (no longer necessary?)
-  # def email_changed?
-  #   false
-  # end
 end

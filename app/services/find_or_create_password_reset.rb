@@ -11,8 +11,12 @@ class FindOrCreatePasswordReset < ApplicationService
   def perform
     return unless retrieve_email_address
 
-    @password_reset = TemporarySigninQuery.recent_email_address(email_address)
-    @password_reset ||= create_password_reset
+    @password_reset =
+      begin
+        PasswordResetQuery.recent_email_address!(email_address)
+      rescue ActiveRecord::RecordNotFound
+        create_password_reset
+      end
 
     @successful = password_reset.persisted?
   end

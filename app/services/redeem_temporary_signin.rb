@@ -8,7 +8,7 @@ class RedeemTemporarySignin < ApplicationService
   end
 
   def allowed?
-    TemporarySigninPolicy.new(temporary_signin).redeem?
+    item.present? && TemporarySigninPolicy.new(item).redeem?
   end
 
   alias temporary_signin item

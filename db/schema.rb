@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160217011157) do
+ActiveRecord::Schema.define(version: 20160321223531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,16 +47,13 @@ ActiveRecord::Schema.define(version: 20160217011157) do
   add_index "comments", ["commenter_id"], name: "index_comments_on_commenter_id", using: :btree
 
   create_table "email_addresses", force: :cascade do |t|
-    t.integer  "user_id",              null: false
-    t.string   "address",              null: false
-    t.string   "confirmation_token"
-    t.datetime "confirmation_sent_at"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.integer  "user_id",    null: false
+    t.string   "address",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "email_addresses", ["address"], name: "index_email_addresses_on_address", unique: true, using: :btree
-  add_index "email_addresses", ["confirmation_token"], name: "index_email_addresses_on_confirmation_token", unique: true, using: :btree
   add_index "email_addresses", ["user_id"], name: "index_email_addresses_on_user_id", using: :btree
 
   create_table "groupings", force: :cascade do |t|
@@ -167,17 +164,19 @@ ActiveRecord::Schema.define(version: 20160217011157) do
 
   create_table "transfers", force: :cascade do |t|
     t.integer  "creator_id"
-    t.integer  "amount_cents",    default: 0,     null: false
-    t.string   "amount_currency", default: "USD", null: false
+    t.integer  "amount_cents",     default: 0,     null: false
+    t.string   "amount_currency",  default: "USD", null: false
     t.string   "description"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.integer  "sender_id",                       null: false
-    t.integer  "recipient_id",                    null: false
-    t.string   "type",                            null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.integer  "sender_id",                        null: false
+    t.integer  "recipient_id",                     null: false
+    t.string   "type",                             null: false
     t.datetime "transferred_at"
-    t.uuid     "uuid",                            null: false
+    t.uuid     "uuid",                             null: false
     t.integer  "loan_request_id"
+    t.integer  "balance_cents",    default: 0,     null: false
+    t.string   "balance_currency", default: "USD", null: false
   end
 
   add_index "transfers", ["creator_id"], name: "index_transfers_on_creator_id", using: :btree

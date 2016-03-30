@@ -14,13 +14,15 @@ FactoryGirl.define do
       user.email_addresses << email_address
     end
 
+    after(:create) do |user, _|
+      CreateEmailAddressConfirmation.with(user.email_addresses.first)
+    end
+
     trait :confirmed do
       password 'password'
 
       after(:create) do |user, _|
-        email_address = user.email_addresses.first
-        ConfirmEmailAddress.with(email_address.address,
-                                 email_address.confirmation_token)
+        ConfirmEmailAddress.with(user.email_addresses.first)
       end
     end
 

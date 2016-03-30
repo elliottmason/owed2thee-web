@@ -23,9 +23,7 @@ class LoansController < ApplicationController
     flash_message_for_create(service.successful?)
 
     if service.successful?
-      establish_creator_session(creator:  service.creator,
-                                loan:     service.loan,
-                                sign_in:  service.unregistered_creator?)
+      establish_creator_session(service)
       redirect_to(service.loan)
     else
       @loan = service.form
@@ -78,20 +76,20 @@ class LoansController < ApplicationController
            lender:      loan.lender(possessive: true))
   end
 
-  def establish_creator_session(creator: nil, loan: nil, sign_in: false)
-    if sign_in
-      sign_in(creator)
+  def establish_creator_session(service)
+    # sign in the creator only if they used an unknown email address
+    if service.unregistered_creator?
+      sign_in(service.creator)
     else
-      session[:created_loan_id] = loan.id
-      session[:email_address]   = creator.primary_email_address.address
+      session[:email_address] = service.creator_email_address
     end
   end
 
   def flash_message_for_create(successful = false)
     if successful
-      flash[:success] = t('loans.notices.create_success')
+      flash[:success] = t('loans.notices.creation')
     else
-      flash[:error] = t('loans.notices.create_failure')
+      flash[:error] = t('loans.notices.failure')
     end
   end
 
