@@ -81,3 +81,7 @@ pickle-email-*.html
 
 # Ignore application configuration
 /config/application.yml
+
+.rspec
+.rubocop.yml
+Guardfile
