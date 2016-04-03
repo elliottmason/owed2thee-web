@@ -6,20 +6,33 @@ module ChangeState
     end
   end
 
-  attr_reader :force
   attr_reader :item
+  attr_reader :user
 
   def allowed?
-    transition.present?
+    item.present? # &&
+      # transition.present? &&
+      # policy_class.new(user, item).send(:"#{transition}?")
   end
 
-  alias force? force
+  def initialize(item, user)
+    @item = item
+    @user = user
+  end
+
+  # def policy_class
+  #   return @policy_class if defined?(@policy_class)
+  #
+  #   @policy_class =
+  #     begin
+  #       "#{item.class}Policy".constantize
+  #     rescue NameError
+  #       nil
+  #     end
+  # end
 
   def perform
-    return unless force? || allowed?
-
     @successful = item.send(:"#{transition}!")
-    super
   end
 
   def transition

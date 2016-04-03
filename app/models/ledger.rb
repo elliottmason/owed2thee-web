@@ -6,8 +6,6 @@ class Ledger < ActiveRecord::Base
   validates :user_b,  presence: true
   validates_with LedgerUniquenessValidator, on: :create
 
-  before_create :update_balances
-
   monetize :confirmed_balance_cents
   monetize :projected_balance_cents
 
@@ -17,28 +15,13 @@ class Ledger < ActiveRecord::Base
     return -_confirmed_balance if user == user_b
   end
 
+  def users
+    [user_a, user_b]
+  end
+
   alias _projected_balance projected_balance
   def projected_balance(user = nil)
     return _projected_balance if user.nil? || (user.present? && user == user_a)
     return -_projected_balance if user == user_b
-  end
-
-  def sum_confirmed_balance
-    self.confirmed_balance = Money.new(
-      TransferQuery.confirmed.received(user_a, user_b).sum(:amount_cents) -
-      TransferQuery.confirmed.sent(user_a, user_b).sum(:amount_cents)
-    )
-  end
-
-  def sum_projected_balance
-    self.projected_balance = Money.new(
-      TransferQuery.published.received(user_a, user_b).sum(:amount_cents) -
-      TransferQuery.published.sent(user_a, user_b).sum(:amount_cents)
-    )
-  end
-
-  def update_balances
-    sum_confirmed_balance
-    sum_projected_balance
   end
 end

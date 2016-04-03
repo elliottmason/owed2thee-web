@@ -9,7 +9,7 @@ class LedgerQuery < ApplicationQuery
       between(user_a, user_b)
   end
 
-  def self.between!(*args)
+  def self.first_between(*args)
     between(*args).first
   end
 

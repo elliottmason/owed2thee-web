@@ -3,7 +3,9 @@ module BroadcastToListeners
     base.class_eval do
       include Wisper::Publisher
 
-      after_perform :broadcast_to_listeners, if: :successful?
+      set_callback :perform, :after do
+        broadcast_to_listeners if successful?
+      end
     end
   end
 

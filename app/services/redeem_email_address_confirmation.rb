@@ -14,6 +14,10 @@ class RedeemEmailAddressConfirmation < RedeemTemporarySignin
     @confirmation_token = confirmation_token
   end
 
+  def allowed?
+    super && email_address_confirmation.present? && redeemable?
+  end
+
   def email_address_confirmation
     return @email_address_confirmation if defined?(@email_address_confirmation)
 
@@ -21,7 +25,7 @@ class RedeemEmailAddressConfirmation < RedeemTemporarySignin
       begin
         EmailAddressConfirmationQuery.confirmation_token!(confirmation_token)
       rescue ActiveRecord::RecordNotFound
-        return @successful = false
+        nil
       end
   end
 
@@ -32,5 +36,9 @@ class RedeemEmailAddressConfirmation < RedeemTemporarySignin
   def broadcast_to_listeners
     broadcast(:redeem_email_address_confirmation_successful,
               email_address_confirmation)
+  end
+
+  def redeemable?
+    EmailAddressConfirmationPolicy.new(nil, email_address_confirmation).redeem?
   end
 end

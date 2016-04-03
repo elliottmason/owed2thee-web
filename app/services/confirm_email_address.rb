@@ -13,6 +13,10 @@ class ConfirmEmailAddress < ApplicationService
     @item = @email_address = email_address
   end
 
+  def allowed?
+    EmailAddressPolicy.new(nil, email_address).confirm?
+  end
+
   def successful?
     email_address.confirmed?
   end

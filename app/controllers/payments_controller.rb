@@ -9,21 +9,6 @@ class PaymentsController < ApplicationController
     redirect_to(@payment)
   end
 
-  def create
-    service = CreatePayment.with(current_user, @payee, params[:payment])
-
-    if service.successful?
-      redirect_to(service.payment)
-    else
-      @payment_form = service.form
-      render :new
-    end
-  end
-
-  def new
-    @payment_form = PaymentForm.new
-  end
-
   def publish
     service = PublishPayment.with(@payment, current_user)
     flash[:notice] = confirmation_notice if service.successful?
@@ -42,11 +27,6 @@ class PaymentsController < ApplicationController
                             amount_paid:  payment.amount_paid,
                             payee:        payment.payee,
                             payer:        payment.payer)
-  end
-
-  def retrieve_payee
-    @payee = UserQuery.uuid!(params[:user_uuid])
-    authorize(@payee, :pay?)
   end
 
   def retrieve_payment

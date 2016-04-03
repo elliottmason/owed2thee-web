@@ -63,7 +63,7 @@ class LoanPolicy < ApplicationPolicy
   end
 
   def loan_is_payable?
-    loan.payment.can_transition_to?(:fully_paid)
+    loan.balance_cents > 0
   end
 
   def loan_is_publishable?

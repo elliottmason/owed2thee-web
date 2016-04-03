@@ -14,10 +14,9 @@ feature 'Creating a loan', :js do
     scenario { expect(show_loan_page).to be_displayed }
   end
 
-  context "with a confirmed user's email address" do
+  context "as a confirmed user for another confirmed user's email address" do
     let(:borrower)  { FactoryGirl.create(:confirmed_user) }
     let(:creator)   { FactoryGirl.create(:confirmed_user) }
-    let(:ledger)    { LedgerQuery.between!(borrower, creator) }
 
     before do
       new_loan_page.load
@@ -120,8 +119,8 @@ feature 'Creating a loan', :js do
     end
 
     scenario do
-      expect(new_loan_page) \
-        .to have_content('you cannot create a loan with yourself')
+      expect(new_loan_page).
+        to have_content('you cannot create a loan with yourself')
     end
   end
 
@@ -141,8 +140,8 @@ feature 'Creating a loan', :js do
     end
 
     scenario do
-      expect(new_loan_page) \
-        .to have_content('you cannot create a loan with yourself')
+      expect(new_loan_page).
+        to have_content('you cannot create a loan with yourself')
     end
   end
 end

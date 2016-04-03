@@ -15,6 +15,10 @@ class CreatePayment < ApplicationService
     @payee    = payee
   end
 
+  def allowed?
+    form.valid?
+  end
+
   def form
     @form ||= PaymentForm.new(params)
   end
@@ -23,15 +27,13 @@ class CreatePayment < ApplicationService
     return unless form.valid?
 
     create_payment
-    @successful = payment.persisted?
-    super
+  end
+
+  def successful?
+    payment && payment.persisted?
   end
 
   private
-
-  def broadcast_to_listeners
-    broadcast(:create_payment_successful, payment)
-  end
 
   def build_payment
     @payment = Payment.new do |payment|
@@ -44,6 +46,8 @@ class CreatePayment < ApplicationService
 
   def create_payment
     build_payment
-    payment.save
+    payment.save!
+  rescue ActiveRecord::RecordInvalid
+    raise ActiveRecord::Rollback
   end
 end

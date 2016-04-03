@@ -17,10 +17,9 @@ class LoanListener
   end
 
   def publish_loan_successful(loan, user)
-    CreateLedgersForLoanParticipant.with(loan, user)
+    FindOrCreateLedger.for(loan.lender, loan.borrower)
     CreateUserContactsForTransferParticipant.with(loan, user)
     NotifyLoanParticipants.with(loan)
-    RecalculateLedger.for(*loan.participants)
     RecordTransferActivity.with(loan, :created)
   end
 end

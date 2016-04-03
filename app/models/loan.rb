@@ -5,9 +5,18 @@ class Loan < Transfer
   belongs_to :lender,   class_name: 'User', foreign_key: 'sender_id'
   belongs_to :loan_request
 
-  transitional :payment
+  has_many :loan_payments
+  has_many :payments, through: :loan_payments
+
+  before_create :set_balance
 
   def obligor
     @obligor ||= creator == lender ? borrower : lender
+  end
+
+  private
+
+  def set_balance
+    self[:balance_cents] = self[:amount_cents]
   end
 end

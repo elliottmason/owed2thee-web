@@ -35,19 +35,17 @@ Rails.application.routes.draw do
         put(action)
       end
     end
+
+    resources :payments, module: :loans, only: %i(create new)
   end
 
-  resources :payments, only: %i(create new show), param: :uuid do
+  resources :payments, only: %i(show), param: :uuid do
     member do
       %w(confirm publish).each do |action|
         patch(action)
         put(action)
       end
     end
-  end
-
-  resources :users, param: :uuid do
-    resources :payments, only: %i(create new)
   end
 
   namespace :users, as: 'user', path: '' do

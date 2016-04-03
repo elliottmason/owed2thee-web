@@ -7,14 +7,33 @@ class RecalculateLedger < ApplicationService
     @user_b = user_b
   end
 
+  def allowed?
+    ledger.present?
+  end
+
   def ledger
-    @ledger ||= LedgerQuery.between!(user_a, user_b)
+    return @ledger if defined?(@ledger)
+
+    @ledger = LedgerQuery.first_between(user_a, user_b)
   end
 
   def perform
-    return unless ledger
+    super
+    ledger.update_attributes(
+      confirmed_balance_cents: calculate_confirmed_balance,
+      projected_balance_cents: calculate_projected_balance
+    )
+  end
 
-    ledger.update_balances
-    @successful = ledger.save
+  private
+
+  def calculate_confirmed_balance
+    TransferQuery.confirmed.received(*ledger.users).sum(:amount_cents) -
+      TransferQuery.confirmed.sent(*ledger.users).sum(:amount_cents)
+  end
+
+  def calculate_projected_balance
+    TransferQuery.published.received(*ledger.users).sum(:amount_cents) -
+      TransferQuery.published.sent(*ledger.users).sum(:amount_cents)
   end
 end

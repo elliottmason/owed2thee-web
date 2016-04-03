@@ -3,15 +3,13 @@ class ConfirmUser < ApplicationService
 
   attr_reader :user
 
-  subscribe(UserListener.new)
+  subscribe UserListener.new
 
   transition :confirm
 
   def initialize(user)
-    @user = user
+    @item = @user = user
   end
-
-  alias item user
 
   def successful?
     user.confirmed?

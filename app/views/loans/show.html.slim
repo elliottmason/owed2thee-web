@@ -11,7 +11,7 @@
     - if policy(@loan).dispute?
       li = button_to t('.dispute_button'), [:dispute, @loan], class: 'button', form_class: 'dispute_button', method: :patch
     - if policy(@loan).pay?
-      li = button_to t('.pay_button'), [:new, @loan.lender, :payment], class: 'button', form_class: 'pay_button', method: :get
+      li = button_to t('.pay_button'), [:new, @loan, :payment], class: 'button', form_class: 'pay_button', method: :get
 
   .activities
     - loan.activities.each do |activity|

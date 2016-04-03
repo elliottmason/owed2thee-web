@@ -1,4 +1,5 @@
 class FindOrCreateLedger < ApplicationService
+  attr_reader :ledger
   attr_reader :user_a
   attr_reader :user_b
 
@@ -11,13 +12,17 @@ class FindOrCreateLedger < ApplicationService
     @user_b = user_b
   end
 
-  def ledger
-    @ledger ||= LedgerQuery.between(user_a, user_b).
-                first_or_create(user_a: user_a, user_b: user_b)
+  def perform
+    # TODO: RecalculateLedger should accept an actual ledger
+    find_or_create_ledger
+    RecalculateLedger.with(user_a, user_b)
+    @succesful = ledger.persisted?
   end
 
-  def perform
-    ledger.save if ledger.new_record?
-    @succesful = ledger.persisted?
+  private
+
+  def find_or_create_ledger
+    @ledger ||= LedgerQuery.between(user_a, user_b).
+                first_or_create(user_a: user_a, user_b: user_b)
   end
 end

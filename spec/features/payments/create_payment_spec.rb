@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Submitting a payment to a lender', :js do
-  let(:new_payment_page)  { Payments::NewPage.new }
+  let(:new_payment_page)  { Loans::Payments::NewPage.new }
   let(:show_loan_page)    { Loans::ShowPage.new }
   let(:show_payment_page) { Payments::ShowPage.new }
 
@@ -35,7 +35,7 @@ feature 'Submitting a payment to a lender', :js do
   context 'invalid params' do
     before do
       login_as(loan.borrower)
-      new_payment_page.load(user_uuid: loan.lender.uuid)
+      new_payment_page.load(loan_uuid: loan.uuid)
       new_payment_page.payment_form.submit(amount: '00')
     end
 

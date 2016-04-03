@@ -1,4 +1,4 @@
-= simple_form_for @payment_form, url: [@payee, :payments] do |f|
+= simple_form_for @payment_form, url: [@loan, :payments] do |f|
   = render partial: '/form_errors', locals: { resource: @payment_form }
   = f.input :amount, as: :integer, input_html: { max: 1000, min: 0, placeholder: '10.00', step: '0.01' }, label: 'amount in dollars', required: true
   = f.button :submit

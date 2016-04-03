@@ -1,9 +1,19 @@
 class PaymentPolicy < ApplicationPolicy
-  alias payment record
+  attr_reader :loan
+  def initialize(user, payment, loan = nil)
+    super(user, payment)
+    @loan = loan
+  end
+
+  def apply?
+    payment_balance_is_nonzero? && LoanPolicy.new(user, loan).pay?
+  end
 
   def confirm?
     payment_is_confirmable? && user_is_participant? && !user_is_creator?
   end
+
+  alias payment record
 
   def publish?
     user_is_creator? && payment_is_publishable?
@@ -14,6 +24,10 @@ class PaymentPolicy < ApplicationPolicy
   end
 
   private
+
+  def payment_balance_is_nonzero?
+    payment.balance_cents > 0
+  end
 
   def payment_is_confirmable?
     payment_is_published? && payment.confirmation.can_transition_to?(:confirmed)

@@ -97,7 +97,7 @@ en:
       cancel_button: :app.verbs.cancel
       confirm_button: :app.verbs.confirm
       dispute_button: :app.verbs.dispute
-      pay_button: :app.verbs.pay
+      pay_button: 'Mark as Paid'
       publish_button: :app.verbs.confirm
 
   passwords:

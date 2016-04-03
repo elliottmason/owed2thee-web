@@ -1,24 +1,26 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ConfirmPayment do
-  let(:ledger)    { LedgerQuery.between!(*payment.participants) }
-  let(:payee)     { payment.payee }
-  let(:payer)     { payment.payer }
-  let(:payment)   { create(:unconfirmed_payment, amount: 3) }
-  let(:service)   { described_class.new(payment, payer) }
-
-  before do
-    FactoryGirl.create(:confirmed_loan, borrower: payer,
-                                        creator:  payee,
-                                        amount:   10)
-    FactoryGirl.create(:confirmed_loan, borrower: payee,
-                                        creator:  payer,
-                                        amount:   5)
+  let(:ledger)  { LedgerQuery.first_between(*payment.participants) }
+  let(:payee)   { loan.lender }
+  let(:payer)   { loan.borrower }
+  let!(:loan)   { create(:confirmed_loan, amount: 10) }
+  let(:payment) do
+    create(:unconfirmed_payment, amount:  3,
+                                 loan:    loan,
+                                 payee:   payee,
+                                 payer:   payer)
   end
 
-  describe '#perform' do
+  before do
+    create(:confirmed_loan, borrower: payee,
+                            creator:  payer,
+                            amount:   5)
+  end
+
+  describe '.with' do
     before do
-      service.perform
+      described_class.with(payment, payee)
     end
 
     context 'successful' do
@@ -30,6 +32,14 @@ describe ConfirmPayment do
       it 'calculates the projected balance between payer and payee' do
         expect(ledger.projected_balance(payee).to_i).to eq(-2)
         expect(ledger.projected_balance(payer).to_i).to eq(2)
+      end
+
+      it 'calculates the loan balance' do
+        expect(loan.reload.balance.to_i).to eq(7)
+      end
+
+      it 'calculates the payment balance' do
+        expect(payment.balance.to_i).to eq(0)
       end
     end
   end

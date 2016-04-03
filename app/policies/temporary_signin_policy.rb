@@ -1,13 +1,9 @@
 class TemporarySigninPolicy < ApplicationPolicy
-  attr_reader :temporary_signin
-
-  def initialize(temporary_signin)
-    @temporary_signin = temporary_signin
-  end
-
   def redeem?
     unexpired? && unredeemed?
   end
+
+  alias temporary_signin record
 
   private
 

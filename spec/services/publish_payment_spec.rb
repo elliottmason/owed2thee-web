@@ -1,11 +1,10 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PublishPayment do
-  let(:ledger)    { LedgerQuery.between!(*payment.participants) }
-  let(:payee)     { payment.payee }
-  let(:payer)     { payment.payer }
-  let(:payment)   { FactoryGirl.create(:unpublished_payment, amount: 3) }
-  let(:service)   { described_class.new(payment, payer) }
+  let(:ledger)  { LedgerQuery.first_between(*payment.participants) }
+  let(:payee)   { payment.payee }
+  let(:payer)   { payment.payer }
+  let(:payment) { FactoryGirl.create(:unpublished_payment, amount: 3) }
 
   before do
     FactoryGirl.create(:confirmed_loan, borrower: payer,
@@ -16,9 +15,9 @@ describe PublishPayment do
                                         amount:   5)
   end
 
-  describe '#perform' do
+  describe '.with' do
     before do
-      service.perform
+      described_class.with(payment, payer)
     end
 
     context 'successful' do

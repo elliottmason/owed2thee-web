@@ -14,7 +14,10 @@ class Transfer < ActiveRecord::Base
   validates :recipient, presence: true
   validates :sender,    presence: true
 
+  before_create :set_default_balance
+
   monetize :amount_cents
+  monetize :balance_cents
 
   transitional :confirmation, state_machine_class_name: 'DisputeStateMachine'
   transitional :publicity
@@ -32,6 +35,10 @@ class Transfer < ActiveRecord::Base
         'transfers.errors.identical_participants',
         record: self.class.name.underscore
       )
-    ) if (recipient == sender)
+    ) if recipient == sender
+  end
+
+  def set_default_balance
+    self[:balance_cents] = self[:amount_cents]
   end
 end

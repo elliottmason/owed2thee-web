@@ -25,6 +25,6 @@ class UserPolicy < ApplicationPolicy
   attr_reader :target_user
 
   def ledger
-    @ledger ||= LedgerQuery.between!(current_user, target_user)
+    @ledger ||= LedgerQuery.first_between(current_user, target_user)
   end
 end
