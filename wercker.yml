@@ -36,3 +36,9 @@ build:
         - script:
             name: rspec
             code: bundle exec rspec
+deploy:
+  steps:
+    - leipart/git-push:
+      host: 66.172.11.31
+      repo: dokku/owed2thee
+      branch: production
