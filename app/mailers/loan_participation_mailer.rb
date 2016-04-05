@@ -1,6 +1,4 @@
 class LoanParticipationMailer < ApplicationMailer
-  default from: 'notifications@owed2thee.com'
-
   delegate :amount,
            :confirmation_link,
            :creator,

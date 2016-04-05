@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'notifications@owed2thee.com'
+  default from: 'postmaster@' + Rails.application.secrets.domain_name
 
   private
 
