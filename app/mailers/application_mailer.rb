@@ -10,6 +10,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   default from: "#{app_title} <notifications@#{domain_name}>"
+  default host: domain_name
 
   private
 
