@@ -23,6 +23,7 @@ gem 'sidekiq',              '~> 3.3'
 gem 'simple_form',          '~> 3.2'
 gem 'slim-rails',           '~> 3.0'
 gem 'statesman',            '~> 1.3.0'
+gem 'sucker_punch',         '~> 2.0'
 gem 'uglifier',             '~> 2.7'
 gem 'wisper',               '~> 1.6'
 
