@@ -7,7 +7,7 @@ class RecalculateLoanBalance < ApplicationService
 
   def perform
     recalculate_loan_balance
-    @successful = loan.previous_changes[:balance_cents].present?
+    raise ActiveRecord::Rollback unless successful?
   end
 
   private
@@ -17,7 +17,6 @@ class RecalculateLoanBalance < ApplicationService
   end
 
   def recalculate_loan_balance
-    raise ActiveRecord::Rollback unless
-      @loan.update_attributes(balance_cents: loan_balance)
+    @successful = @loan.update_attributes(balance_cents: loan_balance)
   end
 end

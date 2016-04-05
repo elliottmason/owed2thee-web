@@ -17,7 +17,6 @@ class RecalculatePaymentBalance < ApplicationService
   end
 
   def recalculate_payment_balance
-    @successful =
-      payment.update_attributes(balance_cents: payment_balance)
+    @successful = payment.update_attributes(balance_cents: payment_balance)
   end
 end

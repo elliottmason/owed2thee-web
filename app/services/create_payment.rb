@@ -24,8 +24,6 @@ class CreatePayment < ApplicationService
   end
 
   def perform
-    return unless form.valid?
-
     create_payment
   end
 
