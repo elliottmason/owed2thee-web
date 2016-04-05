@@ -24,12 +24,8 @@ class LoanParticipationMailerPresenter < TransferPresenter
 
   private
 
-  def creator
-    loan.creator
-  end
-
   def creator_email_address
-    creator.primary_email_address
+    loan.creator.primary_email_address
   end
 
   def creator_is_lender?
@@ -39,6 +35,6 @@ class LoanParticipationMailerPresenter < TransferPresenter
   def email_address_confirmation
     @email_address_confirmation ||=
       EmailAddressConfirmationQuery.
-      recent_email_address!(recipient.primary_email_address)
+      recent_email_address!(loan.recipient.primary_email_address)
   end
 end
