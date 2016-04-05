@@ -220,6 +220,7 @@ GEM
       activerecord (>= 3.0)
       i18n (>= 0.5.0)
       railties (>= 3.0.0)
+    puma (3.2.0)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     quiet_assets (1.1.0)
@@ -402,6 +403,7 @@ DEPENDENCIES
   pry-rails (~> 0.3)
   pry-rescue (~> 1.4)
   public_activity (~> 1.4)
+  puma (~> 3.2)
   pundit (~> 1.0)
   quiet_assets
   rack-livereload

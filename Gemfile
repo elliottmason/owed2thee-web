@@ -59,6 +59,10 @@ group :development, :test do
   gem 'thin',               '~> 1.6'
 end
 
+group :production do
+  gem 'puma', '~> 3.2'
+end
+
 group :test do
   gem 'capybara',             '~> 2.4'
   gem 'capybara-screenshot',  '~> 1.0'
