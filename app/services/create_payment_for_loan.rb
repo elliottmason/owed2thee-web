@@ -11,7 +11,6 @@ class CreatePaymentForLoan < CreatePayment
     ActiveRecord::Base.transaction do
       super
       create_loan_payment
-      puts @loan_payment.persisted?
     end
   end
 
