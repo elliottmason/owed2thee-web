@@ -22,7 +22,9 @@ feature 'Requesting a reset for a forgotten password', :devise, :js do
       sign_in_page.forgot_password_link.click
       expect(forgot_password_page).to be_displayed
       forgot_password_page.email_form.email_address_field.set(email_address)
-      forgot_password_page.email_form.submit
+      perform_enqueued_jobs do
+        forgot_password_page.email_form.submit
+      end
     end
 
     scenario 'sends an email to reset the password' do

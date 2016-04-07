@@ -3,8 +3,6 @@ class ConfirmUser < ApplicationService
 
   attr_reader :user
 
-  subscribe UserListener.new
-
   transition :confirm
 
   def initialize(user)
@@ -13,11 +11,5 @@ class ConfirmUser < ApplicationService
 
   def successful?
     user.confirmed?
-  end
-
-  private
-
-  def broadcast_to_listeners
-    broadcast(:confirm_user_successful, user)
   end
 end

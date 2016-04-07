@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe PublishLoan do
+describe PublishLoan, :background do
   let(:borrower)  { loan.borrower }
   let(:creator)   { loan.creator }
   let(:ledger)    { LedgerQuery.first_between(*loan.participants) }
@@ -16,16 +16,20 @@ describe PublishLoan do
 
   describe '.with' do
     before do
-      described_class.with(loan, creator)
+      perform_enqueued_jobs do
+        described_class.with(loan, creator)
+      end
     end
 
     context 'successful' do
       it 'calculates the confirmed balance between borrower and lender' do
+        described_class.with(loan, creator)
         expect(ledger.confirmed_balance(lender).to_i).to eq(-10)
         expect(ledger.confirmed_balance(borrower).to_i).to eq(10)
       end
 
       it 'calculates the projected balance between borrower and lender' do
+        described_class.with(loan, creator)
         expect(ledger.projected_balance(lender).to_i).to eq(-30)
         expect(ledger.projected_balance(borrower).to_i).to eq(30)
       end

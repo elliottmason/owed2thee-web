@@ -1,17 +1,30 @@
 require 'rails_helper'
 
-feature 'Creating a loan', :js do
+feature 'Creating a loan', :background, :js do
   let(:new_loan_page)   { Loans::NewPage.new }
   let(:show_loan_page)  { Loans::ShowPage.new }
   let(:sign_in_page)    { SignInPage.new }
 
   context 'as a new user' do
-    before do
-      new_loan_page.load
+    def submit_form
       new_loan_page.loan_form.submit(FactoryGirl.attributes_for(:loan_form))
     end
 
-    scenario { expect(show_loan_page).to be_displayed }
+    before do
+      ActionMailer::Base.deliveries.clear
+      new_loan_page.load
+      perform_enqueued_jobs do
+        submit_form
+      end
+    end
+
+    scenario do
+      expect(show_loan_page).to be_displayed
+    end
+
+    scenario do
+      expect(ActionMailer::Base.deliveries.size).to eq 1
+    end
   end
 
   context "as a confirmed user for another confirmed user's email address" do
