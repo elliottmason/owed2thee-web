@@ -3,7 +3,8 @@ class LoanListener
     RecordTransferActivity.with(loan, :canceled, user)
   end
 
-  def create_loan_successful(_loan)
+  def create_loan_successful(loan)
+    NotifyLoanCreator.for(loan)
   end
 
   def confirm_loan_successful(loan, user)

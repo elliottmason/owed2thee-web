@@ -26,6 +26,13 @@ class EmailAddressQuery < ApplicationQuery
     for_transfer_participant(transfer, user).first
   end
 
+  def self.last_unconfirmed_for_user(user)
+    new.relation.
+      unconfirmed.
+      user(user).
+      last
+  end
+
   module Scopes
     def address(address)
       where(address: address)
@@ -33,8 +40,12 @@ class EmailAddressQuery < ApplicationQuery
 
     def transfer(transfer)
       joins('LEFT JOIN transfer_email_addresses tea ' \
-            'ON tea.email_address_id = email_addresses.id')
-        .where('tea.transfer_id' => transfer.id)
+            'ON tea.email_address_id = email_addresses.id').
+        where('tea.transfer_id' => transfer.id)
+    end
+
+    def unconfirmed
+      not_in_state(:confirmed)
     end
 
     def user(user)
