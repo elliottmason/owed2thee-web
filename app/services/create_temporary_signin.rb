@@ -5,6 +5,8 @@ class CreateTemporarySignin < ApplicationService
 
   delegate :user, to: :email_address
 
+  subscribe TemporarySigninListener.new
+
   def initialize(email_address)
     @email_address = email_address
   end
@@ -22,8 +24,6 @@ class CreateTemporarySignin < ApplicationService
       create_record
     end
     @successful = record.persisted?
-
-    broadcast_to_listeners if successful?
   end
 
   private

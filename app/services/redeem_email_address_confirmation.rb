@@ -19,14 +19,9 @@ class RedeemEmailAddressConfirmation < RedeemTemporarySignin
   end
 
   def email_address_confirmation
-    return @email_address_confirmation if defined?(@email_address_confirmation)
-
     @email_address_confirmation ||=
-      begin
-        EmailAddressConfirmationQuery.confirmation_token!(confirmation_token)
-      rescue ActiveRecord::RecordNotFound
-        nil
-      end
+      EmailAddressConfirmationQuery.
+      first_with_confirmation_token(confirmation_token)
   end
 
   alias item email_address_confirmation

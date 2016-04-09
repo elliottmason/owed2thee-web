@@ -32,12 +32,25 @@ feature 'Confirm email address', :devise, :js do
       end
     end
 
-    context 'with exactly one unconfirmed debt' do
+    context 'with an unconfirmed debt' do
       let!(:loan) { create(:published_loan, borrower: user) }
       let(:loan_page) { Loans::ShowPage.new }
 
       context 'using correct confirmation token' do
         scenario 'redirects to debt' do
+          confirm_email_address
+          expect(loan_page).to be_displayed
+          expect(loan_page).to have_content(confirmation_message)
+        end
+      end
+    end
+
+    context 'with an unpublished loan' do
+      let!(:loan) { create(:unpublished_loan, creator: user) }
+      let(:loan_page) { Loans::ShowPage.new }
+
+      context 'using correct confirmation token' do
+        scenario 'redirects to loan' do
           confirm_email_address
           expect(loan_page).to be_displayed
           expect(loan_page).to have_content(confirmation_message)

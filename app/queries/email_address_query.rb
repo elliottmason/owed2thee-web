@@ -26,10 +26,11 @@ class EmailAddressQuery < ApplicationQuery
     for_transfer_participant(transfer, user).first
   end
 
-  def self.last_unconfirmed_for_user(user)
+  def self.most_recent_unconfirmed_for_user(user)
     new.relation.
       unconfirmed.
       user(user).
+      order('created_at DESC').
       last
   end
 

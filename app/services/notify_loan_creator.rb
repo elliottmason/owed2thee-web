@@ -8,7 +8,7 @@ class NotifyLoanCreator < ApplicationService
   end
 
   def allowed?
-    !creator.confirmed?
+    !creator.confirmed? && creator.sign_in_count == 0
   end
 
   def perform

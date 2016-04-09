@@ -13,7 +13,7 @@ class FindOrCreatePasswordReset < ApplicationService
 
     @password_reset =
       begin
-        PasswordResetQuery.recent_email_address!(email_address)
+        PasswordResetQuery.most_recent_email_address(email_address)
       rescue ActiveRecord::RecordNotFound
         create_password_reset
       end

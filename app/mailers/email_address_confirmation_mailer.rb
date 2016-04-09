@@ -1,6 +1,7 @@
 class EmailAddressConfirmationMailer < ApplicationMailer
   def email(user)
-    @user = user
+    @user       = user
+    @presenter  = EmailAddressConfirmationMailerPresenter.new(email_address)
     mail(to: to, subject: subject)
   end
 
@@ -9,11 +10,11 @@ class EmailAddressConfirmationMailer < ApplicationMailer
   attr_reader :user
 
   def email_address
-    @email_address ||= EmailAddressQuery.last_unconfirmed_for_user(user)
+    @email_address ||= EmailAddressQuery.most_recent_unconfirmed_for_user(user)
   end
 
   def subject
-    ["[#{t('app.title')}] - Confirm your email address"]
+    "[#{t('app.title')}] - Confirm your email address"
   end
 
   def to

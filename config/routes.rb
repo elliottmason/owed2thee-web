@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :email_address_confirmations,
             path:   'email_address/confirm',
+            only:   %i(),
             param:  :confirmation_token do
     scope module: 'email_address_confirmations' do
       resource :redemption,

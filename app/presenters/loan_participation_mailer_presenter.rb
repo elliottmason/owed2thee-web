@@ -35,6 +35,6 @@ class LoanParticipationMailerPresenter < TransferPresenter
   def email_address_confirmation
     @email_address_confirmation ||=
       EmailAddressConfirmationQuery.
-      recent_email_address!(loan.recipient.primary_email_address)
+      most_recent_email_address(loan.recipient.primary_email_address)
   end
 end

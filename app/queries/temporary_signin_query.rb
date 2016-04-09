@@ -10,8 +10,8 @@ class TemporarySigninQuery < ApplicationQuery
       confirmation_token(confirmation_token)
   end
 
-  def self.confirmation_token!(*args)
-    confirmation_token(*args).first!
+  def self.first_with_confirmation_token(*args)
+    confirmation_token(*args).first
   end
 
   def self.recent_email_address(email_address)
@@ -22,7 +22,7 @@ class TemporarySigninQuery < ApplicationQuery
       most_recent
   end
 
-  def self.recent_email_address!(*args)
+  def self.most_recent_email_address(*args)
     recent_email_address(*args).first!
   end
 

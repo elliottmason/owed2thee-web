@@ -1,0 +1,8 @@
+p
+  ' You've successfully created an
+  => link_to(t('app.title'), url_for(@presenter.confirmation_path))
+  ' account. You can now
+  => link_to('confirm your email address', url_for(@presenter.confirmation_path))
+  | to access all of the site's features.
+p
+  = link_to("Click here to confirm your #{t('app.title')} account.", url_for(@presenter.confirmation_path))

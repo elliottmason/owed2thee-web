@@ -22,11 +22,8 @@ module EmailAddressConfirmations
     end
 
     def redirect_for_create(service)
-      return DebtQuery.first_unconfirmed_for_user!(service.user) \
-        if service.successful? &&
-           DebtQuery.unconfirmed_count_for_user!(service.user) == 1
-
-      :loans
+      (service.successful? &&
+       LoanQuery.last_incomplete_for_user(service.user)) || :loans
     end
   end
 end

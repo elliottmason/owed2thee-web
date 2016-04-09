@@ -16,6 +16,7 @@ class TemporarySigninMailer < ApplicationMailer
   attr_reader :temporary_signin
 
   def subject
+    "[#{t('app.title')}] - How to sign in and set your password"
   end
 
   def to

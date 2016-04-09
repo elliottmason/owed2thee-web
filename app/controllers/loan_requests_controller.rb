@@ -15,10 +15,6 @@ class LoanRequestsController < ApplicationController
     end
   end
 
-  def index
-    @loan_requests = policy_scope(LoanRequest).page(index_params.page)
-  end
-
   def new
     @loan_request_form = LoanRequestForm.new
   end
@@ -39,10 +35,6 @@ class LoanRequestsController < ApplicationController
     else
       flash[:error] = t('loan_requests.errors.creation')
     end
-  end
-
-  def index_params
-    @index_params || LoanRequestParams.new(params)
   end
 
   def retrieve_loan_request

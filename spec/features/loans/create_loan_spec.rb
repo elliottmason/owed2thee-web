@@ -5,6 +5,10 @@ feature 'Creating a loan', :background, :js do
   let(:show_loan_page)  { Loans::ShowPage.new }
   let(:sign_in_page)    { SignInPage.new }
 
+  before do
+    ActionMailer::Base.deliveries.clear
+  end
+
   context 'as a new user' do
     def submit_form
       new_loan_page.loan_form.submit(FactoryGirl.attributes_for(:loan_form))
@@ -24,6 +28,8 @@ feature 'Creating a loan', :background, :js do
 
     scenario do
       expect(ActionMailer::Base.deliveries.size).to eq 1
+      expect(ActionMailer::Base.deliveries[0].subject).
+        to eq '[Owed2Thee] - Confirm your email address'
     end
   end
 
@@ -58,20 +64,25 @@ feature 'Creating a loan', :background, :js do
 
   context "with an unconfirmed user's email address" do
     before do
-      user = FactoryGirl.create(:unconfirmed_user)
-
       new_loan_page.load
-      new_loan_page.loan_form.submit(
-        FactoryGirl.attributes_for(
-          :loan_form,
-          creator_email_address: user.primary_email_address.address
+      perform_enqueued_jobs do
+        user = FactoryGirl.create(:unconfirmed_user)
+
+        new_loan_page.loan_form.submit(
+          FactoryGirl.attributes_for(
+            :loan_form,
+            creator_email_address: user.primary_email_address.address
+          )
         )
-      )
+      end
     end
 
     scenario do
       expect(sign_in_page).to be_displayed
       expect(sign_in_page).to_not have_sign_in_form
+      expect(ActionMailer::Base.deliveries.size).to be >= 1
+      expect(ActionMailer::Base.deliveries.last.subject).
+        to eq '[Owed2Thee] - How to sign in and set your password'
     end
   end
 
