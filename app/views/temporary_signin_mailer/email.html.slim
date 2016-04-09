@@ -1,1 +1,9 @@
-= link_to(@signin_link, @signin_link)
+p
+  ' It seems like your
+  => link_to(t('app.title'), @signin_link)
+  | account doesn't have a password yet.
+p
+  ' To make it easier to sign in, you
+  = link_to('can set a password for your account.', @signin_link)
+p
+  = link_to('Click here to set your password.', @signin_link)
