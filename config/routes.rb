@@ -27,9 +27,9 @@ Rails.application.routes.draw do
   end
 
   resources :loans,
-            constraints: { uuid: /[a-f0-9\-]{36}/i },
-            only: %i(create new show),
-            param: :uuid do
+            constraints:  { uuid: /[a-f0-9\-]{36}/i },
+            only:         %i(create new show),
+            param:        :uuid do
     member do
       %w(cancel confirm dispute publish).each do |action|
         patch(action)
@@ -37,7 +37,10 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :payments, module: :loans, only: %i(create new)
+    scope module: 'loans' do
+      resources :comments, only: %i(create)
+      resources :payments, only: %i(create new)
+    end
   end
 
   resources :payments, only: %i(show), param: :uuid do

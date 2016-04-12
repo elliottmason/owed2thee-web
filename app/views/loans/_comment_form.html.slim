@@ -1,0 +1,10 @@
+/ .comment-form
+/   h3 Add Comment
+/   = simple_form_for @comment_form || CommentForm.new, url: [@loan, :comments] do |f|
+/     = f.input :body, as: :text, placeholder: 'Leave a comment about this loan.'
+/     = f.submit 'Post Comment', class: 'button'
+
+.description-form
+  = simple_form_for @comment_form || LoanDescriptionForm.new, url: [@loan, :comments] do |f|
+    = f.input :body, :'aria-label' => 'loan description', as: :text, label: 'Add Description', placeholder: 'What is this loan for?', required: true
+    = f.submit 'Save Description', class: 'button'

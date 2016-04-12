@@ -15,9 +15,23 @@ class LoanPresenter < TransferPresenter
     @borrower ||= display_name(loan.borrower, *args)
   end
 
+  def description
+    return unless description_item
+
+    @description ||= description_item.body
+  end
+
   def lender(*args)
     @lender ||= display_name(loan.lender, *args)
   end
 
   alias loan item
+
+  private
+
+  def description_item
+    return @description_item if defined?(@description_item)
+
+    @description_item = CommentQuery.description_for_loan(loan)
+  end
 end
