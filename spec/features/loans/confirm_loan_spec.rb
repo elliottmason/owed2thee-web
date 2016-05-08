@@ -4,11 +4,12 @@ feature 'Confirm a loan', :js do
   let(:show_loan_page) { Loans::ShowPage.new }
 
   context 'as as lender' do
-    let(:confirmation_notice) { 'Confirmed your loan to Josh for $9.00' }
+    let(:confirmation_notice) { 'You confirmed your loan to elliott@gmail.com' }
     let(:current_user) { loan.lender }
     let(:loan) do
-      lender = FactoryGirl.create(:confirmed_user, first_name: 'Josh')
-      FactoryGirl.create(:loan, amount: 9.00, creator: lender)
+      borrower = FactoryGirl.create(:confirmed_user,
+                                    email_address: 'elliott@gmail.com')
+      FactoryGirl.create(:loan, amount: 9.00, borrower: borrower)
     end
 
     before do
@@ -21,9 +22,13 @@ feature 'Confirm a loan', :js do
   end
 
   context 'as a borrower' do
-    let(:confirmation_notice) { "Confirmed Josh's loan for $9.00" }
+    let(:confirmation_notice) { "You confirmed Josh's loan to you" }
     let(:current_user) { loan.borrower }
-    let(:loan) { FactoryGirl.create(:published_loan) }
+    let(:loan) do
+      lender = FactoryGirl.create(:confirmed_user, first_name:  'Josh',
+                                                   last_name:   nil)
+      FactoryGirl.create(:published_loan, creator: lender)
+    end
 
     before do
       confirm_loan
@@ -42,7 +47,7 @@ feature 'Confirm a loan', :js do
 
   def expect_loan_confirmation
     expect(show_loan_page).to be_displayed
-    expect(show_loan_page).to_not have_content(confirmation_notice)
+    expect(show_loan_page).to have_content(confirmation_notice)
     expect(show_loan_page).to_not have_confirm_button
   end
 end

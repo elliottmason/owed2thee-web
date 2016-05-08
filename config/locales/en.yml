@@ -63,10 +63,13 @@ en:
 
   loans:
     descriptions:
-      short: 'loan for %{amount_lent}'
-      full: '%{lender} loan to %{borrower} for %{amount_lent}'
+      full:
+        string: '%{without_amount} for %{amount_lent}'
+        without_amount: :loans.descriptions.without_amount
+      without_amount: '%{lender} loan to %{borrower}'
       without_borrowers: '%{lender} loan for %{amount_lent}'
       without_lenders: 'loan to %{borrower} for %{amount_lent}'
+      without_obligors: 'loan for %{amount_lent}'
     errors:
       amount:
         nonpositive: :transfers.errors.amount.nonpositive
@@ -79,7 +82,7 @@ en:
         cancellable: :loans.descriptions.full
         string: :app.notices.cancellation
       confirmation:
-        confirmable: :loans.descriptions.short
+        confirmable: :loans.descriptions.without_amount
         string: :app.notices.confirmation
       creation:
         creatable: :app.concepts.loan

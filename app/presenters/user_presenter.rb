@@ -39,8 +39,8 @@ class UserPresenter < Burgundy::Item
   def full_name
     return @full_name if @full_name
 
-    return unless user.first_name.present? && user.last_name.present?
-    @full_name = "#{user.first_name} #{user.last_name}"
+    return unless user.first_name.present? || user.last_name.present?
+    @full_name = [user.first_name, user.last_name].compact.join(' ')
   end
 
   def user_is_viewer?

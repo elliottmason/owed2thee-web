@@ -16,9 +16,6 @@ class LoanPresenter < TransferPresenter
   end
 
   def description
-    return unless description_item
-
-    @description ||= description_item.body
   end
 
   def lender(*args)
