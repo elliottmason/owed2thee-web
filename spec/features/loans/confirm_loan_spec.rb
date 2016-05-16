@@ -4,6 +4,7 @@ feature 'Confirm a loan', :js do
   let(:borrower) do
     FactoryGirl.create(:confirmed_user, email_address: 'elliott@gmail.com')
   end
+  let(:creator) { lender }
   let(:lender) do
     FactoryGirl.create(:confirmed_user,
                        email_address: 'josh@gmail.com',
@@ -11,7 +12,10 @@ feature 'Confirm a loan', :js do
                        last_name:     nil)
   end
   let(:loan) do
-    FactoryGirl.create(:loan, amount: 9.00, borrower: borrower, creator: lender)
+    FactoryGirl.create(:loan, amount:   9.00,
+                              borrower: borrower,
+                              creator:  creator,
+                              lender:   lender)
   end
   let(:sent_email) { ActionMailer::Base.deliveries.last }
 
@@ -34,9 +38,9 @@ feature 'Confirm a loan', :js do
     end
   end
 
-  context 'as its recipient' do
+  context 'as its recipient borrower' do
     let(:confirmation_notice) { "You confirmed Josh's loan to you" }
-    let(:current_user) { loan.recipient }
+    let(:current_user) { loan.borrower }
 
     before do
       PublishLoan.with(loan, loan.creator)
@@ -47,6 +51,23 @@ feature 'Confirm a loan', :js do
       expect_loan_confirmation
       expect(sent_email.subject).
         to eq '[Owed2Thee] - elliott@gmail.com confirmed your loan'
+    end
+  end
+
+  context 'as its recipient lender' do
+    let(:confirmation_notice) { '' }
+    let(:creator) { borrower }
+    let(:current_user) { lender }
+
+    before do
+      PublishLoan.with(loan, loan.creator)
+      confirm_loan
+    end
+
+    scenario do
+      expect_loan_confirmation
+      expect(sent_email.subject).
+        to eq '[Owed2Thee] - Josh confirmed your loan'
     end
   end
 

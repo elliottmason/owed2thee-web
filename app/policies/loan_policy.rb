@@ -1,10 +1,10 @@
 class LoanPolicy < ApplicationPolicy
   def cancel?
-    user_is_creator? && loan_is_unconfirmed? && loan_is_cancelable?
+    loan_is_cancelable? && user_is_creator? && loan_is_unconfirmed?
   end
 
   def confirm?
-    loan_is_confirmable? && user_is_recipient? && !user_is_creator?
+    loan_is_confirmable? && user_is_participant? && !user_is_creator?
   end
 
   def create?
@@ -12,8 +12,7 @@ class LoanPolicy < ApplicationPolicy
   end
 
   def dispute?
-    loan_is_disputable? &&
-      user_is_participant? && !user_is_creator?
+    loan_is_disputable? && user_is_participant? && !user_is_creator?
   end
 
   def index?
@@ -27,11 +26,11 @@ class LoanPolicy < ApplicationPolicy
   end
 
   def pay?
-    user_is_borrower? && loan_is_payable? && lender_is_payable?
+    loan_is_payable? && user_is_borrower? && lender_is_payable?
   end
 
   def publish?
-    user_is_creator? && loan_is_publishable?
+    loan_is_publishable? && user_is_creator?
   end
 
   def show?
@@ -92,10 +91,6 @@ class LoanPolicy < ApplicationPolicy
 
   def user_is_participant?
     user_is_borrower? || user_is_lender?
-  end
-
-  def user_is_recipient?
-    loan.recipient == user
   end
 
   class Scope < Scope
