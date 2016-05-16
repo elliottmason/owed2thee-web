@@ -1,0 +1,9 @@
+p
+  | #{@presenter.creator} submitted a #{t('loans.name')} stating that they #{@presenter.verb} you #{@presenter.amount}.
+
+p
+  ' You can
+  => link_to('confirm or deny', url_for(@presenter.confirmation_path))
+  ' this #{@presenter.loan_type} on
+  = link_to(t('app.title'), @presenter.confirmation_path)
+  | .

@@ -1,0 +1,7 @@
+p
+  ' #{t('loans.descriptions.full', amount_lent: @presenter.amount, borrower: @presenter.borrower, lender: @presenter.lender).capitalize}
+  | has been confirmed.
+p
+  ' You can view the status of this loan on
+  = link_to(t('app.title'), @presenter.path)
+  | .

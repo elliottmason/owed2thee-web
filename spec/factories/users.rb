@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :user do
-    factory :confirmed_user, traits: [:confirmed, :with_name]
+    factory :confirmed_user, traits: [:confirmed]
     factory :unconfirmed_user
     factory :user_with_email
 
@@ -24,11 +24,6 @@ FactoryGirl.define do
       after(:create) do |user, _|
         ConfirmEmailAddress.with(user.email_addresses.first)
       end
-    end
-
-    trait :with_name do
-      first_name  { Faker::Name.first_name }
-      last_name   { Faker::Name.last_name }
     end
   end
 end

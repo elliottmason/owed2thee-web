@@ -1,48 +1,59 @@
 require 'rails_helper'
 
 feature 'Confirm a loan', :js do
+  let(:borrower) do
+    FactoryGirl.create(:confirmed_user, email_address: 'elliott@gmail.com')
+  end
+  let(:lender) do
+    FactoryGirl.create(:confirmed_user,
+                       email_address: 'josh@gmail.com',
+                       first_name:    'Josh',
+                       last_name:     nil)
+  end
+  let(:loan) do
+    FactoryGirl.create(:loan, amount: 9.00, borrower: borrower, creator: lender)
+  end
+  let(:sent_email) { ActionMailer::Base.deliveries.last }
+
   let(:show_loan_page) { Loans::ShowPage.new }
 
-  context 'as as lender' do
+  context 'as its creator' do
     let(:confirmation_notice) { 'You confirmed your loan to elliott@gmail.com' }
-    let(:current_user) { loan.lender }
-    let(:loan) do
-      borrower = FactoryGirl.create(:confirmed_user,
-                                    email_address: 'elliott@gmail.com')
-      FactoryGirl.create(:loan, amount: 9.00, borrower: borrower)
-    end
+    let(:current_user) { loan.creator }
 
     before do
+      ActionMailer::Base.deliveries.clear
       confirm_loan
     end
 
     scenario do
       expect_loan_confirmation
+      expect(sent_email.to).to match_array ['elliott@gmail.com']
+      expect(sent_email.subject).
+        to eq '[Owed2Thee] - Confirm or deny your loan with Josh'
     end
   end
 
-  context 'as a borrower' do
+  context 'as its recipient' do
     let(:confirmation_notice) { "You confirmed Josh's loan to you" }
-    let(:current_user) { loan.borrower }
-    let(:loan) do
-      lender = FactoryGirl.create(:confirmed_user, first_name:  'Josh',
-                                                   last_name:   nil)
-      FactoryGirl.create(:published_loan, creator: lender)
-    end
+    let(:current_user) { loan.recipient }
 
     before do
+      PublishLoan.with(loan, loan.creator)
       confirm_loan
     end
 
     scenario do
       expect_loan_confirmation
+      expect(sent_email.subject).
+        to eq '[Owed2Thee] - elliott@gmail.com confirmed your loan'
     end
   end
 
   def confirm_loan
     login_as(current_user)
     show_loan_page.load(uuid: loan.uuid)
-    show_loan_page.confirm
+    perform_enqueued_jobs { show_loan_page.confirm }
   end
 
   def expect_loan_confirmation
