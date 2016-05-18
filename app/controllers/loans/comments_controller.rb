@@ -4,13 +4,15 @@ module Loans
     before_action :retrieve_and_authorize_loan
 
     def create
-      service = CreateComment.with(current_user, @loan, comment_params)
+      service = CreateComment.with(current_user, @loan, params[:comment])
 
       if service.successful?
-        redirect :back
+        redirect_to service.comment.commentable
       else
-        @comment_form = service.form
-        render [@loan]
+        render 'loans/show', locals: {
+          comment_form: service.form,
+          loan:         LoanPresenter.new(@loan)
+        }
       end
     end
   end

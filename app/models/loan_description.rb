@@ -1,0 +1,2 @@
+class LoanDescription < LoanComment
+end

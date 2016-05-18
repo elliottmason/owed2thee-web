@@ -3,6 +3,7 @@ class LoansController < ApplicationController
   before_action :retrieve_loan, only: %i(cancel confirm dispute publish show)
   before_action :authorize_loan
 
+  helper_method :comment_form
   helper_method :loan
 
   def cancel
@@ -42,7 +43,6 @@ class LoansController < ApplicationController
   end
 
   def show
-    @comment_form = CommentForm.new
   end
 
   def publish
@@ -62,6 +62,10 @@ class LoansController < ApplicationController
            amount_lent: loan.amount_lent,
            borrower:    loan.borrower,
            lender:      loan.lender(possessive: true))
+  end
+
+  def comment_form
+    @comment_form ||= CommentForm.new(loan: @loan)
   end
 
   def confirmation_notice
@@ -96,7 +100,7 @@ class LoansController < ApplicationController
   end
 
   def loan
-    @decorated_loan ||= LoanPresenter.new(@loan, current_user)
+    @presented_loan ||= LoanPresenter.new(@loan, current_user)
   end
 
   def retrieve_loan

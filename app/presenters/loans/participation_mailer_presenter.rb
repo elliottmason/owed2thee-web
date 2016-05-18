@@ -22,10 +22,6 @@ module Loans
 
     private
 
-    def creator_email_address
-      loan.creator.primary_email_address
-    end
-
     def creator_is_lender?
       loan.creator == loan.lender
     end

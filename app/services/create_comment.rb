@@ -17,7 +17,7 @@ class CreateComment < ApplicationService
   end
 
   def form
-    @form ||= CommentForm.new(@params)
+    @form ||= CommentForm.new(@params.merge(loan: commentable).to_hash)
   end
 
   def perform
