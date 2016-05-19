@@ -1,10 +1,15 @@
 require 'rails_helper'
 
 describe 'routes', :routing do
-  let(:confirmation_token) { '34PCNkrmp9ovPpWhn5fYf27DbxSjpsrB9QBMKwLTKug' }
-
   describe 'loans' do
     let(:uuid) { '92b0c876-8a6d-4979-af98-67d0c7aeda85' }
+
+    pending do
+      expect(post: '/loans').to route_to(
+        action:     'create',
+        controller: 'loans'
+      )
+    end
 
     it do
       expect(get: "/loans/#{uuid}").to route_to(
@@ -54,11 +59,11 @@ describe 'routes', :routing do
       end
     end
 
-    describe 'comments' do
+    describe 'descriptions' do
       pending do
-        expect(post: "loans/#{uuid}/comments").to route_to(
+        expect(post: "/loans/#{uuid}/descriptions").to route_to(
           action:     'create',
-          controller: 'loans/comments',
+          controller: 'loans/descriptions',
           loan_uuid:  uuid
         )
       end
@@ -93,6 +98,8 @@ describe 'routes', :routing do
   end
 
   describe 'email address confirmation' do
+    let(:confirmation_token) { '34PCNkrmp9ovPpWhn5fYf27DbxSjpsrB9QBMKwLTKug' }
+
     it do
       expect(
         get: "/email_address/confirm/#{confirmation_token}"

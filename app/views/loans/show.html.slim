@@ -13,7 +13,8 @@
     - if policy(@loan).pay?
       li = button_to t('.pay_button'), [:new, @loan, :payment], class: 'button', form_class: 'pay_button', method: :get
 
-  = render partial: 'loans/comment_form', locals: { comment_form: comment_form }
+- if policy(@loan).describe?
+  = render partial: 'loans/description_form', locals: { description_form: description_form }
 
   .activities
     - loan.activities.each do |activity|

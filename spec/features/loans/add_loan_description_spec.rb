@@ -22,8 +22,8 @@ feature 'Adding a description to a loan', :js do
       expect(loan_page).to have_content(loan_description)
     end
 
-    pending 'does not display the description form' do
-      expect(loan_page.description_form).to_not be_visible
+    scenario 'hides the description form' do
+      expect(loan_page).to have_no_description_form
     end
   end
 
@@ -32,9 +32,9 @@ feature 'Adding a description to a loan', :js do
       loan_page.submit_description('')
     end
 
-    scenario '' do
+    scenario 're-renders the description form' do
       expect(loan_page).to_not be_displayed
-      expect(loan_page.description_form).to be_visible
+      expect(loan_page).to have_description_form
     end
   end
 end

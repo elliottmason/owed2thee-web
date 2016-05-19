@@ -1,0 +1,4 @@
+.description-form
+  = simple_form_for description_form, url: [description_form.loan, :descriptions] do |f|
+    = f.input :body, :'aria-label' => 'loan description', as: :text, label: 'Add Description', placeholder: 'What is this loan for?', required: true
+    = f.submit 'Save Description', class: 'button'

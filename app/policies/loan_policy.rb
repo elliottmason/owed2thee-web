@@ -11,6 +11,10 @@ class LoanPolicy < ApplicationPolicy
     true
   end
 
+  def describe?
+    !loan_has_description? && user_is_creator?
+  end
+
   def dispute?
     loan_is_disputable? && user_is_participant? && !user_is_creator?
   end
@@ -43,6 +47,10 @@ class LoanPolicy < ApplicationPolicy
 
   def lender_is_payable?
     UserPolicy.new(user, loan.lender).pay?
+  end
+
+  def loan_has_description?
+    LoanDescriptionQuery.exists_for?(loan)
   end
 
   def loan_is_cancelable?

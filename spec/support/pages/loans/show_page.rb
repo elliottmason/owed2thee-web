@@ -12,7 +12,7 @@ module Loans
 
     form_section :description,
                  fields:        %i(body),
-                 field_prefix:  'comment',
+                 field_prefix:  'loan_description',
                  selector:      '.description-form'
 
     def cancel

@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :loan_requests, param: :uuid
+  resources :loan_requests, param: :uuid, only: %i(create new show)
 
   resources :loans, module: 'users', only: [] do
     collection do
@@ -38,8 +38,8 @@ Rails.application.routes.draw do
     end
 
     scope module: 'loans' do
-      resources :comments, only: %i(create)
-      resources :payments, only: %i(create new)
+      resources :descriptions #,  only: %i(create)
+      resources :payments,      only: %i(create new)
     end
   end
 

@@ -3,7 +3,7 @@ class LoansController < ApplicationController
   before_action :retrieve_loan, only: %i(cancel confirm dispute publish show)
   before_action :authorize_loan
 
-  helper_method :comment_form
+  helper_method :description_form
   helper_method :loan
 
   def cancel
@@ -64,8 +64,8 @@ class LoansController < ApplicationController
            lender:      loan.lender(possessive: true))
   end
 
-  def comment_form
-    @comment_form ||= CommentForm.new(loan: @loan)
+  def description_form
+    @description_form ||= LoanDescriptionForm.new(loan: @loan)
   end
 
   def confirmation_notice

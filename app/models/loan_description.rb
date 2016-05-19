@@ -1,2 +1,3 @@
-class LoanDescription < LoanComment
+class LoanDescription < Comment
+  alias_attribute :loan, :commentable
 end
