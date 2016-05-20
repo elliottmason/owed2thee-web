@@ -6,10 +6,8 @@
 @import 'foundation';
 @import 'foundation-datepicker';
 
-@include foundation-flex-grid;
-
 .alert-box {
-  &:after {
+  &::after {
     content: '.';
   }
 
@@ -19,11 +17,16 @@
 }
 
 .quick-signup {
-  @include flex-grid-row;
-  @include flex-grid-row-align(center, middle);
+  abbr {
+    display: none;
+  }
 
   h2 {
     display: none;
+  }
+
+  label {
+    @include flex-grid-column(1);
   }
 
   .button--submit {
@@ -35,4 +38,30 @@
 
 .new_loan {
   @include flex-grid-column(12);
+}
+
+.input {
+  @include flex-grid-row;
+}
+
+.loan_type {
+  label {
+    @include element-invisible;
+  }
+  select {
+    @include grid-column-position(center);
+    @include grid-column(4);
+  }
+}
+
+.loan_amount,
+.loan_creator_email_address,
+.loan_obligor_email_address {
+  label {
+    @include grid-column(1);
+  }
+
+  input {
+    @include grid-column(11);
+  }
 }
