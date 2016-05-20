@@ -58,4 +58,4 @@ deploy:
         - script:
             name: Push to dokku
             code: |
-              git push dokku $WERCKER_GIT_BRANCH:master --force
+              git push dokku master --force
