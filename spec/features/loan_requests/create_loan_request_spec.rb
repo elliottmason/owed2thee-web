@@ -29,8 +29,8 @@ feature 'Creating a loan request', :js do
       end
 
       scenario 'displays an error message' do
-        expect(new_loan_request_page)
-          .to have_content I18n.t('loan_requests.errors.creation')
+        expect(new_loan_request_page).
+          to have_content I18n.t('loan_requests.errors.creation').capitalize
       end
     end
 
