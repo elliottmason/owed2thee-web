@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     end
 
     scope module: 'loans' do
-      resources :descriptions #,  only: %i(create)
+      resources :descriptions,  only: %i(create)
       resources :payments,      only: %i(create new)
     end
   end
@@ -75,8 +75,7 @@ Rails.application.routes.draw do
         end
 
         member do
-          delete 'destroy', path: 'sign_out'
-          get 'destroy',    path: 'sign_out'
+          get 'destroy', as: :destroy, path: 'sign_out'
         end
       end # resource :session
     end # devise_scope :user

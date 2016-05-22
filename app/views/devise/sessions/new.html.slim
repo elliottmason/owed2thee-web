@@ -1,19 +1,21 @@
-h2 Sign In
+.users-sessions--new
+  .main-content
+    h2 Sign In
 
-- if can_sign_in?
-  #authform
-    = simple_form_for(@sign_in_form, url: session_path(resource_name)) do |f|
-      = f.input :email, as: :email
-      = f.input :password
-      = f.button :submit, 'Sign In'
+    - if can_sign_in?
+      #authform
+        = simple_form_for(@sign_in_form, url: session_path(resource_name)) do |f|
+          = f.input :email, as: :email
+          = f.input :password
+          = f.button :submit, 'Sign In', class: 'button--expanded'
 
-    a.forgot-password href=url_for([:new, :user, :password_reset]) Forgot password
-- else
-  p
-    | You must sign in to continue, but your user account has no password.
-  p
-    ' Follow the link we just sent to
-    => session[:email_address]
-    | and temporarily sign in.
-  p
-    | We'll save your submission until you return.
+        a.forgot-password href=url_for([:new, :user, :password_reset]) Forgot password
+    - else
+      p
+        | You must sign in to continue, but your user account has no password.
+      p
+        ' Follow the link we just sent to
+        => session[:email_address]
+        | and temporarily sign in.
+      p
+        | We'll save your submission until you return.

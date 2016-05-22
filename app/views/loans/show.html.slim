@@ -1,21 +1,22 @@
-.box
-  = render partial: 'loans/description', locals: { loan: loan }
+.loans--show
+  .main-content
+    = render partial: 'loans/description', locals: { loan: loan }
 
-  ul.button-group.controls
-    - if policy(@loan).publish?
-      li = button_to t('.publish_button'), [:publish, @loan], class: 'button', form_class: 'confirm_button', method: :patch
-    - if policy(@loan).confirm?
-      li = button_to t('.confirm_button'), [:confirm, @loan], class: 'button', form_class: 'confirm_button', method: :patch
-    - if policy(@loan).cancel?
-      li = button_to t('.cancel_button'),  [:cancel,  @loan], class: 'button', form_class: 'cancel_button', method: :patch
-    - if policy(@loan).dispute?
-      li = button_to t('.dispute_button'), [:dispute, @loan], class: 'button', form_class: 'dispute_button', method: :patch
-    - if policy(@loan).pay?
-      li = button_to t('.pay_button'), [:new, @loan, :payment], class: 'button', form_class: 'pay_button', method: :get
+    .button-group
+      - if policy(@loan).publish?
+        = button_to t('.publish_button'), [:publish, @loan], class: 'button', method: :patch
+      - if policy(@loan).confirm?
+        = button_to t('.confirm_button'), [:confirm, @loan], class: 'button', method: :patch
+      - if policy(@loan).cancel?
+        = button_to t('.cancel_button'),  [:cancel,  @loan], class: 'button', method: :patch
+      - if policy(@loan).dispute?
+        = button_to t('.dispute_button'), [:dispute, @loan], class: 'button', method: :patch
+      - if policy(@loan).pay?
+        = button_to t('.pay_button'), [:new, @loan, :payment], class: 'button', method: :get
 
-- if policy(@loan).describe?
-  = render partial: 'loans/description_form', locals: { description_form: description_form }
+    - if policy(@loan).describe?
+      = render partial: 'loans/description_form', locals: { description_form: description_form }
 
-  .activities
-    - loan.activities.each do |activity|
-      = render_activity(activity)
+    .activities
+      - loan.activities.each do |activity|
+        = render_activity(activity)

@@ -1,0 +1,79 @@
+@import 'foundation';
+@import 'settings';
+
+.alert-box {
+  @include grid-row;
+
+  p {
+    &::first-letter {
+      text-transform: capitalize;
+    }
+  }
+}
+
+.button--expanded {
+  @include button;
+  @include button-expand(true);
+  letter-spacing: 1.15px;
+  text-transform: uppercase;
+}
+
+.button-group {
+  form {
+    display: inline-block;
+  }
+}
+
+.input {
+  @include grid-row;
+}
+
+.introduction {
+  text-align: center;
+}
+
+.loan_amount,
+.loan_creator_email_address,
+.loan_obligor_email_address {
+  label {
+    @include grid-column(1);
+  }
+
+  input {
+    @include grid-column(11);
+  }
+}
+
+.loan_description_body {
+  label {
+    display: none;
+  }
+}
+
+.loan_type {
+  @include grid-column(4);
+  @include grid-column-position(center);
+
+  label {
+    @include element-invisible;
+  }
+}
+
+.main-content {
+  @include grid-row;
+  max-width: $global-width;
+}
+
+.quick-signup {
+  abbr {
+    display: none;
+  }
+
+  h2 {
+    display: none;
+  }
+
+  label {
+    @include grid-column(1);
+  }
+}

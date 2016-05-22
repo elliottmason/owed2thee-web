@@ -1,0 +1,13 @@
+.top-bar
+  .row
+    .top-bar-left
+      h1.title-bar-title
+        a href="/" Owed2Thee
+
+    .top-bar-right
+      ul.menu.align-right
+        - if policy(current_user || :user).sign_in?
+          li = link_to('Sign In', [:user, :session])
+
+        - if policy(current_user || :user).sign_out?
+          li = link_to('Sign Out', [:destroy, :user, :session])

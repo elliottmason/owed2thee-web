@@ -5,10 +5,10 @@ module Loans
     set_url '/loans{/uuid}'
     set_url_matcher %r{loans/[a-z\d\-]+$}
 
-    element :cancel_button,   'form.cancel_button input[type="submit"]'
-    element :confirm_button,  'form.confirm_button input[type="submit"]'
-    element :dispute_button,  'form.dispute_button input[type="submit"]'
-    element :payment_button,  'form.pay_button input[type="submit"]'
+    element :cancel_button,   :button, 'cancel'
+    element :confirm_button,  :button, 'confirm'
+    element :dispute_button,  :button, 'dispute'
+    element :payment_button,  :button, 'make payment'
 
     form_section :description,
                  fields:        %i(body),

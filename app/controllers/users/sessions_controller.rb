@@ -1,5 +1,6 @@
 module Users
   class SessionsController < Devise::SessionsController
+    skip_before_action :authenticate_user!, only: %i(new)
     skip_after_action :verify_authorized
     skip_after_action :verify_policy_scoped
 
@@ -10,10 +11,10 @@ module Users
 
       begin
         authorize(tentative_user, :sign_in?) if tentative_user
-        @sign_in_form = SignInForm.new(email: session[:email_address])
+        @sign_in_form = SignInForm.new(email: saved_email_address)
       rescue Pundit::NotAuthorizedError
         flash.clear
-        CreateTemporarySignin.for(session[:email_address])
+        CreateTemporarySignin.for(saved_email_address)
       end
     end
 
@@ -28,6 +29,8 @@ module Users
 
     private
 
+    attr_reader :tentative_user
+
     def after_sign_in_path_for(user)
       return [:edit, :user, :password] if user.no_password?
       super
@@ -40,9 +43,11 @@ module Users
     def retrieve_tentative_user
       return unless session[:email_address]
 
-      @tentative_user = UserQuery.email_address(session[:email_address])
+      @tentative_user = UserQuery.email_address(saved_email_address)
     end
 
-    attr_reader :tentative_user
+    def saved_email_address
+      session[:email_address]
+    end
   end
 end

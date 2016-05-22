@@ -16,7 +16,7 @@ en:
       title: :app.title
       user: :app.concepts.user
     errors:
-      creation: 'There was a problem saving your %{creatable}'
+      creation: 'there was a problem saving your %{creatable}'
     notices:
       cancellation:
         actor: :app.pronouns.you
@@ -24,9 +24,9 @@ en:
       confirmation:
         actor: :app.pronouns.you
         string: '%{actor} confirmed %{confirmable}'
-      creation: 'Your %{creatable} has been saved'
-      dispute: 'Your dispute against %{disputable} has been submitted'
-      failure: 'Your %{creatable} could not be saved'
+      creation: 'your %{creatable} has been saved'
+      dispute: 'your dispute against %{disputable} has been submitted'
+      failure: 'your %{creatable} could not be saved'
     pronouns:
       you: you
     verbs:
@@ -100,7 +100,7 @@ en:
       cancel_button: :app.verbs.cancel
       confirm_button: :app.verbs.confirm
       dispute_button: :app.verbs.dispute
-      pay_button: 'Mark as Paid'
+      pay_button: 'make payment'
       publish_button: :app.verbs.confirm
 
   passwords:

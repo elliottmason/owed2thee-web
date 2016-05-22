@@ -10,7 +10,13 @@ class UserPolicy < ApplicationPolicy
   end
 
   def sign_in?
-    current_user.nil? && target_user.encrypted_password?
+    return false if current_user.is_a?(User)
+    return false if target_user.is_a?(User) && !target_user.encrypted_password?
+    true
+  end
+
+  def sign_out?
+    current_user.present?
   end
 
   def view_name?
