@@ -31,7 +31,7 @@ Devise.setup do |config|
   # session. If you need permissions, you should implement that in a before filter.
   # You can also supply a hash where the value is a boolean determining whether
   # or not authentication should be aborted when the value is not present.
-  # config.authentication_keys = [:email]
+  config.authentication_keys = %i(email)
 
   # Configure parameters from the request object used for authentication. Each entry
   # given should be a request method and it will automatically be passed to the
@@ -244,13 +244,9 @@ Devise.setup do |config|
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
   #
-  config.warden do |manager|
-    # manager.intercept_401 = false
-    manager.strategies.add(:temporary_signin,
-                           Devise::TemporarySignin::Strategy)
-    manager.default_strategies(scope: :user).unshift(:temporary_signin)
-    manager.failure_app = Devise::TemporarySignin::Failure
-  end
+  # config.warden do |manager|
+  #   manager.intercept_401 = false
+  # end
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine

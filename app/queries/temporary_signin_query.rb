@@ -3,6 +3,18 @@ class TemporarySigninQuery < ApplicationQuery
     super
   end
 
+  def self.active_confirmation_token?(confirmation_token)
+    new.relation.
+      active_with_confirmation_token(confirmation_token).
+      exists?
+  end
+
+  def self.first_with_active_confirmation_token(confirmation_token)
+    new.relation.
+      active_with_confirmation_token(confirmation_token).
+      first
+  end
+
   def self.confirmation_token(confirmation_token)
     new.relation.
       unexpired.
@@ -34,6 +46,12 @@ class TemporarySigninQuery < ApplicationQuery
   end
 
   module Scopes
+    def active_with_confirmation_token(confirmation_token)
+      unexpired.
+        unredeemed.
+        confirmation_token(confirmation_token)
+    end
+
     def confirmation_token(confirmation_token)
       where(confirmation_token: confirmation_token)
     end

@@ -10,9 +10,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def sign_in?
-    return false if current_user.is_a?(User)
-    return false if target_user.is_a?(User) && !target_user.encrypted_password?
-    true
+    !current_user && target_user_has_password?
   end
 
   def sign_out?
@@ -26,11 +24,21 @@ class UserPolicy < ApplicationPolicy
 
   private
 
-  attr_reader :current_user
   attr_reader :loan
-  attr_reader :target_user
+
+  def current_user
+    @current_user if @current_user.is_a?(User)
+  end
 
   def ledger
     @ledger ||= LedgerQuery.first_between(current_user, target_user)
+  end
+
+  def target_user
+    @target_user if @target_user.is_a?(User)
+  end
+
+  def target_user_has_password?
+    !target_user || (target_user && target_user.encrypted_password?)
   end
 end

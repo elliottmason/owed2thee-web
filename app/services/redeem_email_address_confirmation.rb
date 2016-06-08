@@ -1,6 +1,4 @@
 class RedeemEmailAddressConfirmation < RedeemTemporarySignin
-  include ChangeState
-
   attr_reader :confirmation_token
 
   delegate :email_address, to: :email_address_confirmation

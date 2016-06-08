@@ -67,13 +67,11 @@ Rails.application.routes.draw do
       resource :session, only: %i(new),
                          path: '',
                          path_names: {
-                           new: 'sign_in'
+                           new:     'sign_in'
                          } do
         collection do
-          match 'create', path: 'sign_in(/:confirmation_token)',
-                          via: %i(get post)
+          post 'create', path: 'sign_in'
         end
-
         member do
           get 'destroy', as: :destroy, path: 'sign_out'
         end
@@ -86,6 +84,8 @@ Rails.application.routes.draw do
               only:         %i(edit update),
               param:        :email_address
 
-    resource :password, only: %i(edit update), path: 'account/password'
+    resource :password, only: %i(update), path: 'account/password' do
+      get 'change(/:confirmation_token)', action: :edit, as: :edit
+    end
   end # namespace :users
 end

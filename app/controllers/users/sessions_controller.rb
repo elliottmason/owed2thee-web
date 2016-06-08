@@ -21,7 +21,7 @@ module Users
     def create
       super do |user|
         if user
-          redirect_to after_sign_in_path_for(resource)
+          redirect_to after_sign_in_path_for(user)
           return
         end
       end

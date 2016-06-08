@@ -1,15 +1,20 @@
-- if current_user.password?
-  h2 Change Password
+.users-paswords--edit
+  .main-content
+    - if current_user && current_user.no_password?
+      h2 Set Password
+      .alert-box
+        p
+          ' You haven't set a password yet! Create a password for your account to
+          | make it easier to sign in.
 
-- if current_user.no_password?
-  h2 Set Password
-  p.alert
-    | You haven't set a password yet! Create a password for your account to
-    ' make it easier to sign in.
+    - if current_user && current_user.password?
+      h2 Change Password
 
-= simple_form_for @password_form, url: [:user, :password], method: :patch do |f|
-  - if current_user.password?
-    = f.input :current_password,          as: :password
-  = f.input   :new_password,              as: :password
-  = f.input   :new_password_confirmation, as: :password
-  = f.button  :submit
+    = simple_form_for @password_form, url: [:user, :password], method: :patch do |f|
+      - if user_signed_in? && current_user.encrypted_password?
+        = f.input :current_password,          as: :password
+      - else
+        = f.input :confirmation_token,        as: :hidden
+      = f.input   :new_password,              as: :password
+      = f.input   :new_password_confirmation, as: :password
+      = f.button  :submit, 'Set Password'
