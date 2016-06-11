@@ -9,14 +9,6 @@ class UserPolicy < ApplicationPolicy
     ledger && ledger.confirmed_balance(user).nonzero?.is_a?(Money)
   end
 
-  def sign_in?
-    !current_user && target_user_has_password?
-  end
-
-  def sign_out?
-    current_user.present?
-  end
-
   def view_name?
     (loan && loan.creator_id == target_user.id) ||
       UserContactQuery.between(current_user, target_user).exists?
@@ -36,9 +28,5 @@ class UserPolicy < ApplicationPolicy
 
   def target_user
     @target_user if @target_user.is_a?(User)
-  end
-
-  def target_user_has_password?
-    !target_user || (target_user && target_user.encrypted_password?)
   end
 end

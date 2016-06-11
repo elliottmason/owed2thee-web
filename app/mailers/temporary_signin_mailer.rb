@@ -1,13 +1,9 @@
 class TemporarySigninMailer < ApplicationMailer
   delegate :confirmation_token, to: :temporary_signin
 
-  def signin_link
-    url_for([:user, :session, confirmation_token: confirmation_token])
-  end
-
   def email(temporary_signin)
     @temporary_signin = temporary_signin
-    @signin_link      = signin_link
+    @url              = url
     mail(to: to, subject: subject)
   end
 
@@ -15,15 +11,9 @@ class TemporarySigninMailer < ApplicationMailer
 
   attr_reader :temporary_signin
 
-  def subject
-    "[#{t('app.title')}] - How to sign in and set your password"
-  end
+  delegate :email_address, :user, to: :temporary_signin
 
   def to
-    user.primary_email_address.address
-  end
-
-  def user
-    temporary_signin.user
+    email_address.address
   end
 end

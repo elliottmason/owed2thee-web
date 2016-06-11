@@ -28,18 +28,7 @@ class CreateTemporarySignin < ApplicationService
 
   private
 
-  def broadcast_to_listeners
-    broadcast(:create_temporary_signin_successful, record)
-  end
-
   def cancel_previous_records
-    TemporarySigninQuery.user(user).each(&:cancel!)
-  end
-
-  def create_record
-    @record = TemporarySignin.create!(
-      email_address:  email_address,
-      user:           user
-    )
+    TemporarySigninQuery.active_for_user(user).each(&:cancel!)
   end
 end

@@ -4,9 +4,8 @@ class EmailAddressQuery < ApplicationQuery
   end
 
   def self.address(*args)
-    new
-      .relation
-      .address(*args)
+    new.relation.
+      address(*args)
   end
 
   def self.address!(*args)
@@ -14,10 +13,9 @@ class EmailAddressQuery < ApplicationQuery
   end
 
   def self.for_transfer_participant(transfer, user)
-    new
-      .relation
-      .transfer(transfer)
-      .user(user)
+    new.relation.
+      transfer(transfer).
+      user(user)
   end
 
   def self.for_transfer_participant!(transfer, user)
@@ -26,12 +24,14 @@ class EmailAddressQuery < ApplicationQuery
     for_transfer_participant(transfer, user).first
   end
 
-  def self.most_recent_unconfirmed_for_user(user)
+  def self.unconfirmed_for_user(user)
     new.relation.
       unconfirmed.
-      user(user).
-      order('created_at DESC').
-      last
+      user(user)
+  end
+
+  def self.each_unconfirmed_for_user(user)
+    unconfirmed_for_user(user).each { |u| yield(u) }
   end
 
   module Scopes
