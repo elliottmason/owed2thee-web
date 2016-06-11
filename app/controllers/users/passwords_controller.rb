@@ -3,9 +3,8 @@ module Users
     skip_before_action :authenticate_user!, only: %i(edit update)
 
     def edit
-      unless user_signed_in? || valid_confirmation_token?
-        return head 403
-      end
+      # TODO: flesh this out? although you really shouldn't be here
+      return head 403 unless user_signed_in? || valid_confirmation_token?
 
       @password_form = PasswordForm.new(confirmation_token: confirmation_token)
     end
@@ -17,7 +16,7 @@ module Users
 
       if service.successful?
         sign_in(service.user, bypass: true)
-        redirect_to %i(edit user password)
+        redirect_for_update(service)
       else
         @password_form = service.form
         render :edit
@@ -36,6 +35,19 @@ module Users
       else
         flash[:error] = t('passwords.notices.update_failure')
       end
+    end
+
+    def most_recent_unconfirmed_loan_for_user(user)
+      LoanQuery.most_recent_incomplete_for_user(user)
+    end
+
+    def redirect_for_update(service)
+      redirect_to(if service.password_reset?
+                    most_recent_unconfirmed_loan_for_user(service.user) ||
+                      :loans
+                  else
+                    %i(edit user password)
+                  end)
     end
 
     def valid_confirmation_token?

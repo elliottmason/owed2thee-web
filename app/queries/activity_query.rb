@@ -6,10 +6,9 @@ class ActivityQuery < ApplicationQuery
   end
 
   def self.for_user(user)
-    new
-      .relation
-      .recipient(user)
-      .order('activities.created_at DESC')
+    new.relation.
+      recipient(user).
+      order('activities.created_at DESC')
   end
 
   module Scopes

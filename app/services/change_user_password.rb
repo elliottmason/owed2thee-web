@@ -18,12 +18,15 @@ class ChangeUserPassword < ApplicationService
     @form = PasswordForm.new(@params, @user)
   end
 
+  alias password_reset? password_reset
+
   def perform
+    user.password = new_password
+
     ActiveRecord::Base.transaction do
-      user.password = new_password
       redeem_password_reset
+      @successful = user.save
     end
-    @successful = user.save
   end
 
   def user

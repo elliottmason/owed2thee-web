@@ -3,13 +3,17 @@ class EmailAddressQuery < ApplicationQuery
     super(relation)
   end
 
-  def self.address(*args)
+  def self.address(email_address)
     new.relation.
-      address(*args)
+      address(email_address)
   end
 
   def self.address!(*args)
     address(*args).first
+  end
+
+  def self.each_unconfirmed_for_user(user)
+    unconfirmed_for_user(user).each { |u| yield(u) }
   end
 
   def self.for_transfer_participant(transfer, user)
@@ -28,10 +32,6 @@ class EmailAddressQuery < ApplicationQuery
     new.relation.
       unconfirmed.
       user(user)
-  end
-
-  def self.each_unconfirmed_for_user(user)
-    unconfirmed_for_user(user).each { |u| yield(u) }
   end
 
   module Scopes
