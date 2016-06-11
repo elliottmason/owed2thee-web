@@ -1,23 +1,13 @@
-class EmailAddressConfirmationMailer < ApplicationMailer
-  def email(user)
-    @user       = user
-    @presenter  = EmailAddressConfirmationMailerPresenter.new(email_address)
-    mail(to: to, subject: subject)
-  end
-
+class EmailAddressConfirmationMailer < TemporarySigninMailer
   private
 
-  attr_reader :user
-
-  def email_address
-    @email_address ||= EmailAddressQuery.most_recent_unconfirmed_for_user(user)
-  end
+  alias email_address_confirmation temporary_signin
 
   def subject
     "[#{t('app.title')}] - Confirm your email address"
   end
 
-  def to
-    email_address.address
+  def url
+    [email_address_confirmation, :redemption]
   end
 end

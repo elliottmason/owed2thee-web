@@ -34,7 +34,7 @@ feature 'Confirm a loan', :js do
       expect_loan_confirmation
       expect(sent_email.to).to match_array ['elliott@gmail.com']
       expect(sent_email.subject).
-        to eq '[Owed2Thee] - Confirm or deny your loan with Josh'
+        to eq '[Owed2Thee] - Confirm your loan with Josh'
     end
   end
 

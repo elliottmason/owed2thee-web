@@ -3,15 +3,15 @@ class LoanListener
     RecordTransferActivity.with(loan, :canceled, user)
   end
 
-  def create_loan_successful(loan)
-    NotifyLoanCreator.for(loan)
-  end
-
   def confirm_loan_successful(loan, user)
     CreateUserContactsForTransferParticipant.with(loan, user)
     Loans::ConfirmationMailer.email(loan, loan.creator).deliver_later
     RecalculateLedger.for(*loan.participants)
     RecordTransferActivity.with(loan, :confirmed, user)
+  end
+
+  def create_loan_successful(loan, _user = nil)
+    NotifyLoanCreatorForConfirmation.with(loan)
   end
 
   def dispute_loan_successful(loan, user)

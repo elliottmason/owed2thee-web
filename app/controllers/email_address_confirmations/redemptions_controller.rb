@@ -23,7 +23,7 @@ module EmailAddressConfirmations
 
     def redirect_for_create(service)
       (service.successful? &&
-       LoanQuery.last_incomplete_for_user(service.user)) || :loans
+       LoanQuery.most_recent_incomplete_for_user(service.user)) || :loans
     end
   end
 end

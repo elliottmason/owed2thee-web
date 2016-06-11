@@ -3,7 +3,6 @@ class EmailAddressListener
     ConfirmUser.with(email_address.user)
   end
 
-  def create_email_address_successful(email_address)
-    CreateEmailAddressConfirmation.with(email_address)
+  def create_email_address_successful(_email_address)
   end
 end

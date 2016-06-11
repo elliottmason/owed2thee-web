@@ -62,16 +62,16 @@ feature 'Creating a loan', :background, :js do
     end
   end
 
-  context "with an unconfirmed user's email address" do
+  context 'using a known, but unconfirmed email address' do
+    let(:creator) { FactoryGirl.create(:unconfirmed_user, sign_in_count: 1) }
+
     before do
       new_loan_page.load
       perform_enqueued_jobs do
-        user = FactoryGirl.create(:unconfirmed_user)
-
         new_loan_page.loan_form.submit(
           FactoryGirl.attributes_for(
             :loan_form,
-            creator_email_address: user.primary_email_address.address
+            creator_email_address: creator.primary_email_address.address
           )
         )
       end

@@ -13,7 +13,6 @@ class User < ActiveRecord::Base
   validates :email_addresses, presence: true
 
   devise :database_authenticatable
-  devise :recoverable
   devise :registerable
   devise :rememberable
   devise :trackable

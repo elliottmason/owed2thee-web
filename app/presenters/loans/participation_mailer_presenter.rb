@@ -13,7 +13,7 @@ module Loans
     end
 
     def subject
-      "[#{h.t('app.title')}] - Confirm or deny your loan with #{creator}"
+      "[#{h.t('app.title')}] - Confirm your loan with #{creator}"
     end
 
     def verb

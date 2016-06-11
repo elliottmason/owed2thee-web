@@ -3,6 +3,10 @@ class CreateEmailAddressConfirmation < CreateTemporarySignin
 
   alias email_address_confirmation record
 
+  def allowed?
+    !email_address.confirmed?
+  end
+
   private
 
   def broadcast_to_listeners

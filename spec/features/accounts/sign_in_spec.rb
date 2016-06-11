@@ -17,9 +17,11 @@ feature 'Signing in', :devise, :js do
       )
     end
 
-    scenario { expect(sign_in_page).to be_displayed }
+    scenario 'redisplays the sign-in form' do
+      expect(sign_in_page).to be_displayed
+    end
 
-    scenario do
+    scenario 'shows an error message' do
       expect(sign_in_page).to have_content(
         I18n.t('devise.failure.not_found_in_database',
                authentication_keys: 'email')

@@ -3,32 +3,32 @@ class LoanQuery < ApplicationQuery
     super
   end
 
-  def self.last_incomplete_for_user(user)
-    LoanQuery.last_unpublished_for_creator(user) ||
-      LoanQuery.last_unconfirmed_for_borrower(user)
-  end
-
-  def self.last_unpublished_for_creator(user)
-    new.relation.
-      unpublished.
-      creator(user).
-      order('transfers.created_at DESC').
-      last
-  end
-
-  def self.last_unconfirmed_for_borrower(user)
-    new.relation.
-      unconfirmed.
-      borrower(user).
-      order('transfers.created_at DESC').
-      last
-  end
-
   def self.for_user(user)
     new.relation.
       published.
       user(user).
       order('transfers.created_at DESC')
+  end
+
+  def self.most_recent_incomplete_for_user(user)
+    most_recent_unpublished_for_creator(user) ||
+      most_recent_unconfirmed_for_borrower(user)
+  end
+
+  def self.most_recent_unconfirmed_for_borrower(user)
+    new.relation.
+      unconfirmed.
+      borrower(user).
+      most_recent.
+      first
+  end
+
+  def self.most_recent_unpublished_for_creator(user)
+    new.relation.
+      unpublished.
+      creator(user).
+      most_recent.
+      first
   end
 
   def self.uuid!(uuid)
@@ -42,6 +42,10 @@ class LoanQuery < ApplicationQuery
 
     def creator(user)
       where(creator: user)
+    end
+
+    def most_recent
+      order('transfers.created_at DESC')
     end
 
     def published

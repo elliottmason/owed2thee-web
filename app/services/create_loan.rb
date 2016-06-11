@@ -68,7 +68,7 @@ class CreateLoan < ApplicationService
   end
 
   def broadcast_to_listeners
-    broadcast(:create_loan_successful, self)
+    broadcast(:create_loan_successful, loan)
   end
 
   def build_loan

@@ -9,19 +9,18 @@ module Users
     def new
       retrieve_tentative_user
 
-      begin
-        authorize(tentative_user, :sign_in?) if tentative_user
+      if can_sign_in?
         @sign_in_form = SignInForm.new(email: saved_email_address)
-      rescue Pundit::NotAuthorizedError
+      else
         flash.clear
-        CreateTemporarySignin.for(saved_email_address)
+        CreatePasswordReset.for(saved_email_address)
       end
     end
 
     def create
       super do |user|
         if user
-          redirect_to after_sign_in_path_for(resource)
+          redirect_to after_sign_in_path_for(user)
           return
         end
       end
@@ -37,11 +36,12 @@ module Users
     end
 
     def can_sign_in?
-      !tentative_user || policy(tentative_user).sign_in?
+      !tentative_user ||
+        (tentative_user.confirmed? && tentative_user.encrypted_password?)
     end
 
     def retrieve_tentative_user
-      return unless session[:email_address]
+      return unless saved_email_address
 
       @tentative_user = UserQuery.email_address(saved_email_address)
     end

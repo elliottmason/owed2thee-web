@@ -6,8 +6,8 @@
 
     .top-bar-right
       ul.menu.align-right
-        - if policy(current_user || :user).sign_in?
+        - unless user_signed_in?
           li = link_to('Sign In', [:user, :session])
 
-        - if policy(current_user || :user).sign_out?
+        - if user_signed_in?
           li = link_to('Sign Out', [:destroy, :user, :session])
