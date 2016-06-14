@@ -21,7 +21,7 @@ class LoanListener
   def publish_loan_successful(loan, user)
     FindOrCreateLedger.for(loan.lender, loan.borrower)
     CreateUserContactsForTransferParticipant.with(loan, user)
-    Loans::ParticipationMailer.email(loan, loan.obligor).deliver_later
+    NotifyLoanObligor.for(loan)
     RecordTransferActivity.with(loan, :created)
   end
 end

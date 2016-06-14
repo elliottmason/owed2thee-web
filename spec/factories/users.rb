@@ -14,10 +14,6 @@ FactoryGirl.define do
       user.email_addresses << email_address
     end
 
-    after(:create) do |user, _|
-      CreateEmailAddressConfirmation.with(user.email_addresses.first)
-    end
-
     trait :confirmed do
       password 'password'
 
