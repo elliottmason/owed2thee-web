@@ -1,6 +1,6 @@
 / Rails flash messages styled for Zurb Foundation
 - flash.each do |name, message|
   - if message.is_a?(String)
-    div[class="alert-box round #{name.to_s == 'notice' ? 'success' : 'alert'}" data-alert]
+    div[class="callout #{name.to_s == 'notice' ? 'success' : 'alert'}" data-closable]
       p = message
-      a.close[href="#"] ×
+      a.close-button[href="#"] ×
