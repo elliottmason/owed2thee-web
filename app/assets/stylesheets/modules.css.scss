@@ -1,10 +1,13 @@
 @import 'foundation';
 @import 'settings';
 
-.alert-box {
+.callout {
   @include grid-row;
+  border: 0;
 
   p {
+    margin: 0;
+
     &::first-letter {
       text-transform: capitalize;
     }
