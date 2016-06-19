@@ -4,8 +4,10 @@ module Users
     skip_after_action :verify_authorized
     skip_after_action :verify_policy_scoped
 
+    helper_method :email_address
+
     def create
-      service = FindOrCreatePasswordReset.with(params[:user][:email_address])
+      service = FindOrCreatePasswordReset.with(email_address)
 
       return if service.successful?
 
@@ -27,5 +29,11 @@ module Users
     # def after_sending_reset_password_instructions_path_for(resource_name)
     #   super(resource_name)
     # end
+
+    private
+
+    def email_address
+      params[:user][:email_address]
+    end
   end
 end
