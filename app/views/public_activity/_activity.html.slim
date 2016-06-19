@@ -1,2 +1,4 @@
 .activity-feed-item
-  p = yield
+  p
+    =' yield
+    span.timestamp #{activity.created_at.strftime('%l:%M %p')}
