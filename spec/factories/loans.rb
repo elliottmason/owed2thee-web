@@ -38,13 +38,11 @@ FactoryGirl.define do
     end
 
     after :build do |loan, evaluator|
+      loan.contact_name = loan.obligor.primary_email_address.address
       if evaluator.involving.present?
         participant = %i(borrower creator lender).sample
         loan.send(participant, evaluator.involving)
       end
-
-      loan.email_addresses << loan.borrower.primary_email_address
-      loan.email_addresses << loan.lender.primary_email_address
     end
   end
 end

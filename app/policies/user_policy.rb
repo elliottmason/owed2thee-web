@@ -6,11 +6,16 @@ class UserPolicy < ApplicationPolicy
   end
 
   def pay?
-    ledger && ledger.confirmed_balance(user).nonzero?.is_a?(Money)
+    ledger.present? && ledger.confirmed_balance(user).nonzero?.is_a?(Money)
+  end
+
+  def show?
+    current_user == target_user || ledger.present?
   end
 
   def view_name?
-    (loan && loan.creator_id == target_user.id) ||
+    current_user == target_user ||
+      (loan && loan.creator_id == target_user.id) ||
       UserContactQuery.between(current_user, target_user).exists?
   end
 

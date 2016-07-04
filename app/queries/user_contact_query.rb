@@ -4,9 +4,8 @@ class UserContactQuery < ApplicationQuery
   end
 
   def self.between(user, contact)
-    new
-      .relation
-      .between(user, contact)
+    new.relation.
+      between(user, contact)
   end
 
   module Scopes

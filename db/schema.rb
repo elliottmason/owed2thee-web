@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601034829) do
+ActiveRecord::Schema.define(version: 20160702013541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,13 +144,6 @@ ActiveRecord::Schema.define(version: 20160601034829) do
 
   add_index "temporary_signins", ["confirmation_token"], name: "index_temporary_signins_on_confirmation_token", unique: true, using: :btree
 
-  create_table "transfer_email_addresses", force: :cascade do |t|
-    t.integer "email_address_id", null: false
-    t.integer "transfer_id",      null: false
-  end
-
-  add_index "transfer_email_addresses", ["email_address_id", "transfer_id"], name: "index_transfer_email_addresses_on_foreign_keys", using: :btree
-
   create_table "transfer_participants", force: :cascade do |t|
     t.integer  "user_id",     null: false
     t.integer  "transfer_id", null: false
@@ -178,6 +171,7 @@ ActiveRecord::Schema.define(version: 20160601034829) do
     t.integer  "loan_request_id"
     t.integer  "balance_cents",    default: 0,     null: false
     t.string   "balance_currency", default: "USD", null: false
+    t.string   "contact_name"
   end
 
   add_index "transfers", ["creator_id"], name: "index_transfers_on_creator_id", using: :btree
