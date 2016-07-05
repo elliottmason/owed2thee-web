@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 describe 'routes', :routing do
+  describe 'email address confirmation' do
+    let(:confirmation_token) { '34PCNkrmp9ovPpWhn5fYf27DbxSjpsrB9QBMKwLTKug' }
+
+    it do
+      expect(
+        get: "/email_address/confirm/#{confirmation_token}"
+      ).to route_to(
+        action:     'create',
+        controller: 'email_address_confirmations/redemptions',
+        email_address_confirmation_confirmation_token: confirmation_token
+      )
+    end
+  end
+
   describe 'loans' do
     let(:uuid) { '92b0c876-8a6d-4979-af98-67d0c7aeda85' }
 
@@ -97,16 +111,12 @@ describe 'routes', :routing do
     end
   end
 
-  describe 'email address confirmation' do
-    let(:confirmation_token) { '34PCNkrmp9ovPpWhn5fYf27DbxSjpsrB9QBMKwLTKug' }
-
+  describe 'robots.txt' do
     it do
-      expect(
-        get: "/email_address/confirm/#{confirmation_token}"
-      ).to route_to(
-        action:     'create',
-        controller: 'email_address_confirmations/redemptions',
-        email_address_confirmation_confirmation_token: confirmation_token
+      expect(get: '/robots.txt').to route_to(
+        action:     'show',
+        controller: 'robots',
+        format:     'txt'
       )
     end
   end
