@@ -52,6 +52,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resource :robots, only: %i(show)
+
   namespace :users, as: 'user', path: '' do
     devise_scope :user do
       resource :password_reset, only: %i(new),
