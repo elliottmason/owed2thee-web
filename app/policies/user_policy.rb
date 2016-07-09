@@ -16,7 +16,8 @@ class UserPolicy < ApplicationPolicy
   def view_name?
     current_user == target_user ||
       (loan && loan.creator_id == target_user.id) ||
-      UserContactQuery.between(current_user, target_user).exists?
+      UserContactQuery.confirmed_for(contact: target_user, owner: current_user).
+        exists?
   end
 
   private

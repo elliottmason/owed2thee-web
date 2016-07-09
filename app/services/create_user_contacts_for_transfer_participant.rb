@@ -4,27 +4,32 @@ class CreateUserContactsForTransferParticipant < ApplicationService
   attr_reader :contact
   attr_reader :transfer
 
+  delegate :creator, :recipient, :sender, to: :transfer
+
   def initialize(transfer, contact)
     @contact  = contact
     @transfer = transfer
   end
 
   def recipients
-    @recipients ||=
-      [transfer.creator, transfer.recipient, transfer.sender] - [contact]
+    @recipients ||= [creator, recipient, sender] - [contact]
   end
 
   def perform
-    @successful = true if create_user_contacts
+    create_user_contacts
+    @successful = true
   end
 
   private
 
   def create_user_contacts
     recipients.map do |recipient|
-      UserContactQuery.between(recipient, contact).first_or_create! do |contact|
-        contact.source = transfer
-      end
+      UserContactQuery.for(contact: contact, owner: recipient).
+        first_or_create!(source: transfer).confirm!
+      UserContactQuery.for(contact: recipient, owner: contact).first_or_create!(
+        fallback_display_name: transfer.contact_name,
+        source:                transfer
+      )
     end
   end
 end

@@ -7,6 +7,18 @@ class UserPresenter < Burgundy::Item
     @transfer = transfer
   end
 
+  def contact_display_name
+    return unless contact
+
+    contact.display_name
+  end
+
+  def contact_fallback_display_name
+    return unless contact
+
+    contact.fallback_display_name
+  end
+
   def debted?
     ledger.confirmed_balance(viewer).negative?
   end
@@ -40,10 +52,18 @@ class UserPresenter < Burgundy::Item
   end
   alias can_view_primary_email_address? can_view_full_name?
 
+  def contact
+    return @contact if defined?(@contact)
+
+    UserContactQuery.first_confirmed_for(contact: user, owner: viewer)
+  end
+
   def determine_display_name
-    full_name ||
+    contact_display_name ||
+      full_name ||
       primary_email_address ||
       transfer_contact_name ||
+      contact_fallback_display_name ||
       I18n.t('app.default_display_name')
   end
 
