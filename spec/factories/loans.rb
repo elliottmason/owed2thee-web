@@ -44,5 +44,9 @@ FactoryGirl.define do
         loan.send(participant, evaluator.involving)
       end
     end
+
+    after :create do |loan, _|
+      CreateUserContactsForTransferParticipant.with(loan, loan.creator)
+    end
   end
 end

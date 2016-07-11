@@ -10,19 +10,29 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    current_user == target_user || ledger.present?
+    current_user == target_user || contact_exists?
   end
 
   def view_name?
     current_user == target_user ||
       (loan && loan.creator_id == target_user.id) ||
-      UserContactQuery.confirmed_for(contact: target_user, owner: current_user).
-        exists?
+      contact_confirmed?
   end
 
   private
 
   attr_reader :loan
+
+  def contact_confirmed?
+    # TODO: Why doesn't `UserContactQuery.confirmed_between?` work?
+    UserContactQuery.
+      first_between(contact: target_user, owner: current_user).
+      confirmed?
+  end
+
+  def contact_exists?
+    UserContactQuery.between?(contact: target_user, owner: current_user)
+  end
 
   def current_user
     @current_user if @current_user.is_a?(User)

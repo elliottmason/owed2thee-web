@@ -55,7 +55,7 @@ class UserPresenter < Burgundy::Item
   def contact
     return @contact if defined?(@contact)
 
-    UserContactQuery.first_confirmed_for(contact: user, owner: viewer)
+    UserContactQuery.first_confirmed_between(contact: user, owner: viewer)
   end
 
   def determine_display_name

@@ -124,28 +124,28 @@ describe 'users/loans/index.html.slim' do
     end
 
     it 'has creation item' do
-      expect(rendered)
-        .to have_content('Elliott Mason submitted a loan to you for $10.00')
+      expect(rendered).
+        to have_content('Elliott Mason submitted a loan to you for $10.00')
     end
 
     it 'has dispute item' do
-      expect(rendered)
-        .to have_content("you disputed Elliott Mason's loan for $10.00")
+      expect(rendered).
+        to have_content("you disputed Elliott Mason's loan for $10.00")
     end
 
     it 'has confirmation item' do
-      expect(rendered)
-        .to have_content("you confirmed Elliott Mason's loan to you for $10.00")
+      expect(rendered).
+        to have_content("you confirmed Elliott Mason's loan to you for $10.00")
     end
 
     it 'has payment item' do
-      expect(rendered)
-        .to have_content('you submitted a $1.00 payment to Elliott Mason')
+      expect(rendered).
+        to have_content('you submitted a $1.00 payment to Elliott Mason')
     end
 
     it 'has payment confirmation item' do
-      expect(rendered)
-        .to have_content('Elliott Mason confirmed your $1.00 payment')
+      expect(rendered).
+        to have_content('Elliott Mason confirmed your $1.00 payment')
     end
   end
 end
