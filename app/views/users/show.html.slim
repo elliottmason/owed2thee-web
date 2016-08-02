@@ -2,11 +2,20 @@
   .main-content
     h2 = user.display_name
     p
-      - if user.ledger? && user.debted?
+      - if user.settled?
+        | you and #{user.display_name} are square
+      - elsif user.indebted?
         | owes you #{user.absolute_balance}
-      - elsif user.ledger?
-        | lent you #{user.absolute_balance}
+      - elsif user.indebted_to?
+        | you owe #{user.absolute_balance}
 
-    div
-      - user.loans.each do |loan|
-        p = loan.description
+    .ledger
+      h3 Ledger
+      - if @unconfirmed_transfers.any?
+        .transfers--unconfirmed
+          h4 Unconfirmed
+          = render partial: 'transfers', locals: { transfers: @unconfirmed_transfers }
+      - if @confirmed_transfers.any?
+        .transfers--confirmed
+          h4 Confirmed
+          = render partial: 'transfers', locals: { transfers: @confirmed_transfers }

@@ -6,12 +6,26 @@ class UsersController < ApplicationController
   helper_method :user
 
   def show
+    retrieve_transfers
   end
 
   private
 
   def authorize_user
     authorize(@user)
+  end
+
+  def retrieve_transfers
+    @confirmed_transfers = Burgundy::Collection.new(
+      TransferQuery.confirmed_between(current_user, @user),
+      Users::TransferPresenter,
+      current_user
+    )
+    @unconfirmed_transfers = Burgundy::Collection.new(
+      TransferQuery.unconfirmed_between(current_user, @user),
+      Users::TransferPresenter,
+      current_user
+    )
   end
 
   def retrieve_user

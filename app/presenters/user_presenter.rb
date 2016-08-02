@@ -7,20 +7,8 @@ class UserPresenter < Burgundy::Item
     @transfer = transfer
   end
 
-  def contact_display_name
-    return unless contact
-
-    contact.display_name
-  end
-
-  def contact_fallback_display_name
-    return unless contact
-
-    contact.fallback_display_name
-  end
-
-  def debted?
-    ledger.confirmed_balance(viewer).negative?
+  def absolute_balance
+    ledger.confirmed_balance.abs
   end
 
   def display_name(possessive: false)
@@ -36,8 +24,16 @@ class UserPresenter < Burgundy::Item
     @display_name
   end
 
-  def ledger?
-    ledger.present?
+  def indebted?
+    ledger? && ledger.confirmed_balance(viewer).negative?
+  end
+
+  def indebted_to?
+    ledger? && ledger.confirmed_balance(viewer).positive?
+  end
+
+  def settled?
+    ledger? && ledger.confirmed_balance(viewer).zero?
   end
 
   private
@@ -55,7 +51,20 @@ class UserPresenter < Burgundy::Item
   def contact
     return @contact if defined?(@contact)
 
-    UserContactQuery.first_confirmed_between(contact: user, owner: viewer)
+    @contact =
+      UserContactQuery.first_between(contact: user, owner: viewer)
+  end
+
+  def contact_display_name
+    return unless contact
+
+    contact.display_name
+  end
+
+  def contact_fallback_display_name
+    return unless contact
+
+    contact.fallback_display_name
   end
 
   def determine_display_name
@@ -80,6 +89,10 @@ class UserPresenter < Burgundy::Item
     return @ledger if defined?(@ledger)
 
     @ledger = LedgerQuery.first_between(user, viewer)
+  end
+
+  def ledger?
+    ledger.present?
   end
 
   def primary_email_address

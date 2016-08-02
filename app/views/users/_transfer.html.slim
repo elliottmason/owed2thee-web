@@ -1,0 +1,5 @@
+tr class="transfer--#{transfer.status}"
+  td.transfer-date = link_to(transfer.date, transfer)
+  td class="description--#{transfer.tone}" = link_to(transfer.description, transfer)
+  td.transfer-amount = link_to(transfer.amount, transfer)
+  td.transfer-status = link_to(transfer.confirmation.current_state, transfer)
