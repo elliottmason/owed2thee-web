@@ -61,18 +61,18 @@ class CreateLoan < ApplicationService
   private
 
   def assign_loan_relationships
-    @loan.creator         = creator
-    @loan.borrower        = borrower
-    @loan.lender          = lender
-    @loan.email_addresses = email_addresses
+    @loan.creator   = creator
+    @loan.borrower  = borrower
+    @loan.lender    = lender
   end
 
   def broadcast_to_listeners
-    broadcast(:create_loan_successful, loan)
+    broadcast(:create_loan_successful, loan, creator)
   end
 
   def build_loan
-    @loan = Loan.new(amount: form.amount)
+    @loan = Loan.new(amount:        form.amount,
+                     contact_name:  form.obligor_email_address)
     assign_loan_relationships
   end
 

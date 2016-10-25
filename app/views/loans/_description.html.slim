@@ -3,7 +3,7 @@ p.loan-description
   ' lent
   span.loan-amount => loan.amount
   ' to
-  span.loan-amount = loan.borrower
+  = link_to(loan.borrower, @loan.borrower, class: 'loan-borrower')
   .
 
 p.loan-user-description

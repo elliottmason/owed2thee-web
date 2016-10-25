@@ -4,13 +4,14 @@ class LoanListener
   end
 
   def confirm_loan_successful(loan, user)
-    CreateUserContactsForTransferParticipant.with(loan, user)
+    ConfirmUserContactsForTransfer.with(loan, user)
     Loans::ConfirmationMailer.email(loan, loan.creator).deliver_later
     RecalculateLedger.for(*loan.participants)
     RecordTransferActivity.with(loan, :confirmed, user)
   end
 
-  def create_loan_successful(loan, _user = nil)
+  def create_loan_successful(loan, user)
+    CreateUserContactsForTransferParticipant.with(loan, user)
     NotifyLoanCreatorForConfirmation.with(loan)
   end
 
@@ -19,8 +20,8 @@ class LoanListener
   end
 
   def publish_loan_successful(loan, user)
+    ConfirmUserContactsForTransfer.with(loan, user)
     FindOrCreateLedger.for(loan.lender, loan.borrower)
-    CreateUserContactsForTransferParticipant.with(loan, user)
     NotifyLoanObligor.for(loan)
     RecordTransferActivity.with(loan, :created)
   end

@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   # retrieve a User through an EmailAddress record
   def self.find_for_database_authentication(conditions)
     email_address = EmailAddress.
-                    in_state(:confirmed).
+                    in_confirmation_state(:confirmed).
                     find_by(address: conditions[:email])
     email_address.user if email_address
   end
