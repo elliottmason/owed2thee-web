@@ -1,0 +1,9 @@
+table.ledger
+  thead
+    tr
+      td Date
+      td Action
+      td Amount
+  tbody
+    - transfers.each do |transfer|
+      = render partial: 'transfer', locals: { transfer: transfer }

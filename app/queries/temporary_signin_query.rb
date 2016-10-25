@@ -67,7 +67,7 @@ class TemporarySigninQuery < ApplicationQuery
     end
 
     def unredeemed
-      in_state(:unredeemed)
+      in_redemption_state(:unredeemed)
     end
 
     def user(user)

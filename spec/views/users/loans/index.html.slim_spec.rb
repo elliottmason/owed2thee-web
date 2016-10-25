@@ -84,7 +84,6 @@ describe 'users/loans/index.html.slim' do
       before do
         ConfirmLoan.with(loan, loan.borrower)
         PublishPayment.with(payment, payment.creator)
-        # DisputePayment.with(payment, payment.payee)
         ConfirmPayment.with(payment, payment.payee)
 
         assign_activities
@@ -92,20 +91,20 @@ describe 'users/loans/index.html.slim' do
       end
 
       it 'has creation item' do
-        expect(rendered)
-          .to have_content('you submitted a loan to Josh Schramm for ' \
+        expect(rendered).
+          to have_content('you submitted a loan to Josh Schramm for ' \
                            '$9,000.01')
       end
 
       it 'has confirmation item' do
-        expect(rendered)
-          .to have_content('Josh Schramm confirmed your loan to them for ' \
+        expect(rendered).
+          to have_content('Josh Schramm confirmed your loan to them for ' \
                            '$9,000.01')
       end
 
       it 'has payment item' do
-        expect(rendered)
-          .to have_content('Josh Schramm submitted a $1.00 payment')
+        expect(rendered).
+          to have_content('Josh Schramm submitted a $1.00 payment')
       end
     end
   end
@@ -125,28 +124,28 @@ describe 'users/loans/index.html.slim' do
     end
 
     it 'has creation item' do
-      expect(rendered)
-        .to have_content('Elliott Mason submitted a loan to you for $10.00')
+      expect(rendered).
+        to have_content('Elliott Mason submitted a loan to you for $10.00')
     end
 
     it 'has dispute item' do
-      expect(rendered)
-        .to have_content("you disputed Elliott Mason's loan for $10.00")
+      expect(rendered).
+        to have_content("you disputed Elliott Mason's loan for $10.00")
     end
 
     it 'has confirmation item' do
-      expect(rendered)
-        .to have_content("you confirmed Elliott Mason's loan to you for $10.00")
+      expect(rendered).
+        to have_content("you confirmed Elliott Mason's loan to you for $10.00")
     end
 
     it 'has payment item' do
-      expect(rendered)
-        .to have_content('you submitted a $1.00 payment to Elliott Mason')
+      expect(rendered).
+        to have_content('you submitted a $1.00 payment to Elliott Mason')
     end
 
     it 'has payment confirmation item' do
-      expect(rendered)
-        .to have_content('Elliott Mason confirmed your $1.00 payment')
+      expect(rendered).
+        to have_content('Elliott Mason confirmed your $1.00 payment')
     end
   end
 end

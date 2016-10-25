@@ -3,9 +3,21 @@ class TransferQuery < ApplicationQuery
     super
   end
 
+  def self.between(user_a, user_b)
+    new.relation.where(recipient: [user_a, user_b], sender: [user_a, user_b])
+  end
+
+  def self.confirmed_between(*args)
+    between(*args).confirmed
+  end
+
   def self.confirmed
     new.relation.
       confirmed
+  end
+
+  def self.unconfirmed_between(*args)
+    between(*args).unconfirmed
   end
 
   def self.published
@@ -15,11 +27,11 @@ class TransferQuery < ApplicationQuery
 
   module Scopes
     def confirmed
-      in_state(:confirmed)
+      in_confirmation_state(:confirmed)
     end
 
     def published
-      in_state(:published)
+      in_publicity_state(:published)
     end
 
     def received(recipient, sender)
@@ -28,6 +40,10 @@ class TransferQuery < ApplicationQuery
 
     def sent(sender, recipient)
       where(recipient: recipient, sender: sender)
+    end
+
+    def unconfirmed
+      not_in_confirmation_state(:confirmed)
     end
   end
 end

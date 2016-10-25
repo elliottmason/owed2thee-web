@@ -139,6 +139,11 @@ en:
       publish_button: :app.verbs.confirm
 
   transfers:
+    descriptions:
+      loan_received: 'borrowed'
+      loan_sent: 'lent you'
+      payment_received: 'received'
+      payment_sent: 'paid you'
     errors:
       amount:
         nonpositive: must be larger than $0.00

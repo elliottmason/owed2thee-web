@@ -3,7 +3,11 @@
 # contact. These records are likely created when a user confirms participation
 # in a loan.
 class UserContact < ActiveRecord::Base
-  belongs_to :contact, class_name: 'User'
-  belongs_to :user
+  include Transitional
+
+  belongs_to :contact,  class_name: 'User'
+  belongs_to :owner,    class_name: 'User'
   belongs_to :source, polymorphic: true
+
+  transitional :confirmation
 end

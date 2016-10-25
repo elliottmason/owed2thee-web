@@ -4,16 +4,15 @@ class PublicityStateMachine
   ACTIONS = {
     # <method>:     :<state>
     cancel:     :canceled,
-    delete:     :deleted,
     publish:    :published,
     unpublish:  :unpublished
-  }
+  }.freeze
 
   state :unpublished, initial: true
   state :published
   state :canceled
-  state :deleted
 
   transition from: :unpublished,  to: %i(canceled published)
-  transition from: :published,    to: %i(deleted canceled)
+  transition from: :published,    to: %i(canceled)
+  transition from: :canceled,     to: %i(published unpublished)
 end

@@ -15,16 +15,32 @@ class CreateUserContactsForTransferParticipant < ApplicationService
   end
 
   def perform
-    @successful = true if create_user_contacts
+    create_user_contacts
+    @successful = true
   end
 
   private
 
   def create_user_contacts
     recipients.map do |recipient|
-      UserContactQuery.between(recipient, contact).first_or_create! do |contact|
-        contact.source = transfer
-      end
+      create_user_contact_for_contact(recipient)
+      create_user_contact_for_recipient(recipient)
     end
+  end
+
+  def create_user_contact_for_contact(recipient)
+    UserContactQuery.between(contact: recipient, owner: contact).
+      first_or_create!(
+        fallback_display_name: transfer.contact_name,
+        source:                transfer
+      )
+  end
+
+  def create_user_contact_for_recipient(recipient)
+    UserContactQuery.between(contact: contact, owner: recipient).
+      first_or_create!(
+        fallback_display_name: contact.primary_email_address.address,
+        source:                transfer
+      )
   end
 end

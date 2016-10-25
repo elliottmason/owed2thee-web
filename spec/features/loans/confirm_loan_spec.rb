@@ -2,27 +2,29 @@ require 'rails_helper'
 
 feature 'Confirm a loan', :js do
   let(:borrower) do
-    FactoryGirl.create(:confirmed_user, email_address: 'elliott@gmail.com')
+    create(:confirmed_user, email_address: 'elliott@example.com')
   end
   let(:creator) { lender }
   let(:lender) do
-    FactoryGirl.create(:confirmed_user,
-                       email_address: 'josh@gmail.com',
-                       first_name:    'Josh',
-                       last_name:     nil)
+    create(:confirmed_user,
+           email_address: 'josh@example.com',
+           first_name:    'Josh',
+           last_name:     nil)
   end
   let(:loan) do
-    FactoryGirl.create(:loan, amount:   9.00,
-                              borrower: borrower,
-                              creator:  creator,
-                              lender:   lender)
+    create(:loan, amount:   9.00,
+                  borrower: borrower,
+                  creator:  creator,
+                  lender:   lender)
   end
   let(:sent_email) { ActionMailer::Base.deliveries.last }
 
   let(:show_loan_page) { Loans::ShowPage.new }
 
   context 'as its creator' do
-    let(:confirmation_notice) { 'You confirmed your loan to elliott@gmail.com' }
+    let(:confirmation_notice) do
+      'You confirmed your loan to elliott@example.com'
+    end
     let(:current_user) { loan.creator }
 
     before do
@@ -32,7 +34,7 @@ feature 'Confirm a loan', :js do
 
     scenario do
       expect_loan_confirmation
-      expect(sent_email.to).to match_array ['elliott@gmail.com']
+      expect(sent_email.to).to match_array ['elliott@example.com']
       expect(sent_email.subject).
         to eq '[Owed2Thee] - Confirm your loan with Josh'
     end
@@ -50,17 +52,19 @@ feature 'Confirm a loan', :js do
     scenario do
       expect_loan_confirmation
       expect(sent_email.subject).
-        to eq '[Owed2Thee] - elliott@gmail.com confirmed your loan'
+        to eq '[Owed2Thee] - elliott@example.com confirmed your loan'
     end
   end
 
   context 'as its recipient lender' do
-    let(:confirmation_notice) { '' }
+    let(:confirmation_notice) do
+      'You confirmed your loan to elliott@example.com'
+    end
     let(:creator) { borrower }
     let(:current_user) { lender }
 
     before do
-      PublishLoan.with(loan, loan.creator)
+      PublishLoan.with(loan, creator)
       confirm_loan
     end
 
