@@ -22,7 +22,7 @@ build:
         - script:
             name: phantomjs
             code: |
-              wget https://phantomjs.googlecode.com/files/phantomjs-1.9.2-linux-x86_64.tar.bz2
+              wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/phantomjs/phantomjs-1.9.2-linux-x86_64.tar.bz2
               tar -xjf phantomjs-1.9.2-linux-x86_64.tar.bz2
               sudo cp phantomjs-1.9.2-linux-x86_64/bin/phantomjs /usr/local/bin
         - script:
@@ -49,7 +49,7 @@ deploy:
               git init
               git config --global user.name "wercker"
               git config --global user.email "pleasemailus@wercker.com"
-              git remote add dokku dokku@$SERVER_HOSTNAME:owed2thee_$WERCKER_DEPLOYTARGET_NAME
+              git remote add dokku dokku@$SERVER_HOSTNAME:owed2thee_$WERCKER_GIT_BRANCH
         - script:
             name: Add everything to the repository
             code: |

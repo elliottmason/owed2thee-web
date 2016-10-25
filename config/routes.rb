@@ -52,6 +52,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resource :robots, only: %i(show)
+
   resources :users, only: %i(show), param: :uuid
 
   namespace :users, as: 'user', path: '' do
