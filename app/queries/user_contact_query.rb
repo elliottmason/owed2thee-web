@@ -43,7 +43,7 @@ class UserContactQuery < ApplicationQuery
     end
 
     def confirmed
-      in_state(:confirmed)
+      in_confirmation_state(:confirmed)
     end
 
     def for_source(contact:, source:)
@@ -51,7 +51,7 @@ class UserContactQuery < ApplicationQuery
     end
 
     def unconfirmed
-      in_state(:unconfirmed)
+      in_confirmation_state(:unconfirmed)
     end
   end
 end

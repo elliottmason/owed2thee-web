@@ -31,6 +31,18 @@ module Transitional
       transition_reflection.type
     end
 
+    def most_recent_transition_join(type = nil)
+      if type
+        transition_type = type.to_s.classify + 'Transition'
+        super() +
+          " AND #{most_recent_transition_alias}.type = '#{transition_type}'"
+      else
+        super()
+      end +
+        " AND #{most_recent_transition_alias}.#{model_type} = " \
+        "'#{base_class.name}'"
+    end
+
     def states_where(temporary_table_name, states)
       if initial_state?(states)
         "#{temporary_table_name}.to_state IN (?) OR " \
@@ -43,16 +55,6 @@ module Transitional
 
     def transition_class
       Transition
-    end
-
-    def transition1_join
-      super +
-        " AND #{most_recent_transition_alias}.#{model_type} = '#{base_class}'"
-    end
-
-    def transition2_join
-      super +
-        " AND #{most_recent_transition_alias}.#{model_type} = '#{base_class}'"
     end
   end
 
@@ -68,6 +70,7 @@ module Transitional
 
       compile_initial_state
       compile_predicate_methods
+      compile_scopes
       compile_state_machine
       compile_transition_methods
     end
@@ -92,6 +95,13 @@ module Transitional
       end
     end
 
+    def compile_scopes
+      @class_methods.module_eval <<-EOS, __FILE__, __LINE__ + 1
+        #{in_transition_scope_method}
+        #{not_in_transition_scope_method}
+      EOS
+    end
+
     def compile_state_machine
       @instance_methods.module_eval <<-EOS, __FILE__, __LINE__ + 1
         def #{@name}
@@ -112,6 +122,34 @@ module Transitional
           end
         EOS
       end
+    end
+
+    def in_transition_scope_method
+      <<-EOS
+      def in_#{@name}_state(*states)
+        states = states.flatten.map(&:to_s)
+
+        joins(most_recent_transition_join(:#{@name})).
+          where(
+            "\#{states_where(most_recent_transition_alias, states)}",
+            states
+          ).uniq
+      end
+      EOS
+    end
+
+    def not_in_transition_scope_method
+      <<-EOS
+      def not_in_#{@name}_state(*states)
+        states = states.flatten.map(&:to_s)
+
+        joins(most_recent_transition_join(:#{@name})).
+          where(
+            "NOT (\#{states_where(most_recent_transition_alias, states)})",
+            states
+          ).uniq
+      end
+      EOS
     end
 
     def state_machine_class
