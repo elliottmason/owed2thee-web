@@ -31,14 +31,10 @@ module Transitional
       transition_reflection.type
     end
 
-    def most_recent_transition_join(type = nil)
-      if type
-        transition_type = type.to_s.classify + 'Transition'
-        super() +
-          " AND #{most_recent_transition_alias}.type = '#{transition_type}'"
-      else
-        super()
-      end +
+    def most_recent_transition_join(type)
+      transition_type = type.to_s.classify + 'Transition'
+      super() +
+        " AND #{most_recent_transition_alias}.type = '#{transition_type}'" \
         " AND #{most_recent_transition_alias}.#{model_type} = " \
         "'#{base_class.name}'"
     end

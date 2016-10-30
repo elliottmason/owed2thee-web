@@ -1,4 +1,4 @@
-tr class="transfer--#{transfer.status}"
+tr class="transfer--#{transfer.status}" id="transfer_#{transfer.id}"
   td.transfer-date = link_to(transfer.date, transfer)
   td class="description--#{transfer.tone}" = link_to(transfer.description, transfer)
   td.transfer-amount = link_to(transfer.amount, transfer)

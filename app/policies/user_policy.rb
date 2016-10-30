@@ -24,10 +24,8 @@ class UserPolicy < ApplicationPolicy
   attr_reader :loan
 
   def contact_confirmed?
-    # TODO: Why doesn't `UserContactQuery.confirmed_between?` work?
     UserContactQuery.
-      first_between(contact: target_user, owner: current_user).
-      confirmed?
+      confirmed_between?(contact: target_user, owner: current_user)
   end
 
   def contact_exists?

@@ -7,14 +7,14 @@ describe 'users/loans/index.html.slim' do
   let!(:borrower) do
     FactoryGirl.create(:confirmed_user,
                        email_address: borrower_email_address,
-                       first_name: 'Josh',
-                       last_name: 'Schramm')
+                       first_name:  'Josh',
+                       last_name:   'Schramm')
   end
   let(:borrower_email_address) { 'josh.schramm@gmail.com' }
   let!(:creator) do
     FactoryGirl.create(:confirmed_user,
-                       first_name: 'Elliott',
-                       last_name: 'Mason')
+                       first_name:  'Elliott',
+                       last_name:   'Mason')
   end
   let(:lender) { creator }
   let(:loan) do
