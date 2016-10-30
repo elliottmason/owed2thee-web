@@ -10,7 +10,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    current_user == target_user || contact_exists?
+    true
   end
 
   def view_name?
@@ -26,10 +26,6 @@ class UserPolicy < ApplicationPolicy
   def contact_confirmed?
     UserContactQuery.
       confirmed_between?(contact: target_user, owner: current_user)
-  end
-
-  def contact_exists?
-    UserContactQuery.between?(contact: target_user, owner: current_user)
   end
 
   def current_user

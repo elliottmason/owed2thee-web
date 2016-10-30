@@ -8,10 +8,6 @@ class UserContactQuery < ApplicationQuery
       between(*args)
   end
 
-  def self.between?(*args)
-    between(*args).exists?
-  end
-
   def self.confirmed_between(*args)
     between(*args).confirmed
   end
@@ -22,10 +18,6 @@ class UserContactQuery < ApplicationQuery
 
   def self.first_between(*args)
     between(*args).first
-  end
-
-  def self.first_confirmed_between(*args)
-    confirmed_between(*args).first
   end
 
   def self.for_source(*args)
