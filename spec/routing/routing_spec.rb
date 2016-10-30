@@ -18,7 +18,7 @@ describe 'routes', :routing do
   describe 'loans' do
     let(:uuid) { '92b0c876-8a6d-4979-af98-67d0c7aeda85' }
 
-    pending do
+    it do
       expect(post: '/loans').to route_to(
         action:     'create',
         controller: 'loans'
@@ -74,7 +74,7 @@ describe 'routes', :routing do
     end
 
     describe 'descriptions' do
-      pending do
+      it do
         expect(post: "/loans/#{uuid}/descriptions").to route_to(
           action:     'create',
           controller: 'loans/descriptions',
@@ -84,7 +84,7 @@ describe 'routes', :routing do
     end
 
     describe 'payments' do
-      pending do
+      it do
         expect(post: "loans/#{uuid}/payments").to route_to(
           action:     'create',
           controller: 'loans/payments',
@@ -92,7 +92,7 @@ describe 'routes', :routing do
         )
       end
 
-      pending do
+      it do
         expect(get: "loans/#{uuid}/payments/new").to route_to(
           action:     'new',
           controller: 'loans/payments',

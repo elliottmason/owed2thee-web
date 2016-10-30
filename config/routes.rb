@@ -27,9 +27,8 @@ Rails.application.routes.draw do
   end
 
   resources :loans,
-            constraints:  { uuid: /[a-f0-9\-]{36}/i },
-            only:         %i(create new show),
-            param:        :uuid do
+            only:   %i(create new show),
+            param:  :uuid do
     member do
       %w(cancel confirm dispute publish).each do |action|
         patch(action)
