@@ -5,10 +5,8 @@ module ConfirmationToken
 
       before_validation(on: :create) { generate_confirmation_token }
 
-      validates :confirmation_token, presence: true, on: :create
-      validates :confirmation_token, uniqueness: true, on: :create
-
-      transitional :redemption
+      validates :confirmation_token, presence:    true, on: :create
+      validates :confirmation_token, uniqueness:  true, on: :create
     end
   end
 

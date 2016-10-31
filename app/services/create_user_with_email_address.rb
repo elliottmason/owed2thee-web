@@ -1,10 +1,10 @@
 class CreateUserWithEmailAddress < ApplicationService
   include BroadcastToListeners
 
-  subscribe EmailAddressListener.new
-
   def initialize(email_address)
     @email_address = email_address
+
+    subscribe(EmailAddressListener.new)
   end
 
   def email_address

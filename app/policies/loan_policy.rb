@@ -54,11 +54,11 @@ class LoanPolicy < ApplicationPolicy
   end
 
   def loan_is_cancelable?
-    loan.publicity.can_transition_to?(:canceled)
+    loan.can_transition_to?(:canceled)
   end
 
   def loan_is_confirmable?
-    loan_is_published? && loan.confirmation.can_transition_to?(:confirmed)
+    loan.can_transition_to?(:confirmed)
   end
 
   def loan_is_confirmed?
@@ -66,7 +66,7 @@ class LoanPolicy < ApplicationPolicy
   end
 
   def loan_is_disputable?
-    loan.confirmation.can_transition_to?(:disputed)
+    loan.can_transition_to?(:disputed)
   end
 
   def loan_is_payable?
@@ -74,11 +74,11 @@ class LoanPolicy < ApplicationPolicy
   end
 
   def loan_is_publishable?
-    loan.publicity.can_transition_to?(:published)
+    loan.can_transition_to?(:published)
   end
 
   def loan_is_published?
-    loan.published?
+    !loan.unpublished?
   end
 
   def loan_is_unconfirmed?

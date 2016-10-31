@@ -51,8 +51,7 @@ class UserPresenter < Burgundy::Item
   def contact
     return @contact if defined?(@contact)
 
-    @contact =
-      UserContactQuery.first_between(contact: user, owner: viewer)
+    @contact = UserContactQuery.first_between(contact: user, owner: viewer)
   end
 
   def contact_display_name
@@ -68,10 +67,10 @@ class UserPresenter < Burgundy::Item
   end
 
   def determine_display_name
-    contact_display_name ||
-      full_name ||
-      primary_email_address ||
-      transfer_contact_name ||
+    contact_display_name            ||
+      full_name                     ||
+      primary_email_address         ||
+      transfer_contact_name         ||
       contact_fallback_display_name ||
       I18n.t('app.default_display_name')
   end

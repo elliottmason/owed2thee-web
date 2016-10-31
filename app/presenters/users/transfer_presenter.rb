@@ -24,7 +24,7 @@ module Users
     end
 
     def status
-      transfer.confirmation.current_state
+      transfer.current_state
     end
 
     alias transfer item

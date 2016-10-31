@@ -1,5 +1,8 @@
 class ChangePaymentState < ChangeTransferState
-  subscribe PaymentListener.new
+  def initialize(*args)
+    super
+    subscribe(PaymentListener.new)
+  end
 
   alias payment transfer
 end

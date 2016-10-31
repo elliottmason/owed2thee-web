@@ -7,7 +7,11 @@ class UserContact < ActiveRecord::Base
 
   belongs_to :contact,  class_name: 'User'
   belongs_to :owner,    class_name: 'User'
-  belongs_to :source, polymorphic: true
+  belongs_to :source,   polymorphic: true
 
-  transitional :confirmation
+  state_machine :UserContactStateMachine
+
+  def self.initial_state
+    :unconfirmed
+  end
 end

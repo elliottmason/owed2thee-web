@@ -28,7 +28,7 @@ class EmailAddressQuery < ApplicationQuery
     end
 
     def unconfirmed
-      not_in_confirmation_state(:confirmed)
+      not_in_state(:confirmed)
     end
 
     def user(user)

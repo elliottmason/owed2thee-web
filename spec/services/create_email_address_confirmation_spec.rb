@@ -9,13 +9,13 @@ describe CreateEmailAddressConfirmation do
       expect(
         EmailAddressConfirmation.
           where(email_address: email_address).
-          in_redemption_state(:canceled).
+          in_state(:canceled).
           count
       ).to eq 2
       expect(
         EmailAddressConfirmation.
           where(email_address: email_address).
-          in_redemption_state(:unredeemed).
+          in_state(:unredeemed).
           count
       ).to eq 1
     end

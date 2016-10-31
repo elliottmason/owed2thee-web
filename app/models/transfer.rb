@@ -17,8 +17,7 @@ class Transfer < ActiveRecord::Base
   monetize :amount_cents
   monetize :balance_cents
 
-  transitional :confirmation, state_machine_class_name: 'DisputeStateMachine'
-  transitional :publicity
+  state_machine :TransferStateMachine
 
   def participants
     [recipient, sender]

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160708232759) do
+ActiveRecord::Schema.define(version: 20161031041814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -187,11 +187,7 @@ ActiveRecord::Schema.define(version: 20160708232759) do
     t.boolean  "most_recent",                    null: false
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
-    t.string   "type"
   end
-
-  add_index "transitions", ["transitional_id", "transitional_type", "type", "most_recent"], name: "index_transitions_parent_sort", unique: true, using: :btree
-  add_index "transitions", ["transitional_id", "transitional_type", "type", "sort_key"], name: "index_transitions_parent_most_recent", unique: true, using: :btree
 
   create_table "user_contacts", force: :cascade do |t|
     t.integer  "owner_id",              null: false

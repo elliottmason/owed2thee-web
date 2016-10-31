@@ -12,6 +12,12 @@ class TemporarySignin < ActiveRecord::Base
 
   before_validation :set_expires_at, on: :create
 
+  state_machine :TemporarySigninStateMachine
+
+  def self.initial_state
+    :unredeemed
+  end
+
   def to_param
     confirmation_token
   end

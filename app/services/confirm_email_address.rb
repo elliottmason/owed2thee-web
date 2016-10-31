@@ -5,12 +5,12 @@ class ConfirmEmailAddress < ApplicationService
 
   delegate :user, to: :email_address, allow_nil: true
 
-  subscribe EmailAddressListener.new
-
   transition :confirm
 
   def initialize(email_address)
     @item = @email_address = email_address
+
+    subscribe(EmailAddressListener.new)
   end
 
   def allowed?

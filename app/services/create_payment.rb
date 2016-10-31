@@ -7,12 +7,12 @@ class CreatePayment < ApplicationService
   attr_reader :payment
   attr_reader :user
 
-  subscribe :PaymentListener
-
   def initialize(creator, payee, params = {})
     @creator  = creator
     @params   = params
     @payee    = payee
+
+    subscribe(PaymentListener.new)
   end
 
   def allowed?

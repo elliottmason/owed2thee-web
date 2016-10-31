@@ -1,7 +1,10 @@
 class RedeemPasswordReset < RedeemTemporarySignin
-  subscribe TemporarySigninListener.new
-
   transition :redeem
+
+  def initialize(*args)
+    super
+    subscribe(TemporarySigninListener.new)
+  end
 
   private
 

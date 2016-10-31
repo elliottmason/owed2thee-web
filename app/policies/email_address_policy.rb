@@ -9,7 +9,7 @@ class EmailAddressPolicy < TemporarySigninPolicy
   private
 
   def email_address_is_confirmable?
-    email_address.confirmation.can_transition_to?(:confirmed)
+    email_address.can_transition_to?(:confirmed)
   end
 
   def email_address_user_is_unconfirmed?

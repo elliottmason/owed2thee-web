@@ -1,6 +1,4 @@
-class RedemptionStateMachine
-  include Statesman::Machine
-
+class TemporarySigninStateMachine < ApplicationStateMachine
   ACTIONS = {
     cancel: :canceled,
     redeem: :redeemed

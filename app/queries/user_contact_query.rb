@@ -8,10 +8,6 @@ class UserContactQuery < ApplicationQuery
       between(*args)
   end
 
-  def self.between?(*args)
-    between(*args).exists?
-  end
-
   def self.confirmed_between(*args)
     between(*args).confirmed
   end
@@ -22,10 +18,6 @@ class UserContactQuery < ApplicationQuery
 
   def self.first_between(*args)
     between(*args).first
-  end
-
-  def self.first_confirmed_between(*args)
-    confirmed_between(*args).first
   end
 
   def self.for_source(*args)
@@ -43,7 +35,7 @@ class UserContactQuery < ApplicationQuery
     end
 
     def confirmed
-      in_confirmation_state(:confirmed)
+      in_state(:confirmed)
     end
 
     def for_source(contact:, source:)
@@ -51,7 +43,7 @@ class UserContactQuery < ApplicationQuery
     end
 
     def unconfirmed
-      in_confirmation_state(:unconfirmed)
+      in_state(:unconfirmed)
     end
   end
 end

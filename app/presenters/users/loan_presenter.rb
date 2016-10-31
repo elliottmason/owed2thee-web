@@ -1,5 +1,5 @@
 module Users
-  class LoanPresenter < TransferPresenter
+  class LoanPresenter < Users::TransferPresenter
     def tone
       sender? ? 'neutral' : 'negative'
     end

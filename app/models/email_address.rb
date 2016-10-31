@@ -9,5 +9,5 @@ class EmailAddress < ActiveRecord::Base
 
   validates :address, format: { with: /.+@.+\..+/, on: :create }
 
-  transitional :confirmation
+  state_machine :EmailAddressStateMachine
 end
