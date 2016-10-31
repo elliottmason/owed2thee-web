@@ -34,7 +34,7 @@ class LoansController < ApplicationController
 
   def dispute
     service = DisputeLoan.with(@loan, current_user)
-    flash[:notice] = dispute_notice if service.successful?
+    flash[:success] = dispute_notice if service.successful?
     redirect_to(@loan)
   end
 
@@ -47,7 +47,7 @@ class LoansController < ApplicationController
 
   def publish
     service = PublishLoan.with(@loan, current_user)
-    flash[:notice] = confirmation_notice if service.successful?
+    flash[:success] = confirmation_notice if service.successful?
     redirect_to([@loan])
   end
 

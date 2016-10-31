@@ -1,5 +1,8 @@
 class CreateEmailAddressConfirmation < CreateTemporarySignin
-  subscribe EmailAddressConfirmationListener.new
+  def initialize(*args)
+    super
+    subscribe(EmailAddressConfirmationListener.new)
+  end
 
   alias email_address_confirmation record
 

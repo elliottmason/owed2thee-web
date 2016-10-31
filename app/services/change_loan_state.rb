@@ -1,5 +1,8 @@
 class ChangeLoanState < ChangeTransferState
-  subscribe LoanListener.new
+  def initialize(*args)
+    super
+    subscribe(LoanListener.new)
+  end
 
   alias loan transfer
 end

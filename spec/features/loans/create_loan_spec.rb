@@ -22,11 +22,11 @@ feature 'Creating a loan', :background, :js do
       end
     end
 
-    scenario do
+    scenario 'displays created loan' do
       expect(show_loan_page).to be_displayed
     end
 
-    scenario do
+    scenario 'sends confirmation email' do
       expect(ActionMailer::Base.deliveries.size).to eq 1
       expect(ActionMailer::Base.deliveries[0].subject).
         to eq '[Owed2Thee] - Confirm your email address'

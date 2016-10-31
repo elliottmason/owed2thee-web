@@ -27,11 +27,11 @@ class TransferQuery < ApplicationQuery
 
   module Scopes
     def confirmed
-      in_confirmation_state(:confirmed)
+      in_state(:confirmed)
     end
 
     def published
-      in_publicity_state(:published)
+      not_in_state(:unpublished)
     end
 
     def received(recipient, sender)
@@ -43,7 +43,7 @@ class TransferQuery < ApplicationQuery
     end
 
     def unconfirmed
-      not_in_confirmation_state(:confirmed)
+      not_in_state(:confirmed)
     end
   end
 end

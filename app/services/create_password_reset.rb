@@ -1,7 +1,10 @@
 class CreatePasswordReset < CreateTemporarySignin
-  alias password_reset record
+  def initialize(*args)
+    super
+    subscribe(PasswordResetListener.new)
+  end
 
-  subscribe PasswordResetListener.new
+  alias password_reset record
 
   private
 

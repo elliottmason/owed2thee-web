@@ -4,12 +4,12 @@ class RedeemEmailAddressConfirmation < RedeemTemporarySignin
   delegate :email_address, to: :email_address_confirmation
   delegate :user, to: :email_address
 
-  subscribe EmailAddressConfirmationListener.new
-
   transition :redeem
 
   def initialize(confirmation_token)
     @confirmation_token = confirmation_token
+
+    subscribe(EmailAddressConfirmationListener.new)
   end
 
   def allowed?

@@ -49,15 +49,15 @@ class LoanQuery < ApplicationQuery
     end
 
     def published
-      in_publicity_state(:published)
+      in_state(:published)
     end
 
     def unconfirmed
-      not_in_confirmation_state(:confirmed)
+      not_in_state(:confirmed)
     end
 
     def unpublished
-      not_in_publicity_state(:published)
+      not_in_state(:published)
     end
 
     def user(user)

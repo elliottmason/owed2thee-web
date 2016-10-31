@@ -3,12 +3,6 @@ class ChangeTransferState < ApplicationService
 
   attr_reader :user
 
-  def initialize(transfer, user = nil)
-    @item = transfer
-    @user = user
-    super
-  end
-
   def allowed?
     super && user.present?
   end

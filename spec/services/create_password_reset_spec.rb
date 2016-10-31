@@ -9,13 +9,13 @@ describe CreatePasswordReset do
       expect(
         PasswordReset.
           where(email_address: email_address).
-          in_redemption_state(:canceled).
+          in_state(:canceled).
           count
       ).to eq 2
       expect(
         PasswordReset.
           where(email_address: email_address).
-          not_in_redemption_state(:canceled).
+          not_in_state(:canceled).
           count
       ).to eq 1
     end

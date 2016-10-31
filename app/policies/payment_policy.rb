@@ -30,11 +30,11 @@ class PaymentPolicy < ApplicationPolicy
   end
 
   def payment_is_confirmable?
-    payment_is_published? && payment.confirmation.can_transition_to?(:confirmed)
+    payment_is_published? && payment.can_transition_to?(:confirmed)
   end
 
   def payment_is_publishable?
-    payment.publicity.can_transition_to?(:published)
+    payment.can_transition_to?(:published)
   end
 
   def payment_is_published?
