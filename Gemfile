@@ -3,7 +3,7 @@ ruby '2.5.0'
 
 gem 'rails',            '4.2.8'
 gem 'burgundy',         '~> 0.2'
-gem 'devise',           '~> 3.5'
+gem 'devise',           '~> 4.0'
 gem 'fast_attributes',  '~> 0.7'
 gem 'figaro',           '~> 1.0'
 gem 'foundation-rails', '~> 6.1'
