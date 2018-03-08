@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
-ruby '2.3.1'
+ruby '2.5.0'
 
-gem 'rails',            '4.2.5.1'
+gem 'rails',            '4.2.8'
 gem 'burgundy',         '~> 0.2'
 gem 'devise',           '~> 3.5'
 gem 'fast_attributes',  '~> 0.7'
