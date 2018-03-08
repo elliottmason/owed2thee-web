@@ -15,7 +15,7 @@ module Users
       flash_message_for_update(service.successful?)
 
       if service.successful?
-        sign_in(service.user, bypass: true)
+        bypass_sign_in(service.user)
         redirect_for_update(service)
       else
         @password_form = service.form
